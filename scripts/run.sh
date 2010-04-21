@@ -10,5 +10,3 @@ MIPS_BINARY=$2
 HERE=$PWD
 cd $SIMICS
 ./simics -fast -e "\$mips_binary=$HERE/$MIPS_BINARY" -x $HERE/scripts/run.simics
-
-

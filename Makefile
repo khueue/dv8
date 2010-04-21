@@ -31,7 +31,6 @@ SIMICS=/home/$(shell whoami)/simics-workspace
 
 
 
-
 #### RULE USED TO START SIMICS
 
 do_boot: bin/dv8
@@ -55,7 +54,6 @@ build/%.o: src/%.c
 
 build/%.o: src/%.S
 	$(CC) $(ARCH) $(CFLAGS)  -c $< -o $@
-
 
 clean:
 	pwd
