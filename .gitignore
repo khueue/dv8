@@ -2,10 +2,9 @@
 .*
 # ... except for .gitignore
 !.gitignore
-!bin/.gitignore
-!build/.gitignore
 
 *.[oa]
 *~
 
-bin/dv8
+bin/**/*
+build/**/*
