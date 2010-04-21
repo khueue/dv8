@@ -5,6 +5,8 @@
 !bin/.gitignore
 !build/.gitignore
 
+*.tmproj
+
 *.[oa]
 *~
 

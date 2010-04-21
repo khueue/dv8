@@ -6,6 +6,7 @@
 # Stack.
 # -----------------------------------------------------
 kernel_boot_stack_low_limit:
+    .align  2
     #define KERNEL_BOOT_STACK_SIZE  0x4000
     .space  KERNEL_BOOT_STACK_SIZE
 kernel_boot_stack_high_limit:
