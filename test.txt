@@ -1,4 +1,3 @@
 Nu testar jag som fasen.
 Nu ändrar jag lite i filen.
-Och nu kommer jag in och ändrar på samma rad från dv8_test!
 
