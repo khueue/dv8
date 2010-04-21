@@ -5,10 +5,9 @@
 !bin/.gitignore
 !build/.gitignore
 
-*.tmproj
-
 *.[oa]
 *~
 
+bin/dv8
 bin/**/*
 build/**/*
