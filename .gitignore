@@ -1,8 +1,9 @@
-._*
-build/*
-bin/*
-src/._*
-include/._*
-bin/._*
-build/._*
-scripts/._*
+# Ignore all hidden files ...
+.*
+# ... except for .gitignore
+!.gitignore
+
+*.[oa]
+*~
+
+bin/dv8
