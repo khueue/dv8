@@ -1,4 +1,4 @@
-#include "tty3.h"
+#include "tty.h"
 
 static volatile tty_t* const tty = (tty_t*) 0xb80003f8;
 

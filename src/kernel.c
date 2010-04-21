@@ -1,5 +1,5 @@
 #include "kernel.h"
-#include "tty3.h"
+#include "tty.h"
 void
 kinit(void)
 {

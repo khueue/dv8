@@ -1,3 +1,6 @@
+#ifndef TTY_H
+#define TTY_H
+
 typedef unsigned char uint8_t;
 
 typedef struct {
@@ -21,5 +24,4 @@ typedef struct {
   
 } tty_t;
 
-
-
+#endif
