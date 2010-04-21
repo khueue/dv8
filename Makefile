@@ -38,7 +38,7 @@ do_boot: bin/dv8
 
 #### RULES TO BUILD BINARIES FROM OBJECT FILES
 
-bin/dv8: $(addprefix build/, boot.o kernel.o)
+bin/dv8: $(addprefix build/, boot.o kernel.o tty3.o)
 	$(LD) $(ARCH) -o $@ $^
 
 #### Add dependency on headerfile of various tty.o files

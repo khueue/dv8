@@ -1,11 +1,7 @@
 #include "kernel.h"
-
+#include "tty3.h"
 void
 kinit(void)
 {
-    int x = 5;
-    while (1)
-    {
-        ++x;
-    }
+	tty_test();
 }
