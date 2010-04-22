@@ -74,7 +74,7 @@ build: $(EXE)
 # Build binary from object files.
 $(EXE): $(OBJECTS)
 	@- echo
-	@- echo '--- Linking executable $(EXE) ...'
+	@- echo '--- Linking $@ ...'
 	$(LD) $(ARCH) $(LDFLAGS) $^ -o $@
 
 # Build object from C file.
