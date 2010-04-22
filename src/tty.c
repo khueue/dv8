@@ -19,9 +19,9 @@ void tty_print_string(const char* text) {
 }
 
 void tty_test() {
-  tty_putc('A');
+/*  tty_putc('A');*/
 
-  tty_print_string("loha!");
+  tty_print_string("Dv8-OS version 1.0");
 
   while (1) {};
 }
