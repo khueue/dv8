@@ -1,33 +1,26 @@
-# Path to cross tools
+# Path to cross tools.
+MIPS_PREFIX = /it/sw/cross/mips-idt/bin/mips-idt-elf
 
-MIPS_PREFIX=/it/sw/cross/mips-idt/bin/mips-idt-elf
-
-EXECUTABLES=$(addprefix bin/, dv8)
-
-
-# gcc flags for the MIPS architecture:
+# GCC flags for the MIPS architecture:
 #  -EL     : Little endian
 #  -G0     : Always use small data (using register gp)
 #  -mips32 : Compile for a 32-bit MIPS architecture
-#
+ARCH = -EL -G0 -mips32
 
-ARCH=-EL -G0 -mips32
+# Other GCC flags.
+CFLAGS += -ggdb -Wall -W -fno-builtin -Iinclude
 
-# Other gcc flags
-
-CFLAGS	+= -ggdb -Wall -W -fno-builtin -I include
-
-# Compiler and linker commands
-
-CC=$(MIPS_PREFIX)-gcc
+# Compiler and linker commands.
+CC = $(MIPS_PREFIX)-gcc
 
 # Tell the linker where to start the text segment.
-LD=$(MIPS_PREFIX)-ld -Ttext 80020000
+LD = $(MIPS_PREFIX)-ld -Ttext 80020000
+
+# Path to Simics installation.
+SIMICS = /home/$(shell whoami)/simics-workspace
 
 
-# Path to Simics installation
-
-SIMICS=/home/$(shell whoami)/simics-workspace
+EXECUTABLE = $(addprefix bin/, dv8)
 
 
 
@@ -38,7 +31,7 @@ do_boot: bin/dv8
 
 #### RULES TO BUILD BINARIES FROM OBJECT FILES
 
-bin/dv8: $(addprefix build/, boot.o kernel.o tty.o)
+$(EXECUTABLE): $(addprefix build/, boot.o kernel.o tty.o)
 	$(LD) $(ARCH) -o $@ $^
 
 #### Add dependency on headerfile of various tty.o files
@@ -61,4 +54,4 @@ clean:
 	rm -f include/*~ include/#* include/*#
 	rm -f src/*~ src/#* src/*#
 	rm -f scripts/*~ scripts/#* scripts/*#
-	rm -f ${EXECUTABLES}
+	rm -f ${EXECUTABLE}
