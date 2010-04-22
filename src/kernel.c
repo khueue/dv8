@@ -1,5 +1,6 @@
 #include "kernel.h"
 #include "tty.h"
+
 void
 kinit(void)
 {

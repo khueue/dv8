@@ -3,6 +3,9 @@
  * Copyright (c) 1992 Algorithmics Ltd.
  */
 
+#ifndef REGDEF_H
+#define REGDEF_H
+
 #define zero    $0
 
 #define AT      $1
@@ -44,3 +47,5 @@
 #define sp      $29
 #define fp      $30
 #define ra      $31
+
+#endif
