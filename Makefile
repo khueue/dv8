@@ -2,7 +2,7 @@
 # Variables.
 # --------------------------------------------------------------------------
 
-# Path to cross tools.
+# Path to cross compilation tools.
 MIPS_PREFIX = /it/sw/cross/mips-idt/bin/mips-idt-elf
 
 # Compiler.
@@ -23,7 +23,7 @@ ARCH = -EL -G0 -mips32
 # -Wall           : show more warnings
 # -Werror         : treat warnings as errors (stops compilation)
 # -fno-builtin    : disable built-in functions
-# -I              : add to the #include search path
+# -I              : augment the #include search path
 CFLAGS += -ggdb -W -Wall -Werror -fno-builtin -Iinclude
 
 # Add linker flags.
