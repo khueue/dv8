@@ -69,13 +69,13 @@ boot: build
 
 # Compile everything.
 build: $(EXE)
-	@- echo
 
 # Build binary from object files.
 $(EXE): $(OBJECTS)
 	@- echo
 	@- echo '--- Linking $@ ...'
 	$(LD) $(ARCH) $(LDFLAGS) $^ -o $@
+	@- echo
 
 # Build object from C file.
 $(DIR_BUILD)/%.o: $(DIR_SRC)/%.c
