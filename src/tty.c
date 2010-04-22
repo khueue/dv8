@@ -29,8 +29,6 @@ tty_print_string(const char* text)
 void
 tty_test(void)
 {
-    /*  tty_putc('A');*/
-
     tty_print_string("dv8-OS version 1.1");
 
     while (1)

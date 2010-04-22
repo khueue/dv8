@@ -21,9 +21,10 @@ ARCH = -EL -G0 -mips32
 # -ggdb        : debugger stuff
 # -W           : warnings
 # -Wall        : more warnings
+# -Werror      : treat warnings as errors
 # -fno-builtin : skip standard libraries etc.
 # -I           : add path to #include search path
-CFLAGS += -ggdb -W -Wall -fno-builtin -Iinclude
+CFLAGS += -ggdb -W -Wall -Werror -fno-builtin -Iinclude
 
 # Add linker flags.
 # -Ttext : tell it where to start the text segment
@@ -55,10 +56,6 @@ EXE = $(DIR_BIN)/dv8
 
 # Targets that do not correspond to files.
 .PHONY: all clean boot compile
-
-test:
-	echo $(SOURCES)
-	echo $(OBJECTS)
 
 # Default rule, used when simply typing 'make'.
 all: boot

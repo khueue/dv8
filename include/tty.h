@@ -3,6 +3,9 @@
 
 #include "int_types.h"
 
+/* XXX, remove this later. */
+void tty_test(void);
+
 typedef struct
 {
     uint8_t thr; /* 0x00: Transmitter Holding Register */
