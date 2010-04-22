@@ -1,6 +1,6 @@
-############################################################################
-# --- Variables.
-############################################################################
+# --------------------------------------------------------------------------
+# Variables.
+# --------------------------------------------------------------------------
 
 # Path to cross tools.
 MIPS_PREFIX = /it/sw/cross/mips-idt/bin/mips-idt-elf
@@ -11,23 +11,23 @@ CC = $(MIPS_PREFIX)-gcc
 # Linker.
 LD = $(MIPS_PREFIX)-ld
 
-# GCC flags for the MIPS architecture (used by both compiler and linker):
-# -EL     : little endian
-# -G0     : always use small data (using register gp)
-# -mips32 : compile for a 32-bit MIPS architecture
+# GCC flags for MIPS architecture (used by both compiler and linker).
+# -EL             : little endian
+# -G0             : always use small data (using register gp)
+# -mips32         : compile for a 32-bit MIPS architecture
 ARCH = -EL -G0 -mips32
 
 # Add GCC flags.
-# -ggdb        : debugger stuff
-# -W           : warnings
-# -Wall        : more warnings
-# -Werror      : treat warnings as errors
-# -fno-builtin : skip standard libraries etc.
-# -I           : add path to #include search path
+# -ggdb           : include debugger info
+# -W              : show warnings
+# -Wall           : show more warnings
+# -Werror         : treat warnings as errors (stops compilation)
+# -fno-builtin    : disable built-in functions
+# -I              : add to the #include search path
 CFLAGS += -ggdb -W -Wall -Werror -fno-builtin -Iinclude
 
 # Add linker flags.
-# -Ttext : tell it where to start the text segment
+# -Ttext          : tell it where to start the text segment
 LDFLAGS += -Ttext 80020000
 
 # Path to Simics installation.
@@ -50,9 +50,9 @@ OBJECTS = $(BASENAMES:$(DIR_SRC)/%=$(DIR_BUILD)/%.o)
 # Final binary.
 EXE = $(DIR_BIN)/dv8
 
-############################################################################
-# --- Rules.
-############################################################################
+# --------------------------------------------------------------------------
+# Rules.
+# --------------------------------------------------------------------------
 
 # Targets that do not correspond to files.
 .PHONY: all clean boot compile
