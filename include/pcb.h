@@ -11,7 +11,7 @@ typedef struct
     uint32_t pid;
     uint32_t priority;
     uint8_t stack[PCB_STACK_SIZE];
-    registers_t regs;    
+    registers_t regs;
 } pcb_t;
 
 #endif
