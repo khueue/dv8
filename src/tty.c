@@ -1,27 +1,39 @@
 #include "tty.h"
 
-static volatile tty_t* const tty = (tty_t*) 0xb80003f8;
+#define TTY_UART_BASE_ADDRESS   0xb80003f8
 
-void tty_putc(char c) {
-  // Poll until ready to transmit.
-  while ( !tty->lsr.thre ) {}		
+static volatile tty_t *const tty = (tty_t *)TTY_UART_BASE_ADDRESS;
 
-  // Write character to Transmitter Holding Register
-  tty->thr = c;		    
-	  
+void
+tty_putc(char c)
+{
+    // Poll until ready to transmit.
+    while (!tty->lsr.thre)
+    {
+    }
+
+    // Write character to Transmitter Holding Register
+    tty->thr = c;
 }
 
-void tty_print_string(const char* text) {
-  while (text[0] != '\0') {
-    tty_putc(text[0]);
-    ++text;
-  }
+void
+tty_print_string(const char* text)
+{
+    while (text[0] != '\0')
+    {
+        tty_putc(text[0]);
+        ++text;
+    }
 }
 
-void tty_test() {
-/*  tty_putc('A');*/
+void
+tty_test(void)
+{
+    /*  tty_putc('A');*/
 
-  tty_print_string("Dv8-OS version 1.0");
+    tty_print_string("dv8-OS version 1.1");
 
-  while (1) {};
+    while (1)
+    {
+    };
 }
