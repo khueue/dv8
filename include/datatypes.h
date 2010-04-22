@@ -1,9 +1,9 @@
-#ifndef DATATYPES
-#define DATATYPES
+#ifndef DATATYPES_H
+#define DATATYPES_H
 
-struct pcb
+typedef struct pcb
 {
-    
-};
+    int pid;
+} pcb_t;
 
 #endif
