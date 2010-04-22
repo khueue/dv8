@@ -63,6 +63,7 @@ all: boot
 # Compile everything and run Simics.
 boot: compile
 	./$(DIR_SCRIPTS)/run.sh $(SIMICS) $(EXE)
+	@-echo "Finished!"
 
 # Compile everything.
 compile: $(EXE)
