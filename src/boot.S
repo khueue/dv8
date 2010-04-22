@@ -1,4 +1,5 @@
 #include "regdef.h"
+#include "bits.h"
 
     .data
 
@@ -25,7 +26,7 @@ _start:
     lb  t1, 0x03(t0)    # Line Status register
 
     # Set word length to 8 bits (two least significant bits to 1), see TTY manual, page 14 and 15.
-    ori t1, t1, 0x03
+    ori t1, t1, BIT0|BIT1
     sb  t1, 0x03(t0)
 
     la  sp, kernel_boot_stack_high_limit
