@@ -192,7 +192,7 @@ private to the file they were declared in:
     g_pcb_freelist;
 
 Any variable that is not local to a function (i.e. declared on the top-level)
-should be prefixed with the two letters 'g_'. This makes it easy to spot their
+should be prefixed with the two characters 'g_'. This makes it easy to spot their
 usage inside functions.
 
 Since global variables tend to have more or less long storage qualifiers
