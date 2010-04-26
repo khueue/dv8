@@ -77,12 +77,33 @@ instead of:
     else
         ...
 
+## Language Constructs
+
+Since language constructs aren't function calls, they should look a little
+different (also read the section on Function Declarations), so keep a single
+space after the keyword, just before any parentheses:
+
+    if (...)
+    {
+        ...
+    }
+
+    while (...)
+    {
+        ...
+    }
+
+    for (i = 0; i < 10; ++i)
+    {
+        ...
+    }
+
 ## Functions
 
 ### Function Declarations
 
 Just like with global variable declarations, keep a newline just before the
-function name:
+function name, and avoid spaces between the name and the argument list:
 
     pcb_t *
     alloc_pcb(void);
@@ -94,7 +115,11 @@ function name:
     init_pcb_freelist(void);
 
 As you can see, it's easy to quickly scan the function names, since they are
-all in the leftmost column.
+all collected in the leftmost column.
+
+If a functions takes no arguments, then it should be declared (and defined)
+as taking void. A function that is typed to nothing, not even void, is assumed
+to take a variable number of arguments.
 
 ## Ternary If (condition ? on_true : on_false)
 
