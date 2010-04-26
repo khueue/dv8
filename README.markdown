@@ -99,7 +99,7 @@ all in the leftmost column.
 ## Ternary If (condition ? on_true : on_false)
 
 Use it only for very concise expressions. __Never__ nest. This might be okay,
-but would probably look better as a regular if.
+but would probably look better as a regular if:
 
     int
     fib(int n)
@@ -196,14 +196,40 @@ should be kept as short and idiomatic as possible (i, j, next).
 
 ## Constants
 
-Since constants are pretty much global, always prefer longer names.
+Since constants are pretty much global, always prefer longer names. By
+convention, always use UPPERCASE letters and underscores for spaces:
 
-## Macros
+    #ifndef KERNEL_STACK_SIZE
+        #define KERNEL_STACK_SIZE 0x4000
+    #endif
+
+As you can see, also wrap the #define in an #ifndef which uses the very same
+constant. This enables us to set various settings at compile time, for example
+in the Makefile, instead of searching around in all the header files. [Maybe
+we should keep a list somewhere of all constants that describe system
+"settings"?]
+
+If the replacement isn't atomic, wrap it in parentheses (and read the next
+section):
+
+    #define BIT3 (1 << 2)
+
+This avoids unnecessary headaches involving operator precedence. Note that
+this kind of macro isn't a configurable "setting", so no #ifndef here.
+
+## (Complicated) Macros
+
+__Avoid!__ If you must use them, always wrap the entire expression and all
+arguments in parentheses:
+
+    #define MAX(a,b) ( ((a) > (b)) ? (a) : (b) )
+
+If you don't know why you should do this, then avoid macros altogether.
 
 ## Header Files
 
-Always use "include guards", to avoid wasteful (and most likely erroneous)
-inclusion. For example, in file 'file_1.h', wrap the entire file in:
+Always use "include guards" to avoid wasteful (and most likely erroneous)
+inclusion. For example, in file 'file_1.h', wrap the entire code in:
 
     #ifndef FILE_1_H
     #define FILE_1_H
