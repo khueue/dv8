@@ -6,12 +6,13 @@ appropriate. I think.
 
 ## Indentation
 
-A tab is __exactly four spaces__. So no hard tabs (\t) anywhere.
+A tab is __exactly four spaces__. So no hard tabs (\t) anywhere (except in
+makefiles, where they are required).
 
 ## Nesting
 
 Several levels of nesting is difficult to understand. If you find yourself
-in a _for_ in an _if_ in a _for_ -- refactor! Break it up into smaller
+in a _for_ in an _if_ in a _while_ -- refactor! Break it up into smaller
 functions with descriptive names.
 
 ## Comments
@@ -101,10 +102,10 @@ space after the keyword, just before any parentheses:
 ## Structs
 
 Declaring a struct involves three steps: a "forward declaration", a typedef
-and the declaration itself. The forward declaration lets us to use the symbol
+and the declaration itself. The forward declaration lets us use the symbol
 before it is actually defined. The typedef (which should end in '_t') lets us
-avoid a few strokes, which might lead to cleaner (or at least shorter) code.
-Here goes:
+avoid a few keystrokes, which might lead to cleaner (or at least shorter)
+code. Here goes:
 
     struct pcb;
     typedef struct pcb pcb_t;
