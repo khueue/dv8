@@ -98,6 +98,21 @@ space after the keyword, just before any parentheses:
         ...
     }
 
+## Structs
+
+Declaring a struct involves three steps: a "forward declaration", a typedef
+and the declaration itself. The forward declaration lets us to use the symbol
+before it is actually defined. The typedef (which should end in '_t') lets us
+avoid a few strokes, which might lead to cleaner (or at least shorter) code.
+Here goes:
+
+    struct pcb;
+    typedef struct pcb pcb_t;
+    struct pcb
+    {
+        pcb_t *next;
+    };
+
 ## Functions
 
 ### Function Declarations
@@ -192,8 +207,8 @@ private to the file they were declared in:
     g_pcb_freelist;
 
 Any variable that is not local to a function (i.e. declared on the top-level)
-should be prefixed with the two characters 'g_'. This makes it easy to spot their
-usage inside functions.
+should be prefixed with the two characters 'g_'. This makes it easy to spot
+their usage inside functions.
 
 Since global variables tend to have more or less long storage qualifiers
 (static, volatile, const, etc.) it might be nice to have a newline just before
