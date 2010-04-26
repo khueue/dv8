@@ -1,3 +1,213 @@
-# dv8 - The Operating System
+# Code Convention Suggestions
 
-This is a good place to put whatever crap we might find useful. Plus, it's nice to try out markdown.
+All of this is of course up for debate, but here is an outline of what I feel
+is a reasonable code convention for C code. I've included arguments where
+appropriate. I think.
+
+## Indentation
+
+A tab is __exactly four spaces__. So no hard tabs (\t) anywhere.
+
+## Nesting
+
+Several levels of nesting is difficult to understand. If you find yourself
+in a _for_ in an _if_ in a _for_ -- refactor! Break it up into smaller
+functions with descriptive names.
+
+## Comments
+
+If you feel the need to write a comment to explain a piece of code -- think
+twice. Maybe you could break things up into smaller functions, with better
+names, etc.? See the previous section on Nesting.
+
+Comments are nice, but only if they convey something that the code simply
+cannot.
+
+Single-line comments (no slash-slash in C, that's C++!):
+
+    /* Pretty much like this. */
+    int x ...;
+
+Multi-line comments:
+
+    /*
+     * The code below ... ZOMG!
+     * Watch out!
+     */
+    for (...)
+    {
+        ... really complicated code ... ouch ...
+    }
+
+## Braces
+
+Braces __always__ line up in the same column. This makes it easier to quickly
+associate matching pairs:
+
+    struct pcb
+    {
+        uint32_t priority;
+    };
+
+    pcb_t *
+    alloc_pcb(void)
+    {
+        if (...)
+        {
+            ...
+        }
+    }
+
+Prefer brackets over no brackets. This makes it easier to maintain code. Do
+this:
+
+    if (...)
+    {
+        ...
+    }
+    else
+    {
+        ...
+    }
+
+instead of:
+
+    if (...)
+        ...
+    else
+        ...
+
+## Functions
+
+### Function Declarations
+
+Just like with global variable declarations, keep a newline just before the
+function name:
+
+    pcb_t *
+    alloc_pcb(void);
+
+    void
+    free_pcb(pcb_t *pcb);
+
+    void
+    init_pcb_freelist(void);
+
+As you can see, it's easy to quickly scan the function names, since they are
+all in the leftmost column.
+
+## Ternary If (condition ? on_true : on_false)
+
+Use it only for very concise expressions. __Never__ nest. This might be okay,
+but would probably look better as a regular if.
+
+    int
+    fib(int n)
+    {
+        return (i <= 1) ? 0 : fib(n-1)+fib(n-2);
+    }
+
+## Variables
+
+
+As for pointers, always place the asterisk (*) to the right (if there is
+choice in the matter):
+
+    pcb_t *pcb = ...;
+
+    pcb_t *
+    alloc_pcb(void);
+
+Why, you say? Isn't the pointer part of the type? No, not really. Consider
+this (which is awful, and should be avoided, no less because of this reason):
+
+    int* p1, p2;
+
+Did you expect both p1 and p2 to be pointers to int? Too bad. Only p1 is a
+pointer. With better formatting, the code looks this:
+
+    int *p1, p2;
+
+It's now much more obvious that only p1 is a pointer. So how do we turn p2
+into a pointer then? The best way is of course to break it out, which in the
+long run also makes maintenance easier:
+
+    int *p1;
+    int *p2;
+
+But that's not the answer you were looking for, now is it. This is how you do
+it the obscure way:
+
+    int *p1, *p2;
+
+### Local Variables
+
+Variable declarations must appear __first__ in a block of braces (this is
+actually required by ANSI C). Also try to keep variables as local as possible
+to their usage:
+
+    if (...)
+    {
+        size_t i;
+        for (i = 0; ...)
+        {
+            char c = getchar();
+            putchar(c);
+        }
+    }
+
+### Global Variables
+
+If you declare variables on the top-level (outside of any functions), they are
+accessible throughout the entire file. If they are not mentioned in a header
+file as part of an interface, they should be marked as static, to make them
+private to the file they were declared in:
+
+    static pcb_t *
+    g_pcb_freelist;
+
+Any variable that is not local to a function (i.e. declared on the top-level)
+should be prefixed with the two letters 'g_'. This makes it easy to spot their
+usage inside functions.
+
+Since global variables tend to have more or less long storage qualifiers
+(static, volatile, const, etc.) it might be nice to have a newline just before
+the variable name. This neatly lines up all symbol names in the leftmost
+column, which makes them easier to scan:
+
+    static pcb_t *
+    g_pcb_freelist;
+
+    static volatile tty_t *const
+    tty = (tty_t *)0x...;
+
+### Variable Naming
+
+Use lowercase letters only, and underscores for spaces. As per the previous
+section on Global Variables, prefix globals with 'g_'. _[Should we perhaps
+use some convention for pointers too? Such as 'pcb_t **pp_var' meaning pp_var
+is a 'pointer to pointer to pcb_t'.]_
+
+Prefer long names over short ones, and avoid non-customary abbreviations. A
+simple rule of thumb is "the smaller the scope, the shorter the name". Which
+roughly means that globals must have descriptive and possibly long names
+(g_pcb_freelist), while short-lived variables, such as loop counters,
+should be kept as short and idiomatic as possible (i, j, next).
+
+## Constants
+
+Since constants are pretty much global, always prefer longer names.
+
+## Macros
+
+## Header Files
+
+Always use "include guards", to avoid wasteful (and most likely erroneous)
+inclusion. For example, in file 'file_1.h', wrap the entire file in:
+
+    #ifndef FILE_1_H
+    #define FILE_1_H
+
+    ... file contents here ...
+
+    #endif
