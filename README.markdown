@@ -209,9 +209,9 @@ column, which makes them easier to scan:
 ### Variable Naming
 
 Use lowercase letters only, and underscores for spaces. As per the previous
-section on Global Variables, prefix globals with 'g_'. _[Should we perhaps
+section on Global Variables, prefix globals with 'g_'. [Should we perhaps
 use some convention for pointers too? Such as 'pcb_t **pp_var' meaning pp_var
-is a 'pointer to pointer to pcb_t'.]_
+is a 'pointer to pointer to pcb_t'.]
 
 Prefer long names over short ones, and avoid non-customary abbreviations. A
 simple rule of thumb is "the smaller the scope, the shorter the name". Which
