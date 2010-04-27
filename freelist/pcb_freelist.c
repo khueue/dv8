@@ -2,9 +2,11 @@
 
 #include "pcb_freelist.h"
 
-static pcb_t g_pcbs[PCB_MAX_LENGTH];
+static pcb_t 
+g_pcbs[PCB_MAX_LENGTH];
 
-static pcb_t *g_pcb_freelist;
+static pcb_t *
+g_pcb_freelist;
 
 pcb_t *
 alloc_pcb(void)
