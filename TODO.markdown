@@ -2,10 +2,10 @@
 
 __All:__ kinit, scheduler, process, etc.
 
-Seb: utility functions (strcmp, etc.)
+__Seb:__ utility functions (strcmp, etc.)
 
-Simon: group leader, kinit supervisor
+__Simon:__ group leader, kinit supervisor
 
-Jon: more scheduler
+__Jon:__ more scheduler
 
-David: user programs, more scheduler
+__David:__ user programs, more scheduler
