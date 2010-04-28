@@ -1,8 +1,7 @@
-#include <stdio.h>
-
+#include "utils.h"
 #include "pcb_freelist.h"
 
-static pcb_t 
+static pcb_t
 g_pcbs[PCB_MAX_LENGTH];
 
 static pcb_t *
@@ -21,20 +20,19 @@ alloc_pcb(void)
 }
 
 void
-free_pcb(pcb_t *pcb) 
+free_pcb(pcb_t *pcb)
 {
-    pcb_t *next = g_pcb_freelist;
+    pcb->next = g_pcb_freelist;
     g_pcb_freelist = pcb;
-    g_pcb_freelist->next = next;    
 }
 
 void
 init_pcb_freelist(void)
 {
     size_t i;
-    
+
     g_pcb_freelist = &g_pcbs[0];
-    
+
     for (i = 0; i < PCB_MAX_LENGTH - 1; i++)
     {
         g_pcbs[i].next = &g_pcbs[i + 1];
@@ -43,19 +41,26 @@ init_pcb_freelist(void)
     g_pcbs[PCB_MAX_LENGTH - 1].next = NULL;
 }
 
-int 
+#ifdef MAIN
+
+#include <stdlib.h>
+#include <stdio.h>
+
+int
 main(int argc, char *argv[])
 {
     pcb_t *pcb;
+
     init_pcb_freelist();
+
     pcb = alloc_pcb();
     pcb->priority = 1;
-        
-    printf("%d\n",pcb->priority);
-
+    printf("%d\n", pcb->priority);
     free_pcb(pcb);
+
     (void)argc;
     (void)argv;
     return 0;
 }
 
+#endif
