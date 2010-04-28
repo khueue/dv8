@@ -84,7 +84,8 @@ free_list_node(list_node_t *node)
 
 /*
  * Define this constant and compile only this module, e.g.:
- * gcc <this_module>.c -D<THIS_MODULE>_MAIN -Iinclude
+ *   gcc <this_module>.c -D<THIS_MODULE>_MAIN -Iinclude
+ *   ./a.out
  */
 #ifdef LIST_NODE_MAIN
 

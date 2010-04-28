@@ -15,7 +15,7 @@ enqueue(queue_t *q, void *data)
     list_node_t *new_node = alloc_list_node();
     
     new_node->data = data;
-    q->foot->next = new_node;
+    q->foot->next = new_node; /* specialfall om inget ännu finns? */
     new_node->prev = q->foot;
     q->foot = new_node;    
 }
@@ -54,11 +54,12 @@ main(void)
     init_queue(&q);
     
     enqueue(&q, &d1);
-    enqueue(&q, &d2);
+    /*enqueue(&q, &d2);
     enqueue(&q, &d3);
 
     
     printf("q->head->data: \"%f\"\n", *(double *)q.head->data);
+    */
 
     
     return 0;
