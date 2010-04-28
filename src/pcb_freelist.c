@@ -47,7 +47,7 @@ init_pcb_freelist(void)
 #include <stdio.h>
 
 int
-main(int argc, char *argv[])
+main(void)
 {
     pcb_t *pcb;
 
@@ -58,8 +58,6 @@ main(int argc, char *argv[])
     printf("%d\n", pcb->priority);
     free_pcb(pcb);
 
-    (void)argc;
-    (void)argv;
     return 0;
 }
 
