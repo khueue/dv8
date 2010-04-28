@@ -16,6 +16,7 @@ alloc_pcb(void)
         return NULL;
     }
     g_pcb_freelist = g_pcb_freelist->next;
+    ZERO_STRUCT(pcb);
     return pcb;
 }
 
