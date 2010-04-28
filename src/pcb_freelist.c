@@ -16,8 +16,7 @@ alloc_pcb(void)
         return NULL;
     }
     g_pcb_freelist = g_pcb_freelist->next;
-    ZERO_STRUCT(pcb);
-    return pcb;
+    return ZERO_STRUCT(pcb);
 }
 
 void
@@ -42,7 +41,7 @@ init_pcb_freelist(void)
     g_pcbs[PCB_MAX_LENGTH - 1].next = NULL;
 }
 
-#ifdef MAIN
+#ifdef PCB_FREELIST_MAIN
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -56,6 +55,11 @@ main(void)
 
     pcb = alloc_pcb();
     pcb->priority = 1;
+    printf("%d\n", pcb->priority);
+    free_pcb(pcb);
+    
+    /* Allocate again, should be the same struct but zeroed. */
+    pcb = alloc_pcb();
     printf("%d\n", pcb->priority);
     free_pcb(pcb);
 

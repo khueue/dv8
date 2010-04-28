@@ -33,7 +33,7 @@
  * Fills an object at p with num_bytes zeroes. Use the provided macros above
  * instead of using this function directly.
  */
-void
+void *
 zero_fill(void *p, size_t num_bytes)
 {
     uint8_t *byte = p;
@@ -43,9 +43,11 @@ zero_fill(void *p, size_t num_bytes)
     {
         byte[i] = 0;
     }
+    
+    return p;
 }
 
-#ifdef MAIN
+#ifdef UTILS_MAIN
 
 #include <stdio.h>
 

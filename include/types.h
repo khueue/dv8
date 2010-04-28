@@ -12,7 +12,7 @@ typedef signed int   int32_t;
 typedef uint32_t size_t;
 
 #ifndef NULL
-#define NULL ((void)0)
+#define NULL ((void *)0)
 #endif
 
 #endif
