@@ -1,11 +1,9 @@
 #include "utils.h"
-#include "types.h"
-#include "bits.h"
 
 /*
  * ---------------------------------------------------------------------------
  * Functions.
- * -------------------------------------------------------------------------
+ * ---------------------------------------------------------------------------
  */
 
 /*
@@ -26,8 +24,20 @@ zero_fill(void *p, size_t num_bytes)
     return p;
 }
 
+/*
+ * ---------------------------------------------------------------------------
+ * Main for module testing.
+ * ---------------------------------------------------------------------------
+ */
+
+/*
+ * Define this constant and compile this and required modules, e.g.:
+ *   gcc <this_module>.c <other_modules>.c -D<THIS_MODULE>_MAIN -Iinclude
+ *   ./a.out
+ */
 #ifdef UTILS_MAIN
 
+#include <stdlib.h>
 #include <stdio.h>
 
 struct pair

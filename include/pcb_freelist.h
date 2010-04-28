@@ -1,10 +1,15 @@
 #ifndef PCB_FREELIST_H
 #define PCB_FREELIST_H
 
-#ifndef PCB_MAX_LENGTH
-#define PCB_MAX_LENGTH 20
-#endif
+/*
+ * ---------------------------------------------------------------------------
+ * Types.
+ * ---------------------------------------------------------------------------
+ */
 
+/*
+ * XXX
+ */
 struct pcb;
 typedef struct pcb pcb_t;
 struct pcb
@@ -12,6 +17,12 @@ struct pcb
    int priority;
    pcb_t *next_free;
 };
+
+/*
+ * ---------------------------------------------------------------------------
+ * Functions.
+ * ---------------------------------------------------------------------------
+ */
 
 pcb_t *
 alloc_pcb(void);

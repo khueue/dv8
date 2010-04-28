@@ -1,31 +1,43 @@
 #include "utils.h"
 #include "pcb_freelist.h"
 
+/*
+ * ---------------------------------------------------------------------------
+ * Constants.
+ * ---------------------------------------------------------------------------
+ */
+
+#ifndef PCB_MAX_LENGTH
+#define PCB_MAX_LENGTH 20
+#endif
+
+/*
+ * ---------------------------------------------------------------------------
+ * Globals.
+ * ---------------------------------------------------------------------------
+ */
+
+/*
+ * XXX
+ */
 static pcb_t
 g_pcbs[PCB_MAX_LENGTH];
 
+/*
+ * XXX
+ */
 static pcb_t *
 g_pcb_freelist;
 
-pcb_t *
-alloc_pcb(void)
-{
-    pcb_t *pcb = g_pcb_freelist;
-    if (!pcb)
-    {
-        return NULL;
-    }
-    g_pcb_freelist = g_pcb_freelist->next_free;
-    return ZERO_STRUCT(pcb);
-}
+/*
+ * ---------------------------------------------------------------------------
+ * Functions.
+ * ---------------------------------------------------------------------------
+ */
 
-void
-free_pcb(pcb_t *pcb)
-{
-    pcb->next_free = g_pcb_freelist;
-    g_pcb_freelist = pcb;
-}
-
+/*
+ * XXX
+ */
 void
 init_pcb_freelist(void)
 {
@@ -41,6 +53,42 @@ init_pcb_freelist(void)
     g_pcbs[PCB_MAX_LENGTH - 1].next_free = NULL;
 }
 
+/*
+ * XXX
+ */
+pcb_t *
+alloc_pcb(void)
+{
+    pcb_t *pcb = g_pcb_freelist;
+    if (!pcb)
+    {
+        return NULL;
+    }
+    g_pcb_freelist = g_pcb_freelist->next_free;
+    return ZERO_STRUCT(pcb);
+}
+
+/*
+ * XXX
+ */
+void
+free_pcb(pcb_t *pcb)
+{
+    pcb->next_free = g_pcb_freelist;
+    g_pcb_freelist = pcb;
+}
+
+/*
+ * ---------------------------------------------------------------------------
+ * Main for module testing.
+ * ---------------------------------------------------------------------------
+ */
+
+/*
+ * Define this constant and compile this and required modules, e.g.:
+ *   gcc <this_module>.c <other_modules>.c -D<THIS_MODULE>_MAIN -Iinclude
+ *   ./a.out
+ */
 #ifdef PCB_FREELIST_MAIN
 
 #include <stdlib.h>

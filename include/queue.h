@@ -1,12 +1,18 @@
 #ifndef QUEUE_H
 #define QUEUE_H
-#include "list_node.h"
-/*
- * Good comment goes here
- */
- 
-struct queue; 
 
+#include "list_node.h"
+
+/*
+ * ---------------------------------------------------------------------------
+ * Types.
+ * ---------------------------------------------------------------------------
+ */
+
+/*
+ * XXX
+ */
+struct queue;
 typedef struct queue queue_t;
 struct queue
 {
@@ -14,6 +20,11 @@ struct queue
     list_node_t *foot;
 };
 
+/*
+ * ---------------------------------------------------------------------------
+ * Functions.
+ * ---------------------------------------------------------------------------
+ */
 
 void
 init_queue(queue_t *q);

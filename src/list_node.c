@@ -32,8 +32,8 @@ g_list_node_freelist;
  */
 
 /*
- * Initializes the freelist. This function must be called before any freelist
- * usage.
+ * Initializes the freelist. This function must be called before calling any
+ * other list node functions.
  */
 void
 init_list_node_freelist(void)
@@ -83,8 +83,8 @@ free_list_node(list_node_t *node)
  */
 
 /*
- * Define this constant and compile only this module, e.g.:
- *   gcc <this_module>.c -D<THIS_MODULE>_MAIN -Iinclude
+ * Define this constant and compile this and required modules, e.g.:
+ *   gcc <this_module>.c <other_modules>.c -D<THIS_MODULE>_MAIN -Iinclude
  *   ./a.out
  */
 #ifdef LIST_NODE_MAIN
