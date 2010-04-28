@@ -10,7 +10,7 @@ typedef struct pcb pcb_t;
 struct pcb
 {
    int priority;
-   pcb_t *next;
+   pcb_t *next_free;
 };
 
 pcb_t *

@@ -15,14 +15,14 @@ alloc_pcb(void)
     {
         return NULL;
     }
-    g_pcb_freelist = g_pcb_freelist->next;
+    g_pcb_freelist = g_pcb_freelist->next_free;
     return ZERO_STRUCT(pcb);
 }
 
 void
 free_pcb(pcb_t *pcb)
 {
-    pcb->next = g_pcb_freelist;
+    pcb->next_free = g_pcb_freelist;
     g_pcb_freelist = pcb;
 }
 
@@ -35,10 +35,10 @@ init_pcb_freelist(void)
 
     for (i = 0; i < PCB_MAX_LENGTH - 1; i++)
     {
-        g_pcbs[i].next = &g_pcbs[i + 1];
+        g_pcbs[i].next_free = &g_pcbs[i + 1];
     }
 
-    g_pcbs[PCB_MAX_LENGTH - 1].next = NULL;
+    g_pcbs[PCB_MAX_LENGTH - 1].next_free = NULL;
 }
 
 #ifdef PCB_FREELIST_MAIN
@@ -57,7 +57,7 @@ main(void)
     pcb->priority = 1;
     printf("%d\n", pcb->priority);
     free_pcb(pcb);
-    
+
     /* Allocate again, should be the same struct but zeroed. */
     pcb = alloc_pcb();
     printf("%d\n", pcb->priority);

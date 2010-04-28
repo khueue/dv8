@@ -111,7 +111,7 @@ code. Here goes:
     typedef struct pcb pcb_t;
     struct pcb
     {
-        pcb_t *next;
+        pcb_t *next_free;
     };
 
 ## Functions
