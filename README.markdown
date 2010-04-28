@@ -17,6 +17,8 @@ functions with descriptive names.
 
 ## Comments
 
+### Style
+
 If you feel the need to write a comment to explain a piece of code -- think
 twice. Maybe you could break things up into smaller functions, with better
 names, etc.? See the previous section on Nesting.
@@ -39,6 +41,83 @@ Multi-line comments:
     {
         ... really complicated code ... ouch ...
     }
+
+### Block Dividers
+
+Code can often be divided into logical sections. Comments may be used to
+further emphasize this. Some examples:
+
+    /*
+     * ---------------------------------------------------------------------------
+     * Globals.
+     * ---------------------------------------------------------------------------
+     */
+
+    /*
+     * All list nodes available in the system, organised as a freelist.
+     */
+    static list_node_t
+    g_list_nodes[NUM_LIST_NODES];
+
+    ...
+
+    /*
+     * ---------------------------------------------------------------------------
+     * Macros.
+     * ---------------------------------------------------------------------------
+     */
+
+    /*
+     * Counts the number of elements in an array. Note that this only works with
+     * an actual array, and not a pointer which used to be an array (like an
+     * array passed to a function)!
+     */
+    #define COUNT_ARRAY(arr)  ( sizeof(arr) / sizeof((arr)[0]) )
+
+    ...
+
+    /*
+     * ---------------------------------------------------------------------------
+     * Types.
+     * ---------------------------------------------------------------------------
+     */
+
+    /*
+     * A generic list node. Could be used as pretty much any type of list node.
+     * Just add more pointers as needed.
+     */
+    struct list_node;
+    typedef struct list_node list_node_t;
+    struct list_node
+    {
+        ...
+    };
+
+    ...
+
+    /*
+     * ---------------------------------------------------------------------------
+     * Functions.
+     * ---------------------------------------------------------------------------
+     */
+
+    /*
+     * Initializes the freelist. This function must be called before calling any
+     * other list node functions.
+     */
+    void
+    init_list_node_freelist(void)
+    {
+        ...
+    }
+
+    ...
+
+### Documentation Comments
+
+As seen in the previous section, documentation comments (preferably
+multi-line, to stand out) should be used to describe globals, macros,
+functions etc.
 
 ## Braces
 
@@ -241,7 +320,7 @@ Since constants are pretty much global, always prefer longer names. By
 convention, always use UPPERCASE letters and underscores for spaces:
 
     #ifndef KERNEL_STACK_SIZE
-        #define KERNEL_STACK_SIZE 0x4000
+    #define KERNEL_STACK_SIZE 0x4000
     #endif
 
 As you can see, also wrap the #define in an #ifndef which uses the very same
