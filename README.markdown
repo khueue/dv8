@@ -117,7 +117,9 @@ further emphasize this. Some examples:
 
 As seen in the previous section, documentation comments (preferably
 multi-line, to stand out) should be used to describe globals, macros,
-functions etc.
+functions etc. I don't think we need to be overly strict with these, a couple
+of sentences on what the function accomplishes and possible pitfalls etc. is
+probably more than adequate.
 
 ## Braces
 
