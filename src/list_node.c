@@ -69,8 +69,9 @@ alloc_list_node(void)
 /*
  * Releases a list node back to the system. Always returns NULL, to make it
  * easy and idiomatic to avoid dangling pointers:
+ *
  *   node = alloc_list_node();
- *   ... use it ...
+ *   ... use node ...
  *   node = free_list_node();
  */
 list_node_t *
@@ -88,7 +89,8 @@ free_list_node(list_node_t *node)
  */
 
 /*
- * Define this constant and compile this and required modules, e.g.:
+ * Define this constant and compile this and any required modules, e.g.:
+ *
  *   gcc <this_module>.c <other_modules>.c -D<THIS_MODULE>_MAIN -Iinclude
  *   ./a.out
  */
