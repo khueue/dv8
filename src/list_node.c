@@ -17,8 +17,6 @@
 static list_node_t
 g_list_nodes[NUM_LIST_NODES];
 
-#undef NUM_LIST_NODES
-
 /*
  * Freelist pointer. Points to the first free node.
  */
