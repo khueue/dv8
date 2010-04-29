@@ -221,9 +221,9 @@ function name, and avoid spaces between the name and the argument list:
 As you can see, it's easy to quickly scan the function names, since they are
 all collected in the leftmost column.
 
-If a functions takes no arguments, then it should be declared (and defined)
-as taking void. A function that is typed to nothing, not even void, is assumed
-to take a variable number of arguments.
+If a function takes no arguments, then it should be declared (and defined) as
+taking void. A function that is typed to nothing, not even void, is assumed to
+take a variable number of arguments.
 
 ## Ternary If (condition ? on_true : on_false)
 
