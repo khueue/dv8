@@ -8,6 +8,8 @@
 *.[oa]
 *~
 
+a.out
+
 bin/dv8
 bin/**/*
 build/**/*
