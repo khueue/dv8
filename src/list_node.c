@@ -12,7 +12,7 @@
 #endif
 
 /*
- * All list nodes available in the system, organised as a freelist.
+ * All list nodes available in the system, organised on a freelist.
  */
 static list_node_t
 g_list_nodes[NUM_LIST_NODES];
@@ -20,7 +20,7 @@ g_list_nodes[NUM_LIST_NODES];
 #undef NUM_LIST_NODES
 
 /*
- * Freelist pointer. Points to the first free list node.
+ * Freelist pointer. Points to the first free node.
  */
 static list_node_t *
 g_list_node_freelist;
@@ -32,13 +32,13 @@ g_list_node_freelist;
  */
 
 /*
- * Initializes the freelist. This function must be called before calling any
- * other list node functions.
+ * Initializes the freelist like a normal linked list. This function must be
+ * called exactly once before calling any other list node functions.
  */
 void
 init_list_node_freelist(void)
 {
-    size_t i;
+    size_t i = 0;
 
     g_list_node_freelist = &g_list_nodes[0];
 
@@ -61,12 +61,19 @@ alloc_list_node(void)
     {
         return NULL;
     }
-    g_list_node_freelist = g_list_node_freelist->next_free;
-    return ZERO_STRUCT(node);
+    else
+    {
+        g_list_node_freelist = g_list_node_freelist->next_free;
+        return ZERO_STRUCT(node);
+    }
 }
 
 /*
- * Releases a list node back to the system.
+ * Releases a list node back to the system. Always returns NULL, to make it
+ * easy and idiomatic to avoid dangling pointers:
+ *   node = alloc_list_node();
+ *   ... use it ...
+ *   node = free_list_node();
  */
 list_node_t *
 free_list_node(list_node_t *node)
@@ -95,7 +102,7 @@ free_list_node(list_node_t *node)
 int
 main(void)
 {
-    list_node_t *node;
+    list_node_t *node = NULL;
 
     init_list_node_freelist();
 

@@ -15,6 +15,13 @@ Several levels of nesting is difficult to understand. If you find yourself
 in a _for_ in an _if_ in a _while_ -- refactor! Break it up into smaller
 functions with descriptive names.
 
+## Line Length
+
+A line length of 78 characters is reasonable, and helps keep the code
+readable. (Why 78? Well, my editor is set to 78 by default ...) If you fall
+off the end of the line, it is probably a good indication that some
+refactoring should be done.
+
 ## Comments
 
 ### Style
@@ -231,7 +238,6 @@ but would probably look better as a regular if:
 
 ## Variables
 
-
 As for pointers, always place the asterisk (*) to the right (if there is
 choice in the matter):
 
@@ -264,13 +270,27 @@ it the obscure way:
 
 ### Local Variables
 
+Always initialize local variables (static variables are always initialized to
+zero). Using an uninitialized variable can lead to missile launches and system
+crashes. And don't worry about any "speed issues" -- compilers are smart
+enough to detect and omit redundant assignments.
+
+Integral types are usually initialized to 0, and pointers to NULL. Structs and
+arrays can be neatly zeroed using the macros ZERO_STRUCT and ZERO_ARRAY found
+in utils.h:
+
+    pcb_t pcb;
+    char str[20];
+    ZERO_STRUCT(&pcb);
+    ZERO_ARRAY(str);
+
 Variable declarations must appear __first__ in a block of braces (this is
 actually required by ANSI C). Also try to keep variables as local as possible
 to their usage:
 
     if (...)
     {
-        size_t i;
+        size_t i = 0;
         for (i = 0; ...)
         {
             char c = getchar();

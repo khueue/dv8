@@ -7,8 +7,8 @@
  */
 
 /*
- * Fills an object at p with num_bytes zeroes. Use the provided macros above
- * instead of using this function directly.
+ * Fills an object at p with num_bytes zeroes. Never called directly, but
+ * used by macros.
  */
 void *
 zero_fill(void *p, size_t num_bytes)
