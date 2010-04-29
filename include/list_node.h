@@ -10,8 +10,8 @@
  */
 
 /*
- * A generic list node. Could be used as pretty much any type of list node.
- * Just add more pointers as needed.
+ * Generic list node. Could be used as pretty much any type of list node. Just
+ * add more pointers as needed.
  */
 struct list_node;
 typedef struct list_node list_node_t;
