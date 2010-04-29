@@ -272,8 +272,7 @@ it the obscure way:
 
 Always initialize local variables (static variables are always initialized to
 zero). Using an uninitialized variable can lead to missile launches and system
-crashes. And don't worry about any "speed issues" -- compilers are smart
-enough to detect and omit redundant assignments.
+crashes.
 
 Integral types are usually initialized to 0, and pointers to NULL. Structs and
 arrays can be neatly zeroed using the macros ZERO_STRUCT and ZERO_ARRAY found
