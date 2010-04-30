@@ -11,11 +11,16 @@
  */
 
 /*
+ * Returns the maximum of two values.
+ */
+#define MAX(a, b)  (  ((a) > (b)) ? (a) : (b)  )
+
+/*
  * Counts the number of elements in an array. Note that this only works with
  * an actual array, and not a pointer which used to be an array (like an
  * array passed to a function)!
  */
-#define COUNT_ARRAY(arr)  ( sizeof(arr) / sizeof((arr)[0]) )
+#define COUNT_ARRAY(arr)  (  sizeof(arr) / sizeof((arr)[0])  )
 
 /*
  * Fills array/struct with zeroes.

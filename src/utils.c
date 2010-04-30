@@ -77,6 +77,20 @@ main(void)
         printf("st.x    = %d\n",     st.x);
     }
 
+    /* Count array length. */
+    {
+        double d[3];
+        printf("length  = %d\n", COUNT_ARRAY(d));
+    }
+
+    /* Test maximum. */
+    {
+        int a = 4;
+        int b = 5;
+        printf("max     = %d\n", MAX(a, b));
+        printf("max     = %d\n", MAX(b, a));
+    }
+
     return 0;
 }
 
