@@ -65,11 +65,6 @@ void kinit()
   while(1);
 }
 
-/*
- * ------------------------------------------------------------------------\
- * ------------------------------------------------------------------------/
- */
-
 /* kexception:
  *   Application-specific exception handler, called after registers
  *   have been saved.
