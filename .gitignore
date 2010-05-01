@@ -1,10 +1,3 @@
-# Ignore all hidden files ...
-.*
-# ... except for .gitignore
-!.gitignore
-!bin/.gitignore
-!build/.gitignore
-
 *.[oa]
 *~
 
@@ -12,13 +5,18 @@ a.out
 
 *.tmproj
 
-bin/dv8
-bin/**/*
-build/**/*
+bin/*
+build/*
 
-# OS generated files #
-######################
+### OS generated files
 .DS_Store?
 ehthumbs.db
 Icon?
 Thumbs.db
+
+### Ignore all hidden files ...
+.*
+### ... except for .gitignore
+!.gitignore
+!bin/.gitignore
+!build/.gitignore
