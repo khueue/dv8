@@ -3,13 +3,40 @@
 
 /*
  * ---------------------------------------------------------------------------
- * Globals.
+ * Constants.
  * ---------------------------------------------------------------------------
  */
 
 #ifndef NUM_LIST_NODES
 #define NUM_LIST_NODES 1024
 #endif
+
+/*
+ * ---------------------------------------------------------------------------
+ * Types.
+ * ---------------------------------------------------------------------------
+ */
+
+/*
+ * Generic list node. Could be used as pretty much any type of list node. Just
+ * add more pointers as needed.
+ */
+struct list_node
+{
+    void *data;
+    list_node_t *next;
+    list_node_t *prev;
+    /* Add more useful pointers here ... */
+
+    /* For the internal freelist. */
+    list_node_t *next_free;
+};
+
+/*
+ * ---------------------------------------------------------------------------
+ * Globals.
+ * ---------------------------------------------------------------------------
+ */
 
 /*
  * All list nodes available in the system, organised on a freelist.
@@ -108,12 +135,12 @@ main(void)
 
     node = alloc_list_node();
     node->data = "hej";
-    printf("node->data: \"%s\"\n", node->data);
+    printf("node->data: \"%s\"\n", (char *)node->data);
     node = free_list_node(node);
 
     /* Allocate again, should be the same struct but zeroed. */
     node = alloc_list_node();
-    printf("node->data: \"%s\"\n", node->data); /* Should segfault! */
+    printf("node->data: \"%s\"\n", (char *)node->data); /* Should segfault! */
     node = free_list_node(node);
 
     return 0;
