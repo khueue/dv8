@@ -93,7 +93,6 @@ further emphasize this. Some examples:
      * A generic list node. Could be used as pretty much any type of list node.
      * Just add more pointers as needed.
      */
-    struct list_node;
     typedef struct list_node list_node_t;
     struct list_node
     {
@@ -189,18 +188,22 @@ space after the keyword, just before any parentheses:
 
 ## Structs
 
-Declaring a struct involves three steps: a "forward declaration", a typedef
-and the declaration itself. The forward declaration lets us use the symbol
-before it is actually defined. The typedef (which should end in '_t') lets us
-avoid a few keystrokes, which might lead to cleaner (or at least shorter)
-code. Here goes:
+__UPDATE:__ Forward references seem unnecessary. Lets skip these.
 
-    struct pcb;
+Declaring a struct involves two separate steps: a typedef and the struct
+definition itself. The typedef (which should end in '_t') lets us write more
+concise code. By starting with the typedef, we allow the struct definition to
+use the alias:
+
     typedef struct pcb pcb_t;
     struct pcb
     {
         pcb_t *next_free;
     };
+
+Both of these parts must be part of the header file if and only if the struct
+must be part of the interface. Private (local to the .c file) structs should
+of course only be visible within the .c file.
 
 ## Functions
 
