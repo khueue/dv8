@@ -1,6 +1,6 @@
-# --------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
 # Variables.
-# --------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
 
 # Path to cross compilation tools.
 MIPS_PREFIX = /it/sw/cross/mips-idt/bin/mips-idt-elf
@@ -23,7 +23,7 @@ ARCH = -EL -G0 -mips32
 # -Wall           : show more warnings
 # -Werror         : treat warnings as errors (stops compilation)
 # -fno-builtin    : disable built-in functions
-# -I              : augment the #include search path
+# -I              : extend the #include search path
 CFLAGS += -ggdb -W -Wall -Werror -fno-builtin -Iinclude
 
 # Add linker flags.
@@ -50,9 +50,9 @@ OBJECTS = $(BASENAMES:$(DIR_SRC)/%=$(DIR_BUILD)/%.o)
 # Final binary.
 EXE = $(DIR_BIN)/dv8
 
-# --------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
 # Rules.
-# --------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
 
 # Targets that do not correspond to files.
 .PHONY: all clean boot build
@@ -90,6 +90,11 @@ $(DIR_BUILD)/%.o: $(DIR_SRC)/%.S
 	$(CC) $(ARCH) $(CFLAGS) -c $< -o $@
 
 ##############################################################################
+
+# ----------------------------------------------------------------------------
+# Karl's examples. We can probably remove these once we get things working in
+# our main build.
+# ----------------------------------------------------------------------------
 
 OBJS_TIMER   = $(addprefix build/, example_timer.o asm.o debug.o)
 OBJS_UART    = $(addprefix build/, example_uart.o asm.o debug.o)
