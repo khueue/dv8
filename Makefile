@@ -19,12 +19,12 @@ ARCH = -EL -G0 -mips32
 
 # Add GCC flags.
 # -ggdb           : include debugger info
-# -W              : show warnings
-# -Wall           : show more warnings
-# -Werror         : treat warnings as errors (stops compilation)
 # -fno-builtin    : disable built-in functions
 # -I              : extend the #include search path
-CFLAGS += -ggdb -W -Wall -Werror -fno-builtin -Iinclude
+# -W...           : show lots of warnings
+CFLAGS += -ggdb -fno-builtin -Iinclude \
+	-W -Wall -Werror -Wshadow -Wpointer-arith \
+	-Wcast-qual -Wstrict-prototypes -Wmissing-prototypes
 
 # Add linker flags.
 # -Ttext          : tell it where to start the text segment
@@ -99,8 +99,6 @@ $(DIR_BUILD)/%.o: $(DIR_SRC)/%.S
 OBJS_TIMER   = $(addprefix build/, example_timer.o asm.o debug.o)
 OBJS_UART    = $(addprefix build/, example_uart.o asm.o debug.o)
 OBJS_SYSCALL = $(addprefix build/, example_syscall.o asm.o syscall.o debug.o)
-
-examples: example_timer example_uart example_syscall
 
 # Build the timer example.
 example_timer: $(OBJS_TIMER)
