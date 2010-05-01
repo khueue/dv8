@@ -42,7 +42,7 @@ static uint8_t bfifo_get(struct bounded_fifo* bfifo)
 
   bfifo->length--;
   ch = bfifo->buf[0];
-  for (i = 0; i < bfifo->length; i++) {
+  for (i = 0; i < (int)bfifo->length; i++) {
     bfifo->buf[i] = bfifo->buf[i+1];
   }
   return ch;
