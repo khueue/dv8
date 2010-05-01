@@ -35,6 +35,7 @@ void ksyscall_handler(registers_t* reg);
 void my_system_call(uint32_t v);
 
 /* Kernels internal definition of my system call (prefix 'k'). */
+void kmy_system_call(uint32_t v);
 void kmy_system_call(uint32_t v)
 {
   /* Implementation of my_system_call: */

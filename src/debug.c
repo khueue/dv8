@@ -45,7 +45,7 @@ void kdebug_printint(int value)
   }
 }
 
-void kdebug_magic_break();
+void kdebug_magic_break(void);
 
 void kdebug_assert_at(int assertion, const char* file, int line)
 {
