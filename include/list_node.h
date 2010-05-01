@@ -9,7 +9,6 @@
  * ---------------------------------------------------------------------------
  */
 
-struct list_node;
 typedef struct list_node list_node_t;
 
 /*
