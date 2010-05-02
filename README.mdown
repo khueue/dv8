@@ -228,6 +228,27 @@ If a function takes no arguments, then it should be declared (and defined) as
 taking void. A function that is typed to nothing, not even void, is assumed to
 take a variable number of arguments.
 
+### Arguments Passing
+
+When you are meaning to pass an array into a function, prototype and define it
+as an actual array (with unspecified size), and not just a pointer (even
+though they are interchangeable in this situation):
+
+    void
+    print_str(const char str[]);
+
+    void
+    print_str(const char str[])
+    {
+        puts(str);
+    }
+
+Also, as seen above, when a function can guarantee that it does not change any
+data being pointer to by argument pointers, qualify those arguments with
+'const' (meaning read-only). This is both self-documenting and might enable
+the compiler to optimize more aggressively (not that we have any optimizations
+turned on, but hey ...).
+
 ## Ternary If (condition ? on_true : on_false)
 
 Use it only for very concise expressions. __Never__ nest. This might be okay,
