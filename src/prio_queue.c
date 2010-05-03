@@ -41,13 +41,13 @@ prio_enqueue(prio_queue_t *q, void *data)
     else 
     {
         list_node_t *tmp_node = q->foot;
-        while(tmp_node && (q->cmp_fun(tmp_node->data, new_node->data) < 0))
+        while (tmp_node && (q->cmp_fun(tmp_node->data, new_node->data) < 0))
         {
             tmp_node = tmp_node->prev;
         }
         
         /* first */
-        if(!tmp_node) 
+        if (!tmp_node) 
         {
             q->head->prev = new_node;
             new_node->next = q->head;
@@ -90,7 +90,7 @@ prio_dequeue(prio_queue_t *q)
     
     q->length--;
 
-    if(!q->length)
+    if (!q->length)
     {
         q->foot = NULL;
         q->head = NULL;
@@ -127,7 +127,7 @@ void
 testprint(prio_queue_t *q) 
 {
     list_node_t *tmp_node = q->head;
-    while(tmp_node)
+    while (tmp_node)
     {
         printf("%d, ", *(int *)tmp_node->data);
         tmp_node = tmp_node->next;
