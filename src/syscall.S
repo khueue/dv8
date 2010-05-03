@@ -3,16 +3,16 @@
 #include "asm_regs.h"
 
     .text
-    .globl my_system_call
-    .globl kmy_system_call
+    .globl print_int
+    .globl kprint_int
     .globl ksyscall_handler
 
     # A:
     #   A user mode interface to the kernel mode function
     #   'kmy_system_call'.
     #
-my_system_call:
-    la v0,kmy_system_call   # Load adress of syscall implementation in v0.
+print_int:
+    la v0, kprint_int   # Load adress of syscall implementation in v0.
     syscall         # Enter kernel mode by 'syscall' exception.
     jr ra           # Back in user mode, return to caller
 

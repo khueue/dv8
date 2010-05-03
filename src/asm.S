@@ -152,7 +152,7 @@ copyloop:
     .set noreorder
 exceptstub:
     .set noat
-    addi k1,$at,0         #preserve the $at register
+    addi k1, $at, 0         #preserve the $at register
     .set at
     mfc0 k0, cause
     sw k0, cause_reg(zero)    #preserve the cause register
