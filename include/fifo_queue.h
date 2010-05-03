@@ -10,7 +10,7 @@
  */
 
 /*
- * XXX
+ * First in first out
  */
 struct fifo_queue;
 typedef struct fifo_queue fifo_queue_t;
@@ -18,6 +18,7 @@ struct fifo_queue
 {
     list_node_t *head;
     list_node_t *foot;
+    size_t length;
 };
 
 /*

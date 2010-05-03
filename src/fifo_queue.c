@@ -7,7 +7,6 @@
  * Functions.
  * ---------------------------------------------------------------------------
  */
-
 /*
  * Init the queue.
  */
@@ -18,7 +17,7 @@ fifo_init_queue(fifo_queue_t *q)
 }
 
 /*
- * Insert last in the fifo_queue.
+ * Insert last in the fifo queue.
  */
 void
 fifo_enqueue(fifo_queue_t *q, void *data)
@@ -26,18 +25,19 @@ fifo_enqueue(fifo_queue_t *q, void *data)
     list_node_t *new_node = alloc_list_node();
 
     new_node->data = data;
-    
+
     if (q->foot)
     {
-    	q->foot->next = new_node;    	
-    } 
-    else 
-    {
-    	q->foot = new_node;
-    	q->head = new_node;
+        q->foot->next = new_node;
     }
-    new_node->prev = q->foot;    
+    else
+    {
+        q->foot = new_node;
+        q->head = new_node;
+    }
+    new_node->prev = q->foot;
     q->foot = new_node;
+    q->length++;
 }
 
 /*
@@ -50,7 +50,15 @@ fifo_dequeue(fifo_queue_t *q)
     void *data = node->data;
 
     q->head = node->next;
+
+    if (!node->next)
+    {
+        q->foot = NULL;
+    }
+
     free_list_node(node);
+
+    q->length--;
 
     return data;
 }
@@ -71,6 +79,19 @@ fifo_dequeue(fifo_queue_t *q)
 #include <stdlib.h>
 #include <stdio.h>
 
+
+void
+fifo_testprint(fifo_queue_t *q)
+{
+    list_node_t *tmp_node = q->head;
+    while (tmp_node)
+    {
+        printf("%f, ", *(double *)tmp_node->data);
+        tmp_node = tmp_node->next;
+    }
+    printf("\n");
+}
+
 int
 main(void)
 {
@@ -83,14 +104,46 @@ main(void)
     init_list_node_freelist();
 
     fifo_init_queue(&q);
-    fifo_enqueue(&q, &d1);
-    fifo_enqueue(&q, &d2);
-    fifo_enqueue(&q, &d3);
 
-    printf("q->head->data: \"%f\"\n", *(double *)q.head->data);
+    fifo_enqueue(&q, &d1);
+    printf("enqueue: \"%f\"\n",d1);
+    fifo_testprint(&q);
+
+    fifo_enqueue(&q, &d2);
+    printf("enqueue: \"%f\"\n",d2);
+    fifo_testprint(&q);
+
+    fifo_enqueue(&q, &d3);
+    printf("enqueue: \"%f\"\n",d3);
+    fifo_testprint(&q);
+
     printf("dequeue: \"%f\"\n", *(double *)fifo_dequeue(&q));
+    fifo_testprint(&q);
+
+    fifo_enqueue(&q, &d1);
+    printf("enqueue: \"%f\"\n",d1);
+    fifo_testprint(&q);
+
     printf("dequeue: \"%f\"\n", *(double *)fifo_dequeue(&q));
+    fifo_testprint(&q);
+
     printf("dequeue: \"%f\"\n", *(double *)fifo_dequeue(&q));
+    fifo_testprint(&q);
+
+    printf("dequeue: \"%f\"\n", *(double *)fifo_dequeue(&q));
+    fifo_testprint(&q);
+
+    fifo_enqueue(&q, &d1);
+    printf("enqueue: \"%f\"\n",d1);
+    fifo_testprint(&q);
+
+    fifo_enqueue(&q, &d2);
+    printf("enqueue: \"%f\"\n",d2);
+    fifo_testprint(&q);
+
+    fifo_enqueue(&q, &d3);
+    printf("enqueue: \"%f\"\n",d3);
+    fifo_testprint(&q);
 
     return 0;
 }
