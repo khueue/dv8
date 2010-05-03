@@ -1,5 +1,5 @@
 #include "utils.h"
-#include "queue.h"
+#include "fifo_queue.h"
 #include "list_node.h"
 
 /*
@@ -9,33 +9,42 @@
  */
 
 /*
- * XXX
+ * Init the queue.
  */
 void
-init_queue(queue_t *q)
+fifo_init_queue(fifo_queue_t *q)
 {
     ZERO_STRUCT(q);
 }
 
 /*
- * XXX
+ * Insert last in the fifo_queue.
  */
 void
-enqueue(queue_t *q, void *data)
+fifo_enqueue(fifo_queue_t *q, void *data)
 {
     list_node_t *new_node = alloc_list_node();
 
     new_node->data = data;
-    q->foot->next = new_node; /* Special case if none present? */
-    new_node->prev = q->foot;
+    
+    if (q->foot)
+    {
+    	q->foot->next = new_node;    	
+    } 
+    else 
+    {
+    	q->foot = new_node;
+    	q->head = new_node;
+    }
+    new_node->prev = q->foot;    
     q->foot = new_node;
 }
 
 /*
- * XXX
+ * Returns the first data of the queue.
  */
 void *
-dequeue(queue_t *q)
+fifo_dequeue(fifo_queue_t *q)
 {
     list_node_t *node = q->head;
     void *data = node->data;
@@ -57,7 +66,7 @@ dequeue(queue_t *q)
  *   gcc <this_module>.c <other_modules>.c -D<THIS_MODULE>_MAIN -Iinclude
  *   ./a.out
  */
-#ifdef QUEUE_MAIN
+#ifdef FIFO_QUEUE_MAIN
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -69,16 +78,19 @@ main(void)
     double d2 = 20.0;
     double d3 = 30.0;
 
-    queue_t q;
+    fifo_queue_t q;
 
     init_list_node_freelist();
 
-    init_queue(&q);
-    enqueue(&q, &d1); /* Currently segfaults. */
-    enqueue(&q, &d2);
-    enqueue(&q, &d3);
+    fifo_init_queue(&q);
+    fifo_enqueue(&q, &d1);
+    fifo_enqueue(&q, &d2);
+    fifo_enqueue(&q, &d3);
 
     printf("q->head->data: \"%f\"\n", *(double *)q.head->data);
+    printf("dequeue: \"%f\"\n", *(double *)fifo_dequeue(&q));
+    printf("dequeue: \"%f\"\n", *(double *)fifo_dequeue(&q));
+    printf("dequeue: \"%f\"\n", *(double *)fifo_dequeue(&q));
 
     return 0;
 }

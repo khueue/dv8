@@ -1,5 +1,5 @@
-#ifndef QUEUE_H
-#define QUEUE_H
+#ifndef FIFO_QUEUE_H
+#define FIFO_QUEUE_H
 
 #include "list_node.h"
 
@@ -12,9 +12,9 @@
 /*
  * XXX
  */
-struct queue;
-typedef struct queue queue_t;
-struct queue
+struct fifo_queue;
+typedef struct fifo_queue fifo_queue_t;
+struct fifo_queue
 {
     list_node_t *head;
     list_node_t *foot;
@@ -27,12 +27,12 @@ struct queue
  */
 
 void
-init_queue(queue_t *q);
+fifo_init_queue(fifo_queue_t *q);
 
 void
-enqueue(queue_t *q, void *data);
+fifo_enqueue(fifo_queue_t *q, void *data);
 
 void *
-dequeue(queue_t *q);
+fifo_dequeue(fifo_queue_t *q);
 
 #endif
