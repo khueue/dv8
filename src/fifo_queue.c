@@ -29,14 +29,15 @@ fifo_enqueue(fifo_queue_t *q, void *data)
     if (q->foot)
     {
         q->foot->next = new_node;
+        new_node->prev = q->foot;
+        q->foot = new_node;
     }
     else
     {
         q->foot = new_node;
         q->head = new_node;
     }
-    new_node->prev = q->foot;
-    q->foot = new_node;
+    
     q->length++;
 }
 
