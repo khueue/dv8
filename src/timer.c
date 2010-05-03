@@ -23,7 +23,7 @@ execute_timer(cause_reg_t cause)
         static int i = 0;
 
         /* Reload timer for another 100 ms (simulated time) */
-        kload_timer(100 * timer_msec);
+        kload_timer(50 * timer_msec);
 
         /* Increase the number on the Malta display. */
         display_word(++i);

@@ -145,7 +145,6 @@ set_status_reg(void)
 void
 kinit(void)
 {
-    int i = 0;
     /*
      * Set UART word length ('3' meaning 8 bits).
      * Do this early to enable debug printouts (e.g. kdebug_print).
@@ -168,7 +167,7 @@ kinit(void)
     print_int(0x42);
 
     /* Initialise timer to interrupt in 100 ms (simulated time). */
-    kload_timer(100 * timer_msec);
+    kload_timer(50 * timer_msec);
 
     /* run scheduler? start shell? */
     while (1)
