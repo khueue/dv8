@@ -22,7 +22,7 @@ fifo_init_queue(fifo_queue_t *q)
 void
 fifo_enqueue(fifo_queue_t *q, void *data)
 {
-    list_node_t *new_node = alloc_list_node();
+    list_node_t *new_node = list_node_alloc();
 
     new_node->data = data;
 
@@ -57,7 +57,7 @@ fifo_dequeue(fifo_queue_t *q)
         q->foot = NULL;
     }
 
-    free_list_node(node);
+    node = list_node_free(node);
 
     q->length--;
 

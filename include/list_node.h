@@ -31,13 +31,10 @@ struct list_node
  * ---------------------------------------------------------------------------
  */
 
-void
-init_list_node_freelist(void);
+list_node_t *
+list_node_alloc(void);
 
 list_node_t *
-alloc_list_node(void);
-
-list_node_t *
-free_list_node(list_node_t *node);
+list_node_free(list_node_t *node);
 
 #endif

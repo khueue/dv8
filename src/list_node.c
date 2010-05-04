@@ -7,6 +7,9 @@
  * ---------------------------------------------------------------------------
  */
 
+/*
+ * Maximum number of list nodes available in the system.
+ */
 #ifndef NUM_LIST_NODES
 #define NUM_LIST_NODES 1024
 #endif
@@ -27,7 +30,7 @@ g_list_nodes[NUM_LIST_NODES];
  * Freelist pointer. Points to the first free node.
  */
 static list_node_t *
-g_list_node_freelist;
+g_freelist;
 
 /*
  * ---------------------------------------------------------------------------
@@ -36,15 +39,14 @@ g_list_node_freelist;
  */
 
 /*
- * Initializes the freelist like a normal linked list. This function must be
- * called exactly once before calling any other list node functions.
+ * Initializes the freelist like a normal linked list.
  */
-void
-init_list_node_freelist(void)
+static void
+list_node_init_freelist(void)
 {
     size_t i = 0;
 
-    g_list_node_freelist = &g_list_nodes[0];
+    g_freelist = &g_list_nodes[0];
 
     for (i = 0; i < COUNT_ARRAY(g_list_nodes)-1; ++i)
     {
@@ -58,16 +60,26 @@ init_list_node_freelist(void)
  * Returns a free list node, or NULL if none free.
  */
 list_node_t *
-alloc_list_node(void)
+list_node_alloc(void)
 {
-    list_node_t *node = g_list_node_freelist;
+    static int is_initialized = 0;
+    list_node_t *node = NULL;
+
+    /* Make sure the free list is initialized automatically! */
+    if (!is_initialized)
+    {
+        is_initialized = 1;
+        list_node_init_freelist();
+    }
+
+    node = g_freelist;
     if (!node)
     {
         return NULL;
     }
     else
     {
-        g_list_node_freelist = g_list_node_freelist->next_free;
+        g_freelist = g_freelist->next_free;
         return ZERO_STRUCT(node);
     }
 }
@@ -76,15 +88,15 @@ alloc_list_node(void)
  * Releases a list node back to the system. Always returns NULL, to make it
  * easy and idiomatic to avoid dangling pointers:
  *
- *   node = alloc_list_node();
+ *   node = list_node_alloc();
  *   ... use node ...
- *   node = free_list_node();
+ *   node = list_node_free();
  */
 list_node_t *
-free_list_node(list_node_t *node)
+list_node_free(list_node_t *node)
 {
-    node->next_free = g_list_node_freelist;
-    g_list_node_freelist = node;
+    node->next_free = g_freelist;
+    g_freelist = node;
     return NULL;
 }
 
@@ -110,17 +122,15 @@ main(void)
 {
     list_node_t *node = NULL;
 
-    init_list_node_freelist();
-
-    node = alloc_list_node();
-    node->data = "hej";
+    node = list_node_alloc();
+    node->data = "Wohoo!";
     printf("node->data: \"%s\"\n", (char *)node->data);
-    node = free_list_node(node);
+    node = list_node_free(node);
 
     /* Allocate again, should be the same struct but zeroed. */
-    node = alloc_list_node();
+    node = list_node_alloc();
     printf("node->data: \"%s\"\n", (char *)node->data); /* Should segfault! */
-    node = free_list_node(node);
+    node = list_node_free(node);
 
     return 0;
 }

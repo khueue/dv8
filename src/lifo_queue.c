@@ -23,7 +23,7 @@ lifo_init_queue(lifo_queue_t *q)
 void
 lifo_enqueue(lifo_queue_t *q, void *data)
 {
-    list_node_t *new_node = alloc_list_node();
+    list_node_t *new_node = list_node_alloc();
 
     new_node->data = data;
     new_node->next = q->head;
@@ -41,7 +41,7 @@ lifo_dequeue(lifo_queue_t *q)
     void *data = node->data;
 
     q->head = node->next;
-    free_list_node(node);
+    node = list_node_free(node);
     q->length--;
     return data;
 }

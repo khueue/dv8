@@ -3,7 +3,7 @@
 #include "malta.h"
 #include "debug.h"
 
-#include "pcb_freelist.h"
+#include "pcb.h"
 
 void
 print_int(uint32_t word);
@@ -94,7 +94,7 @@ kfunc_to_go_to_when_the_process_ends_normally(void)
 pcb_t *
 spawn(user_prog_pointer program)
 {
-    pcb_t *pcb = alloc_pcb();
+    pcb_t *pcb = pcb_alloc();
     
     if (!pcb)
     {

@@ -25,7 +25,7 @@ prio_init_queue(prio_queue_t *q, int (*cmp_fun)(void *, void *))
 void
 prio_enqueue(prio_queue_t *q, void *data)
 {
-    list_node_t *new_node = alloc_list_node();
+    list_node_t *new_node = list_node_alloc();
     
     /* kdebug_assert(q != NULL);
     kdebug_assert(data != NULL); */
@@ -86,7 +86,7 @@ prio_dequeue(prio_queue_t *q)
     kdebug_assert(q->length > 0); */
     
     q->head = node->next;
-    free_list_node(node);    
+    node = list_node_free(node);    
     
     q->length--;
 

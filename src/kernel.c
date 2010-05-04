@@ -145,7 +145,7 @@ int
 fib_recursive(int n);
 void
 fib(void);
-#include "pcb_freelist.h"
+#include "pcb.h"
 pcb_t *
 spawn(user_prog_pointer program);
 

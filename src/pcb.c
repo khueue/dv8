@@ -1,5 +1,5 @@
 #include "utils.h"
-#include "pcb_freelist.h"
+#include "pcb.h"
 
 /*
  * ---------------------------------------------------------------------------
@@ -7,8 +7,11 @@
  * ---------------------------------------------------------------------------
  */
 
-#ifndef PCB_MAX_LENGTH
-#define PCB_MAX_LENGTH 20
+/*
+ * Maximum number of PCBs available in the system.
+ */
+#ifndef NUM_PCBS
+#define NUM_PCBS 20
 #endif
 
 /*
@@ -18,19 +21,16 @@
  */
 
 /*
- * XXX
+ * All PCBs available in the system, organised on a freelist.
  */
 static pcb_t
-g_pcbs[PCB_MAX_LENGTH];
+g_pcbs[NUM_PCBS];
 
 /*
- * XXX
+ * Freelist pointer. Points to the first free PCB.
  */
 static pcb_t *
-g_pcb_freelist;
-
-static int
-g_is_initialized;
+g_freelist;
 
 /*
  * ---------------------------------------------------------------------------
@@ -39,54 +39,64 @@ g_is_initialized;
  */
 
 /*
- * XXX
+ * Initializes the freelist like a normal linked list.
  */
-void
-init_pcb_freelist(void)
+static void
+pcb_init_freelist(void)
 {
-    size_t i;
+    size_t i = 0;
 
-    g_pcb_freelist = &g_pcbs[0];
+    g_freelist = &g_pcbs[0];
 
-    for (i = 0; i < PCB_MAX_LENGTH - 1; i++)
+    for (i = 0; i < COUNT_ARRAY(g_pcbs)-1; ++i)
     {
-        g_pcbs[i].next_free = &g_pcbs[i + 1];
+        g_pcbs[i].next_free = &g_pcbs[i+1];
     }
 
-    g_pcbs[PCB_MAX_LENGTH - 1].next_free = NULL;
+    g_pcbs[COUNT_ARRAY(g_pcbs)-1].next_free = NULL;
 }
 
 /*
- * XXX
+ * Returns a free PCB, or NULL if none free.
  */
 pcb_t *
-alloc_pcb(void)
+pcb_alloc(void)
 {
+    static int is_initialized = 0;
     pcb_t *pcb = NULL;
-    
-    if (!g_is_initialized)
+
+    if (!is_initialized)
     {
-        g_is_initialized = 1;
-        init_pcb_freelist();
+        is_initialized = 1;
+        pcb_init_freelist();
     }
-    
-    pcb = g_pcb_freelist;
+
+    pcb = g_freelist;
     if (!pcb)
     {
         return NULL;
     }
-    g_pcb_freelist = g_pcb_freelist->next_free;
-    return ZERO_STRUCT(pcb);
+    else
+    {
+        g_freelist = g_freelist->next_free;
+        return ZERO_STRUCT(pcb);
+    }
 }
 
 /*
- * XXX
+ * Releases a PCB back to the system. Always returns NULL, to make it easy and
+ * idiomatic to avoid dangling pointers:
+ *
+ *   pcb = pcb_alloc();
+ *   ... use pcb ...
+ *   pcb = pcb_free();
  */
-void
-free_pcb(pcb_t *pcb)
+pcb_t *
+pcb_free(pcb_t *pcb)
 {
-    pcb->next_free = g_pcb_freelist;
-    g_pcb_freelist = pcb;
+    pcb->next_free = g_freelist;
+    g_freelist = pcb;
+    return NULL;
 }
 
 /*
@@ -100,7 +110,7 @@ free_pcb(pcb_t *pcb)
  *   gcc <this_module>.c <other_modules>.c -D<THIS_MODULE>_MAIN -Iinclude
  *   ./a.out
  */
-#ifdef PCB_FREELIST_MAIN
+#ifdef PCB_MAIN
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -108,17 +118,17 @@ free_pcb(pcb_t *pcb)
 int
 main(void)
 {
-    pcb_t *pcb;
+    pcb_t *pcb = NULL;
 
-    pcb = alloc_pcb();
+    pcb = pcb_alloc();
     pcb->priority = 1;
     printf("%d\n", pcb->priority);
-    free_pcb(pcb);
+    pcb = pcb_free(pcb);
 
     /* Allocate again, should be the same struct but zeroed. */
-    pcb = alloc_pcb();
+    pcb = pcb_alloc();
     printf("%d\n", pcb->priority);
-    free_pcb(pcb);
+    pcb = pcb_free(pcb);
 
     return 0;
 }

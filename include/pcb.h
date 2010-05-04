@@ -31,12 +31,9 @@ struct pcb
  */
 
 pcb_t *
-alloc_pcb(void);
+pcb_alloc(void);
 
-void
-free_pcb(pcb_t *pcb);
-
-void
-init_pcb_freelist(void);
+pcb_t *
+pcb_free(pcb_t *pcb);
 
 #endif
