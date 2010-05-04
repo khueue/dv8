@@ -10,7 +10,7 @@
  */
 
 /*
- * XXX
+ * Last in first out
  */
 struct lifo_queue;
 typedef struct lifo_queue lifo_queue_t;
@@ -18,6 +18,7 @@ struct lifo_queue
 {
     list_node_t *head;
     list_node_t *foot;
+    size_t length;
 };
 
 /*
