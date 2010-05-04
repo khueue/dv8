@@ -91,6 +91,9 @@ kprint_int(uint32_t v)
     display_word(v);
 }
 
+/*
+ * Handles syscall exceptions.
+ */
 static void
 execute_syscall(cause_reg_t cause)
 {
@@ -112,7 +115,7 @@ execute_syscall(cause_reg_t cause)
 }
 
 /*
- * XXXXXXX todo
+ * Configures the CPU to enable interrupts etc.
  */
 static void
 set_status_reg(void)
@@ -138,8 +141,16 @@ set_status_reg(void)
     kset_sr(and.reg, or.reg);
 }
 
+int
+fib_recursive(int n);
+void
+fib(void);
+pcb_t *
+spawn(user_prog_pointer program);
+
 /*
- * XXXXXXXX
+ * Entry point for the C code. We start here when the assembly has finished
+ * some initial work.
  */
 void
 kinit(void)
@@ -159,23 +170,25 @@ kinit(void)
     /* Setup storage-area for saving registers on exception. */
     kset_registers(&regs);
 
-    /* XXXXXXXXXXXX todo */
+    /* Setup status register in the CPU. */
     set_status_reg();
 
-    /* Display 0x42 using my system call */
+    /* Display 0x42 using a syscall. */
     print_int(0x42);
 
-    /* Initialise timer to interrupt in 100 ms (simulated time). */
+    /* Initialise timer to interrupt in 50 ms (simulated time). */
     kload_timer(50 * timer_msec);
 
-    /* run scheduler? start shell? */
+    /* XXXXXXXX run scheduler? start shell? */
     while (1)
     {
+        pcb_t *process = spawn(fib);
     }
 }
 
 /*
- * XXXXXXXX
+ * Called automatically after an exception occurs and registers are saved.
+ * Handles the various exceptions. 
  */
 void
 kexception(void)

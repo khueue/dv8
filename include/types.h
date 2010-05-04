@@ -11,6 +11,8 @@ typedef signed int   int32_t;
 
 typedef uint32_t size_t;
 
+typedef void (*user_prog_pointer)(void);
+
 #ifndef NULL
 #define NULL ((void *)0)
 #endif
