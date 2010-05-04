@@ -32,7 +32,7 @@ fib_impl(void)
     int n = 5;
     /* TODO: Print to tty.
     printf("fib(5) = %d\n", fib_recursive(n)); */
-    print_int(fib_recursive(n));
+    kdebug_printint(fib_recursive(n));
 }
 
 void
@@ -41,16 +41,29 @@ void
 terminate_this_process(void)
 {
     /* What does this do? */
-    kdebug_println("terminate process");
+    kdebug_println("terminating process");
 }
 
+pcb_t *
+    spawn(user_prog_pointer program);
+    
+void inc(void);
+    void inc(void)
+    {
+        kdebug_println("jag ar increment!!!!!!!!!");
+    }
+    
+void switch_to_registers(registers_t *regs);
 void
     fib(void);
 void
 fib(void)
 {
+            pcb_t *process = spawn(inc);
+    kdebug_println("start of fib");
     fib_impl();
     terminate_this_process();
+            switch_to_registers(&process->regs);
     kdebug_println("end of fib");
     /* We should never get here! */
 }
@@ -79,12 +92,10 @@ kfunc_to_go_to_when_the_process_ends_normally(void)
 }
 
 pcb_t *
-    spawn(user_prog_pointer program);
-pcb_t *
 spawn(user_prog_pointer program)
 {
     pcb_t *pcb = alloc_pcb();
-
+    
     if (!pcb)
     {
         /* XXX no more pcbs! */

@@ -29,6 +29,9 @@ g_pcbs[PCB_MAX_LENGTH];
 static pcb_t *
 g_pcb_freelist;
 
+static int
+g_is_initialized;
+
 /*
  * ---------------------------------------------------------------------------
  * Functions.
@@ -59,7 +62,15 @@ init_pcb_freelist(void)
 pcb_t *
 alloc_pcb(void)
 {
-    pcb_t *pcb = g_pcb_freelist;
+    pcb_t *pcb = NULL;
+    
+    if (!g_is_initialized)
+    {
+        g_is_initialized = 1;
+        init_pcb_freelist();
+    }
+    
+    pcb = g_pcb_freelist;
     if (!pcb)
     {
         return NULL;
@@ -98,8 +109,6 @@ int
 main(void)
 {
     pcb_t *pcb;
-
-    init_pcb_freelist();
 
     pcb = alloc_pcb();
     pcb->priority = 1;

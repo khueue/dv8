@@ -132,7 +132,7 @@ _start:
     subu t2, t2, t0 #calculate length of handler
 
 copyloop:
-    lw v0,(t0)      #copy one word at a time
+    lw v0, (t0)      #copy one word at a time
     sw v0, (t1)
     addu t0, 4
     addu t1, 4
@@ -140,7 +140,7 @@ copyloop:
     bgez t2, copyloop
 
     la gp, 0x80000000
-    la sp,init_stack-32
+    la sp, init_stack - 32   # -32 ???
     j  kinit
 
 # -------------------------------------------------------------------------
@@ -171,6 +171,7 @@ exceptstubend:
 # -------------------------------------------------------------------------
 
 exception_handler:
+    # Save CPU register.
     lw k0, excn_regs(zero)
     sw k1, REG_AT(k0)
     sw v0, REG_V0(k0)
@@ -210,9 +211,10 @@ exception_handler:
     sw k1, REG_EPC(k0)
     .set reorder
 
-    la sp, excn_stack-32
+    la sp, excn_stack - 32    # -32 ??????? XXXXXX
     jal kexception
 
+    # Restore saved registers into CPU.
     lw k0, excn_regs(zero)
     lw v0, REG_V0(k0)
     lw v1, REG_V1(k0)

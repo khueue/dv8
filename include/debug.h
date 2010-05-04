@@ -11,7 +11,6 @@
 #define kdebug_println(n)
 #define kdebug_printint(n)
 #define kdebug_assert(n)
-
 #else
 void kdebug_putc(char c);
 void kdebug_print(const char* text);

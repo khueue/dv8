@@ -16,7 +16,7 @@
  * XXXXXXXXXXX
  */
 static registers_t
-regs;
+g_regs;
 
 /*
  * ---------------------------------------------------------------------------
@@ -74,7 +74,7 @@ display_word(uint32_t word)
 
 /* Declaration of system call handler (defined in 'syscall.S'). */
 void
-ksyscall_handler(registers_t* reg);
+ksyscall_handler(registers_t* regs);
 
 /* Declaration of my system call for user processes. */
 void
@@ -101,13 +101,13 @@ execute_syscall(cause_reg_t cause)
     if (cause.field.exc == BIT3)
     {
         /* Get pointer to stored registers. */
-        registers_t* reg = kget_registers();
+        registers_t* regs = kget_registers();
 
         /* Handle the system call (see syscall.S). */
-        ksyscall_handler(reg);
+        ksyscall_handler(regs);
 
         /* Return from exception to instruction following syscall. */
-        reg->epc_reg += 4;
+        regs->epc_reg += 4;
 
         /* Acknowledge syscall exception. */
         kset_cause(~0x60, 0);
@@ -145,8 +145,11 @@ int
 fib_recursive(int n);
 void
 fib(void);
+#include "pcb_freelist.h"
 pcb_t *
 spawn(user_prog_pointer program);
+
+void switch_to_registers(registers_t *regs);
 
 /*
  * Entry point for the C code. We start here when the assembly has finished
@@ -168,21 +171,23 @@ kinit(void)
     tty->mcr.field.out2 = 1;
 
     /* Setup storage-area for saving registers on exception. */
-    kset_registers(&regs);
+    kset_registers(&g_regs);
 
     /* Setup status register in the CPU. */
     set_status_reg();
 
-    /* Display 0x42 using a syscall. */
-    print_int(0x42);
-
     /* Initialise timer to interrupt in 50 ms (simulated time). */
     kload_timer(50 * timer_msec);
 
-    /* XXXXXXXX run scheduler? start shell? */
-    while (1)
     {
         pcb_t *process = spawn(fib);
+        switch_to_registers(&process->regs);
+    }
+    
+    /* XXXXXXXX run scheduler? start shell? */
+    kdebug_println("KERNEL whiling ...");
+    while (1)
+    {
     }
 }
 

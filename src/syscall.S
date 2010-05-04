@@ -6,6 +6,14 @@
     .globl print_int
     .globl kprint_int
     .globl ksyscall_handler
+    .globl switch_to_registers
+
+    # Input:
+    #   a0 - registers_t *
+switch_to_registers:
+    addi v0, a0, 0
+    syscall
+    jr ra
 
     # A:
     #   A user mode interface to the kernel mode function
@@ -16,6 +24,11 @@ print_int:
     syscall         # Enter kernel mode by 'syscall' exception.
     jr ra           # Back in user mode, return to caller
 
+ksyscall_handler:
+    lw v0, REG_V0(a0)
+    lw v0, REG_EPC(v0)
+    jr v0
+
     # syscall_handler:
     #   Enables argument passing for up
     #   to four parameters of a system call.
@@ -23,12 +36,3 @@ print_int:
     # Input:
     #   a0 - Pointer to saved registers.
     #
-ksyscall_handler:
-    addi    v0, a0, 0   # Move a0 into v0.
-    lw  a0, REG_A0(v0)  # Load saved a0 (argument 1) into a0.
-    lw  a1, REG_A1(v0)  # Load saved a1 (argument 2) into a1.
-    lw  a2, REG_A2(v0)  # Load saved a2 (argument 3) into a2.
-    lw  a3, REG_A3(v0)  # Load saved a3 (argument 4) into a3.
-    lw  v0, REG_V0(v0)  # Load saved v0 (implementation) into v0.
-
-    jr  v0      # Jump to system call implementation.
