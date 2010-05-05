@@ -15,6 +15,12 @@ fib(void);
 void
 fib_impl(void);
 
+void
+inc(void);
+
+void
+inc_impl(void);
+
 int
 fib_recursive(int n);
 

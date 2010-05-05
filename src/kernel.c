@@ -105,6 +105,8 @@ set_status_reg(void)
     kset_sr(and.reg, or.reg);
 }
 
+pcb_t *p1, *p2;
+
 /*
  * Entry point for the C code. We start here when the assembly has finished
  * some initial work.
@@ -134,8 +136,9 @@ kinit(void)
     kload_timer(50 * timer_msec);
 
     {
-        pcb_t *process = spawn(fib);
-        switch_to_registers(&process->regs);
+        p1 = spawn(fib);
+        p2 = spawn(inc);
+        kswitch_context(&p1->regs, &g_regs);
     }
     
     /* XXXXXXXX run scheduler? start shell? */

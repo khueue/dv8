@@ -40,6 +40,7 @@ excn_stack:
     .globl  kget_registers
     .globl  kexception
     .globl  kdebug_magic_break
+    .globl  kswitch_context
 
 # -------------------------------------------------------------------------
 # Set cpu status register
@@ -171,7 +172,7 @@ exceptstubend:
 # -------------------------------------------------------------------------
 
 exception_handler:
-    # Save CPU register.
+    # Save CPU registers.
     lw k0, excn_regs(zero)
     sw k1, REG_AT(k0)
     sw v0, REG_V0(k0)
@@ -257,3 +258,80 @@ exception_handler:
     eret
     .set at
     .set reorder
+
+    # a0 - new register_t *
+    # a1 - temp register_t *
+kswitch_context:
+    # Save CPU registers to temp.
+    addi k0, a1, 0
+    sw k1, REG_AT(k0)
+    sw v0, REG_V0(k0)
+    sw v1, REG_V1(k0)
+    sw a0, REG_A0(k0)
+    sw a1, REG_A1(k0)
+    sw a2, REG_A2(k0)
+    sw a3, REG_A3(k0)
+    sw t0, REG_T0(k0)
+    sw t1, REG_T1(k0)
+    sw t2, REG_T2(k0)
+    sw t3, REG_T3(k0)
+    sw t4, REG_T4(k0)
+    sw t5, REG_T5(k0)
+    sw t6, REG_T6(k0)
+    sw t7, REG_T7(k0)
+    sw t8, REG_T8(k0)
+    sw t9, REG_T9(k0)
+    sw s0, REG_S0(k0)
+    sw s1, REG_S1(k0)
+    sw s2, REG_S2(k0)
+    sw s3, REG_S3(k0)
+    sw s4, REG_S4(k0)
+    sw s5, REG_S5(k0)
+    sw s6, REG_S6(k0)
+    sw s7, REG_S7(k0)
+    sw sp, REG_SP(k0)
+    sw fp, REG_FP(k0)
+    sw gp, REG_GP(k0)
+    sw ra, REG_RA(k0)
+    .set noreorder
+    mfc0 k1, epc
+    nop
+    nop
+    nop
+    sw k1, REG_EPC(k0)
+    .set reorder
+
+    # Restore saved registers into CPU.
+    addi k0, a0, 0
+    lw v0, REG_V0(k0)
+    lw v1, REG_V1(k0)
+    lw a0, REG_A0(k0)
+    lw a1, REG_A1(k0)
+    lw a2, REG_A2(k0)
+    lw a3, REG_A3(k0)
+    lw t0, REG_T0(k0)
+    lw t1, REG_T1(k0)
+    lw t2, REG_T2(k0)
+    lw t3, REG_T3(k0)
+    lw t4, REG_T4(k0)
+    lw t5, REG_T5(k0)
+    lw t6, REG_T6(k0)
+    lw t7, REG_T7(k0)
+    lw t8, REG_T8(k0)
+    lw t9, REG_T9(k0)
+    lw s0, REG_S0(k0)
+    lw s1, REG_S1(k0)
+    lw s2, REG_S2(k0)
+    lw s3, REG_S3(k0)
+    lw s4, REG_S4(k0)
+    lw s5, REG_S5(k0)
+    lw s6, REG_S6(k0)
+    lw s7, REG_S7(k0)
+    lw sp, REG_SP(k0)
+    lw fp, REG_FP(k0)
+    lw gp, REG_GP(k0)
+    lw ra, REG_RA(k0)
+    lw k1, REG_EPC(k0)
+    lw k0, REG_AT(k0)
+
+    jr k1

@@ -6,6 +6,8 @@
 #include "pcb.h"
 #include "spawn.h"
 
+extern pcb_t *p1, *p2;
+
 int
 fib_recursive(int n)
 {
@@ -26,7 +28,21 @@ fib_impl(void)
     int n = 5;
     /* TODO: Print to tty.
     printf("fib(5) = %d\n", fib_recursive(n)); */
+    kdebug_print("fib_recursive(5) = ");
     kdebug_printint(fib_recursive(n));
+    kdebug_println("");
+}
+
+void
+inc_impl(void)
+{
+    /* TODO: We should actually read arguments from messages. */
+    static int i = 0;
+    /* TODO: Print to tty.
+    printf("fib(5) = %d\n", fib_recursive(n)); */
+    kdebug_print("i = ");
+    kdebug_printint(i++);
+    kdebug_println("");
 }
 
 void
@@ -43,6 +59,27 @@ fib(void)
     fib_impl();
     terminate_this_process();
     kdebug_println("end of fib");
+    while (1)
+    {
+        kdebug_println("fib");
+        kswitch_context(&p2->regs, &p1->regs);
+    }
+    /* We should never get here! */
+}
+
+void
+inc(void)
+{
+    kdebug_println("start of incrment");
+    inc_impl();
+    terminate_this_process();
+    kdebug_println("end of innremtmnt");
+    while (1)
+    {
+        kdebug_println("inc");
+        kswitch_context(&p1->regs, &p2->regs);
+    kdebug_println("finished switching back to fib");
+    }
     /* We should never get here! */
 }
 
@@ -64,6 +101,20 @@ void
 kfunc_to_go_to_when_the_process_ends_normally(void)
 {
     kdebug_println("process ended normally, whiling ...");
+    
+    {
+        static int i = 0;
+        if (i == 0)
+        {
+            i = 1;
+            registers_t regs;
+            pcb_t *process = spawn(fib);
+            kswitch_context(&process->regs, &regs);
+            while (1)
+            {
+            }
+        }
+    }
     while (1)
     {
     }

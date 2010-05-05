@@ -23,6 +23,8 @@ registers_t* kget_registers(void);
 
 void kdebug_magic_break(void);
 
+void kswitch_context(registers_t *new, registers_t *old);
+
 /*
  * kinit is called at startup, contains application-specific
  * system initialisation.
