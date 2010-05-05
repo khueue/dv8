@@ -20,3 +20,6 @@ Thumbs.db
 !.gitignore
 !bin/.gitignore
 !build/.gitignore
+
+### Test batch file
+test.sh

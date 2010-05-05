@@ -2,7 +2,6 @@
 #include "prio_queue.h"
 #include "list_node.h"
 
-
 /*
  * ---------------------------------------------------------------------------
  * Functions.
@@ -26,33 +25,35 @@ void
 prio_enqueue(prio_queue_t *q, void *data)
 {
     list_node_t *new_node = list_node_alloc();
-    
+
     /* kdebug_assert(q != NULL);
-    kdebug_assert(data != NULL); */
-    
+    kdebug_assert(data != NULL);
+    kdebug_assert(new_node != NULL);*/
+
     new_node->data = data;
-    
+
     /* empty queue */
     if (!q->foot)
     {
-        q->head = new_node; 
-        q->foot = new_node;    	
+        q->head = new_node;
+        q->foot = new_node;
     }
-    else 
+    else
     {
         list_node_t *tmp_node = q->foot;
+        /* find insert point */
         while (tmp_node && (q->cmp_fun(tmp_node->data, new_node->data) < 0))
         {
             tmp_node = tmp_node->prev;
         }
-        
+
         /* first */
-        if (!tmp_node) 
+        if (!tmp_node)
         {
             q->head->prev = new_node;
             new_node->next = q->head;
-            q->head = new_node;           
-        } 
+            q->head = new_node;
+        }
         /* last */
         else if (!tmp_node->next)
         {
@@ -61,17 +62,16 @@ prio_enqueue(prio_queue_t *q, void *data)
             q->foot = new_node;
         }
         else
-        {   
+        {
             new_node->next = tmp_node->next;
             new_node->prev = tmp_node;
-            
-            tmp_node->next = new_node;
-            new_node->next->prev = new_node;                                   
-        }        
-    }
-    q->length++;	
- }
 
+            tmp_node->next = new_node;
+            new_node->next->prev = new_node;
+        }
+    }
+    q->length++;
+ }
 
 /*
  * Returns the first data of the queue.
@@ -81,13 +81,13 @@ prio_dequeue(prio_queue_t *q)
 {
     list_node_t *node = q->head;
     void *data = node->data;
-    
+
    /* kdebug_assert(q != NULL);
     kdebug_assert(q->length > 0); */
-    
+
     q->head = node->next;
-    node = list_node_free(node);    
-    
+    node = list_node_free(node);
+
     q->length--;
 
     if (!q->length)
@@ -95,7 +95,7 @@ prio_dequeue(prio_queue_t *q)
         q->foot = NULL;
         q->head = NULL;
     }
-    
+
     return data;
 }
 
@@ -115,7 +115,7 @@ prio_dequeue(prio_queue_t *q)
 #include <stdlib.h>
 #include <stdio.h>
 
-int
+static int
 comparefun(void *a, void *b)
 {
     int x = *(int *)a;
@@ -123,8 +123,8 @@ comparefun(void *a, void *b)
     return x - y;
 }
 
-void
-testprint(prio_queue_t *q) 
+static void
+testprint(prio_queue_t *q)
 {
     list_node_t *tmp_node = q->head;
     while (tmp_node)
@@ -138,8 +138,7 @@ testprint(prio_queue_t *q)
 int
 main(void)
 {
-    
-    
+
     int d1 = 10;
     int d2 = 20;
     int d3 = 30;
@@ -147,8 +146,6 @@ main(void)
     int d5 = 15;
 
     prio_queue_t q;
-
-    init_list_node_freelist();
 
     prio_init_queue(&q, &comparefun);
     prio_enqueue(&q, &d1);
@@ -175,8 +172,7 @@ main(void)
     printf("dequeue: \"%d\"\n", *(int *)prio_dequeue(&q));
     testprint(&q);
     printf("dequeue: \"%d\"\n", *(int *)prio_dequeue(&q));
-    
-    
+
     prio_enqueue(&q, &d1);
     printf("enqueue: \"%d\"\n",d1);
     testprint(&q);
@@ -186,11 +182,10 @@ main(void)
     prio_enqueue(&q, &d3);
     printf("enqueue: \"%d\"\n",d3);
     testprint(&q);
-    
+
     printf("dequeue: \"%d\"\n", *(int *)prio_dequeue(&q));
     testprint(&q);
-    
-    
+
     prio_enqueue(&q, &d4);
     printf("enqueue: \"%d\"\n",d4);
     prio_enqueue(&q, &d4);
@@ -201,7 +196,7 @@ main(void)
     prio_enqueue(&q, &d5);
     printf("enqueue: \"%d\"\n",d5);
     testprint(&q);
-    
+
     printf("dequeue: \"%d\"\n", *(int *)prio_dequeue(&q));
     testprint(&q);
     printf("dequeue: \"%d\"\n", *(int *)prio_dequeue(&q));
