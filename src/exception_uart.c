@@ -3,7 +3,7 @@
 #include "debug.h"
 #include "utils.h"
 
-#include "uart.h"
+#include "exception_uart.h"
 
 /*
  * ---------------------------------------------------------------------------

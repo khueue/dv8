@@ -1,5 +1,7 @@
-#ifndef TIMER_H
-#define TIMER_H
+#ifndef EXCEPTION_SYSCALL_H
+#define EXCEPTION_SYSCALL_H
+
+#include "utils.h"
 
 /*
  * ---------------------------------------------------------------------------
@@ -8,9 +10,6 @@
  */
 
 void
-display_word(uint32_t word);
-
-void
-execute_timer(cause_reg_t cause);
+execute_syscall(cause_reg_t cause);
 
 #endif

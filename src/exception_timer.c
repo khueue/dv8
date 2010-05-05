@@ -3,7 +3,7 @@
 #include "debug.h"
 #include "utils.h"
 
-#include "timer.h"
+#include "exception_timer.h"
 
 /*
  * ---------------------------------------------------------------------------

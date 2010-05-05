@@ -1,5 +1,7 @@
-#ifndef UART_H
-#define UART_H
+#ifndef EXCEPTION_UART_H
+#define EXCEPTION_UART_H
+
+#include "utils.h"
 
 /*
  * ---------------------------------------------------------------------------
