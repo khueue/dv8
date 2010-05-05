@@ -2,9 +2,13 @@
 #include "asm.h"
 #include "malta.h"
 #include "debug.h"
+#include "syscall.h"
 
-#include "uart.h"
-#include "timer.h"
+#include "exception_uart.h"
+#include "exception_timer.h"
+#include "exception_syscall.h"
+#include "pcb.h" /* XXX probably remove */
+#include "spawn.h" /* XXX probably remove */
 
 /*
  * ---------------------------------------------------------------------------
@@ -55,6 +59,7 @@ printstr(const char str[])
 }
 #endif
 
+#if 0
 /*
  * Displays a value on the Malta display.
  */
@@ -71,48 +76,7 @@ display_word(uint32_t word)
         word /= 10;
     }
 }
-
-/* Declaration of system call handler (defined in 'syscall.S'). */
-void
-ksyscall_handler(registers_t* regs);
-
-/* Declaration of my system call for user processes. */
-void
-print_int(uint32_t v);
-
-/* Kernels internal definition of my system call (prefix 'k'). */
-void
-kprint_int(uint32_t v);
-void
-kprint_int(uint32_t v)
-{
-    /* Implementation of my_system_call: */
-    /* Displays value of its argument.   */
-    display_word(v);
-}
-
-/*
- * Handles syscall exceptions.
- */
-static void
-execute_syscall(cause_reg_t cause)
-{
-    /* Make sure that we are here because of a syscall exception. */
-    if (cause.field.exc == BIT3)
-    {
-        /* Get pointer to stored registers. */
-        registers_t* regs = kget_registers();
-
-        /* Handle the system call (see syscall.S). */
-        ksyscall_handler(regs);
-
-        /* Return from exception to instruction following syscall. */
-        regs->epc_reg += 4;
-
-        /* Acknowledge syscall exception. */
-        kset_cause(~0x60, 0);
-    }
-}
+#endif
 
 /*
  * Configures the CPU to enable interrupts etc.
@@ -140,16 +104,6 @@ set_status_reg(void)
 
     kset_sr(and.reg, or.reg);
 }
-
-int
-fib_recursive(int n);
-void
-fib(void);
-#include "pcb.h"
-pcb_t *
-spawn(user_prog_pointer program);
-
-void switch_to_registers(registers_t *regs);
 
 /*
  * Entry point for the C code. We start here when the assembly has finished
