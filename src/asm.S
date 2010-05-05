@@ -293,13 +293,6 @@ kswitch_context:
     sw fp, REG_FP(k0)
     sw gp, REG_GP(k0)
     sw ra, REG_RA(k0)
-    .set noreorder
-    mfc0 k1, epc
-    nop
-    nop
-    nop
-    sw k1, REG_EPC(k0)
-    .set reorder
 
     # Restore saved registers into CPU.
     addi k0, a0, 0
