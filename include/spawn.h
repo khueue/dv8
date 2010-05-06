@@ -9,24 +9,6 @@
  * ---------------------------------------------------------------------------
  */
 
-void
-fib(void);
-
-void
-fib_impl(void);
-
-void
-inc(void);
-
-void
-inc_impl(void);
-
-void
-maltascr(void);
-
-int
-fib_recursive(int n);
-
 pcb_t *
 spawn(user_prog_pointer program);
 

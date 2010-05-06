@@ -1,7 +1,8 @@
-#ifndef SYSCALL_H
-#define SYSCALL_H
+#ifndef KERNEL_API_H
+#define KERNEL_API_H
 
 #include "utils.h"
+#include "registers.h"
 
 /*
  * ---------------------------------------------------------------------------
@@ -9,10 +10,12 @@
  * ---------------------------------------------------------------------------
  */
 
+/* kill */
+
 void
 ksyscall_handler(registers_t* regs);
 
-void
-switch_to_registers(registers_t *regs);
+uint32_t
+exec(user_prog_pointer program);
 
 #endif

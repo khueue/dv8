@@ -3,7 +3,6 @@
 
 #include "utils.h"
 #include "asm.h"
-#include "debug.h"
 
 #include "pcb.h"
 

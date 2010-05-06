@@ -8,22 +8,29 @@
 static const int timer_usec = 67;
 static const int timer_msec = 67000;
 
-/* Functions provided by 'asm.S' */
+uint32_t
+kset_sr(uint32_t and_mask, uint32_t or_mask);
 
-uint32_t kset_sr(uint32_t and_mask, uint32_t or_mask);
-uint32_t kget_sr(void);
+uint32_t
+kget_sr(void);
 
-uint32_t kset_cause(uint32_t and_mask, uint32_t or_mask);
-uint32_t kget_cause(void);
+uint32_t
+kset_cause(uint32_t and_mask, uint32_t or_mask);
 
-void kload_timer(uint32_t timer_value);
+uint32_t
+kget_cause(void);
 
-void kset_registers(registers_t* regs);
-registers_t* kget_registers(void);
+void
+kload_timer(uint32_t timer_value);
 
-void kdebug_magic_break(void);
+void
+kset_registers(registers_t* regs);
 
-void kswitch_context(registers_t *new, registers_t *old);
+registers_t*
+kget_registers(void);
+
+void
+kdebug_magic_break(void);
 
 /*
  * kinit is called at startup, contains application-specific
@@ -31,7 +38,8 @@ void kswitch_context(registers_t *new, registers_t *old);
  * Applications should make sure that 'kset_registers' is
  * called, to that the exception handler can save registers.
  */
-void kinit(void);
+void
+kinit(void);
 
 /*
  * kexception is called when an exception occurs, after registers
@@ -39,6 +47,7 @@ void kinit(void);
  * registers, and 'kset_registers' to update the entire register
  * set when 'kexception' returns (useful for task switching).
  */
-void kexception(void);
+void
+kexception(void);
 
 #endif

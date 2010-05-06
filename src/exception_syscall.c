@@ -1,8 +1,7 @@
 #include "asm.h"
 #include "malta.h"
-#include "debug.h"
 #include "utils.h"
-#include "syscall.h"
+#include "kernel_api.h"
 
 #include "exception_syscall.h"
 
@@ -24,7 +23,7 @@ execute_syscall(cause_reg_t cause)
         /* Get pointer to stored registers. */
         registers_t* regs = kget_registers();
 
-        /* Handle the system call (see syscall.S). */
+        /* Handle the system call (see kernel_api.S). */
         ksyscall_handler(regs);
 
         /* Return from exception to instruction following syscall. */

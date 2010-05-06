@@ -1,15 +1,18 @@
 #include "utils.h"
 #include "asm.h"
 #include "malta.h"
-#include "debug.h"
-#include "syscall.h"
+#include "kernel_api.h"
 
+#include "kernel.h"
 #include "exception_uart.h"
 #include "exception_timer.h"
 #include "exception_syscall.h"
 #include "pcb.h" /* XXX probably remove */
 #include "spawn.h" /* XXX probably remove */
 #include "scheduler.h" /* XXX probably remove */
+
+#include "user_fib.h"
+#include "user_incr.h"
 
 /*
  * ---------------------------------------------------------------------------
@@ -128,6 +131,15 @@ idle_func(void)
     }
 }
 
+uint32_t
+kexec(user_prog_pointer program)
+{
+    pcb_t *pcb = spawn(program);
+    /* Error handling here XXXXXXX */
+    sch_schedule(pcb);
+    return pcb->pid;
+}
+
 /*
  * Entry point for the C code. We start here when the assembly has finished
  * some initial work.
@@ -159,7 +171,7 @@ kinit(void)
     idle_pcb->pid = 666;
     sch_place_in_run(idle_pcb); /* Super bad. XXXXXX */
     sch_schedule(spawn(fib));
-    sch_schedule(spawn(inc));
+    sch_schedule(spawn(incr));
 
     /* Initialise timer to interrupt in 50 ms (simulated time). */
     kload_timer(50 * timer_msec);

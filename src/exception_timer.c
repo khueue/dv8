@@ -1,6 +1,5 @@
 #include "asm.h"
 #include "malta.h"
-#include "debug.h"
 #include "utils.h"
 #include "pcb.h"
 #include "scheduler.h"
