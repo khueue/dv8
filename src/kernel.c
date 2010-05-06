@@ -159,6 +159,7 @@ kinit(void)
     idle_pcb->pid = 666;
     sch_place_in_run(idle_pcb); /* Super bad. XXXXXX */
     sch_schedule(spawn(fib));
+    sch_schedule(spawn(inc));
 
     /* Initialise timer to interrupt in 50 ms (simulated time). */
     kload_timer(50 * timer_msec);
