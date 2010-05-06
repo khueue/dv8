@@ -21,6 +21,9 @@ inc(void);
 void
 inc_impl(void);
 
+void
+maltascr(void);
+
 int
 fib_recursive(int n);
 
