@@ -15,11 +15,11 @@ void
 prio_init_queue(
     prio_queue_t *q, 
     int (*cmp_fun)(void *, void *),
-    int (*find_fun)(void *, void *))
+    int (*match_fun)(void *, void *))
 {
     ZERO_STRUCT(q);
     q->cmp_fun = cmp_fun;
-    q->find_fun = find_fun;
+    q->match_fun = match_fun;
 }
 
 /*
@@ -120,7 +120,7 @@ prio_remove(prio_queue_t *q, void *find)
     kdebug_assert(q->length > 0); */
     
     /* While when still in queue or requested node is found */
-    while(node && !q->find_fun(node->data, find))
+    while(node && !q->match_fun(node->data, find))
     {
         node = node->prev;
     }

@@ -19,7 +19,7 @@ struct prio_queue
     list_node_t *head;
     list_node_t *foot;
     int (*cmp_fun)(void *, void *);
-    int (*find_fun)(void *, void *);
+    int (*match_fun)(void *, void *);
     size_t length;
 };
 
@@ -33,7 +33,7 @@ void
 prio_init_queue(
     prio_queue_t *q, 
     int (*cmp_fun)(void *, void *),
-    int (*find_fun)(void *, void *));
+    int (*match_fun)(void *, void *));
 
 void
 prio_enqueue(prio_queue_t *q, void *data);
