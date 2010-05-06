@@ -51,6 +51,18 @@ pcb_cmp_priority(void *p1, void *p2)
 }
 
 /*
+ * XXXXXX
+ */
+int
+pcb_has_pid(void *ppcb, void *ppid)
+{
+    pcb_t *pcb = (pcb_t *)ppcb;
+    uint32_t pid = *(uint32_t *)ppid;
+
+    return pcb->pid == pid;
+}
+
+/*
  * Initializes the freelist like a normal linked list.
  */
 static void

@@ -26,9 +26,9 @@ sch_get_current_running(void)
 void
 sch_init(void)
 {
-    prio_init_queue(&g_ready, pcb_cmp_priority);
-    prio_init_queue(&g_run,   pcb_cmp_priority);
-    prio_init_queue(&g_wait,  pcb_cmp_priority);
+    prio_init_queue(&g_ready, pcb_cmp_priority, pcb_has_pid);
+    prio_init_queue(&g_run,   pcb_cmp_priority, pcb_has_pid);
+    prio_init_queue(&g_wait,  pcb_cmp_priority, pcb_has_pid);
 }
 
 pcb_t *
