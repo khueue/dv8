@@ -55,14 +55,18 @@ terminate_this_process(void)
 void
 fib(void)
 {
+    int k = 0;
     kdebug_println("start of fib");
     fib_impl();
     terminate_this_process();
     kdebug_println("end of fib");
+   
     while (1)
-    {
-        kdebug_println("fib");
-        kswitch_context(&p2->regs, &p1->regs);
+    {        
+        if((k++ % 10000)==0) {
+            kdebug_printint(k);
+            kdebug_println("fib");
+        }
     }
     /* We should never get here! */
 }
@@ -70,15 +74,18 @@ fib(void)
 void
 inc(void)
 {
+    int k = 0;
     kdebug_println("start of incrment");
     inc_impl();
     terminate_this_process();
     kdebug_println("end of innremtmnt");
     while (1)
     {
-        kdebug_println("inc");
-        kswitch_context(&p1->regs, &p2->regs);
-    kdebug_println("finished switching back to fib");
+        
+        if((k++ % 10000)==0) {
+            kdebug_printint(k);
+            kdebug_println("inc");
+        }
     }
     /* We should never get here! */
 }

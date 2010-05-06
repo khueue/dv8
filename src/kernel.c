@@ -98,10 +98,10 @@ set_status_reg(void)
     and.field.bev = 0;    /* Use normal exception vector (not bootstrap). */
 
     or.reg = 0;               /* All zeroes: preserve all bits. */
-    //or.field.ie  = 1;         /* Enable interrupts. */
-    or.field.ie  = 0;         /* Enable interrupts. */
-    //or.field.im  = BIT7|BIT2; /* XXXXXX todo: Enable HW interrupt 0. */
-    or.field.im  = 0; /* XXXXXX todo: Enable HW interrupt 0. */
+    or.field.ie  = 1;         /* Enable interrupts. */
+    //or.field.ie  = 0;         /* Enable interrupts. */
+    or.field.im  = BIT7|BIT2; /* XXXXXX todo: Enable HW interrupt 0. */
+    //or.field.im  = 0; /* XXXXXX todo: Enable HW interrupt 0. */
     or.field.cu0 = 1;         /* Coprocessor 0 usable. */
 
     kset_sr(and.reg, or.reg);
@@ -123,10 +123,10 @@ kinit(void)
     tty->lcr.field.wls = BIT1|BIT0;
 
     /* Generate interrupts when data is received by UART. */
-    //tty->ier.field.erbfi = 1;
+    tty->ier.field.erbfi = 1;
 
     /* Some obscure bit that needs to be set for UART interrupts to work. */
-    //tty->mcr.field.out2 = 1;
+    tty->mcr.field.out2 = 1;
 
     /* Setup storage-area for saving registers on exception. */
     kset_registers(&g_regs);
@@ -134,22 +134,20 @@ kinit(void)
     /* Setup status register in the CPU. */
     set_status_reg();
 
-    /* Initialise timer to interrupt in 50 ms (simulated time). */
-    kload_timer(50 * timer_msec);
 
-    p1 = NULL;
-    p1->pid = 4;
 
     {
         p1 = spawn(fib);
         p2 = spawn(inc);
-        kswitch_context(&p1->regs, &g_regs);
     }
-
+    /* Initialise timer to interrupt in 50 ms (simulated time). */
+    kload_timer(50 * timer_msec);
     /* XXXXXXXX run scheduler? start shell? */
     kdebug_println("KERNEL whiling ...");
     while (1)
     {
+
+            
     }
 }
 
