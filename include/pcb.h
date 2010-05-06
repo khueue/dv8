@@ -15,10 +15,10 @@
 typedef struct pcb pcb_t;
 struct pcb
 {
-    uint8_t stack[0x4000];
     uint32_t pid;
     uint32_t priority;
     registers_t regs;
+    uint8_t stack[0x4000];
 
     /* Internal freelist pointer. */
     pcb_t *next_free;
