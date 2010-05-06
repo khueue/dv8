@@ -2,8 +2,6 @@
 #define SCHEDULER_H
 
 #include "utils.h"
-#include "asm.h"
-
 #include "pcb.h"
 
 void

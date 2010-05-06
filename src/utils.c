@@ -7,21 +7,85 @@
  */
 
 /*
- * Fills an object at p with num_bytes zeroes. Never called directly, but
- * used by macros.
+ * XXXXX
  */
 void *
-zero_fill(void *p, size_t num_bytes)
+memset(void *dst, int value, size_t num_bytes)
 {
-    uint8_t *byte = p;
-    size_t i;
+    uint8_t *dst_byte = dst;
+    uint8_t byte_value = (uint8_t)value;
+    size_t i = 0;
 
     for (i = 0; i < num_bytes; ++i)
     {
-        byte[i] = 0;
+        dst_byte[i] = byte_value;
     }
 
-    return p;
+    return dst;
+}
+
+/*
+ * XXXXXXX
+ */
+size_t
+strlen(const char *s)
+{
+    size_t len = 0;
+    while (*s++)
+    {
+        ++len;
+    }
+    return len;
+}
+
+/*
+ * XXXXXXXXX
+ */
+int
+strcmp(const char *a, const char *b)
+{
+    while (*a && *b && (*a == *b))
+    {
+        ++a;
+        ++b;
+    }
+
+    return *a - *b;
+}
+
+/*
+ * XXXXXX
+ */
+char *
+strcpy(char *dst, const char *src)
+{
+    char *dst_orig = dst;
+
+    while (*src)
+    {
+        *dst++ = *src++;
+    }
+    *dst = '\0';
+
+    return dst_orig;
+}
+
+/*
+ * XXXXXXXX
+ */
+void *
+memcpy(void *dst, const void *src, size_t num_bytes)
+{
+    uint8_t       *dst_byte = dst;
+    const uint8_t *src_byte = src;
+    size_t i = 0;
+
+    for (i = 0; i < num_bytes; ++i)
+    {
+        *dst_byte++ = *src_byte++;
+    }
+
+    return dst;
 }
 
 /*
@@ -89,6 +153,34 @@ main(void)
         int b = 5;
         printf("max     = %d\n", MAX(a, b));
         printf("max     = %d\n", MAX(b, a));
+    }
+
+    /* Test strcmp. */
+    {
+        char a[] = "ab";
+        char b[] = "abd";
+        printf("strcmp  = %d\n", strcmp(a, b));
+    }
+
+    /* Test strlen. */
+    {
+        char a[] = "ab\n";
+        char b[] = "";
+        printf("strlen  = %d\n", strlen(a)); /* = 3 */
+        printf("strlen  = %d\n", strlen(b)); /* = 0 */
+    }
+
+    /* Test strcpy. */
+    {
+        char dst[20] = "";
+        char src[20] = "baba";
+        printf("strcpy  = %s\n", strcpy(dst, src));
+    }
+
+    /* Test memset. */
+    {
+        char dst[20] = "";
+        printf("memset  = %s\n", (char *)memset(dst, 97, sizeof(dst)-1));
     }
 
     return 0;

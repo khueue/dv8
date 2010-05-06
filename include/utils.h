@@ -26,8 +26,8 @@
 /*
  * Fills array/struct with zeroes.
  */
-#define ZERO_ARRAY(p)   (  zero_fill((p), sizeof( (p)))  )
-#define ZERO_STRUCT(p)  (  zero_fill((p), sizeof(*(p)))  )
+#define ZERO_ARRAY(p)   (  memset((p), 0, sizeof( (p)))  )
+#define ZERO_STRUCT(p)  (  memset((p), 0, sizeof(*(p)))  )
 
 /*
  * ---------------------------------------------------------------------------
@@ -35,7 +35,19 @@
  * ---------------------------------------------------------------------------
  */
 
+size_t
+strlen(const char *s);
+
+char *
+strcpy(char *dst, const char *src);
+
+int
+strcmp(const char *a, const char *b);
+
 void *
-zero_fill(void *p, size_t num_bytes);
+memset(void *dst, int value, size_t num_bytes);
+
+void *
+memcpy(void *dst, const void *src, size_t num_bytes);
 
 #endif

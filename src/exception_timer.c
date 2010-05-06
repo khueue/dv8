@@ -12,21 +12,6 @@
  * ---------------------------------------------------------------------------
  */
 
-/*
- * XXXXXXXX
- */
-static void
-copy_registers(registers_t *dst, registers_t *src)
-{
-    uint8_t *pdst = (uint8_t *)dst;
-    uint8_t *psrc = (uint8_t *)src;
-    size_t i = 0;
-    for (i = 0; i < sizeof(registers_t); ++i)
-    {
-        *pdst++ = *psrc++;
-    }
-}
-
 void
 execute_timer(cause_reg_t cause)
 {
@@ -44,7 +29,7 @@ execute_timer(cause_reg_t cause)
         else
         {
             pcb_t *next = NULL;
-            copy_registers(&current->regs, kget_registers());
+            memcpy(&current->regs, kget_registers(), sizeof(registers_t));
             next = sch_run();
             kset_registers(&next->regs);
         }

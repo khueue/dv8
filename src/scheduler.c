@@ -42,7 +42,7 @@ sch_run(void)
 
     next = prio_dequeue(&g_ready);
     prio_enqueue(&g_run, next);
-    
+
     return next;
 }
 
