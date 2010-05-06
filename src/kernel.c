@@ -146,8 +146,11 @@ kinit(void)
     kdebug_println("KERNEL whiling ...");
     while (1)
     {
-
-            
+        static int count = 0;
+        if ((count++ % 10000000) == 0)
+        {
+            kdebug_println("Kernel whiling ...");
+        }
     }
 }
 

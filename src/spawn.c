@@ -55,18 +55,22 @@ terminate_this_process(void)
 void
 fib(void)
 {
-    int k = 0;
     kdebug_println("start of fib");
     fib_impl();
     terminate_this_process();
     kdebug_println("end of fib");
-   
+
     while (1)
-    {        
-        if((k++ % 10000)==0) {
+    {
+        static int count = 0;
+        if ((count++ % 10000000) == 0)
+        {
+            kdebug_println("- fib whiling ...");
+        }
+        /*if((k++ % 10000)==0) {
             kdebug_printint(k);
             kdebug_println("fib");
-        }
+        }*/
     }
     /* We should never get here! */
 }
@@ -74,18 +78,21 @@ fib(void)
 void
 inc(void)
 {
-    int k = 0;
     kdebug_println("start of incrment");
     inc_impl();
     terminate_this_process();
     kdebug_println("end of innremtmnt");
     while (1)
     {
-        
-        if((k++ % 10000)==0) {
+        static int count = 0;
+        if ((count++ % 10000000) == 0)
+        {
+            kdebug_println("--- inc whiling ...");
+        }
+        /*if((k++ % 10000)==0) {
             kdebug_printint(k);
             kdebug_println("inc");
-        }
+        }*/
     }
     /* We should never get here! */
 }
@@ -108,7 +115,7 @@ void
 kfunc_to_go_to_when_the_process_ends_normally(void)
 {
     kdebug_println("process ended normally, whiling ...");
-    
+
     {
         static int i = 0;
         if (i == 0)
