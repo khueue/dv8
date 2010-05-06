@@ -9,6 +9,7 @@
 #include "exception_syscall.h"
 #include "pcb.h" /* XXX probably remove */
 #include "spawn.h" /* XXX probably remove */
+#include "scheduler.h" /* XXX probably remove */
 
 /*
  * ---------------------------------------------------------------------------
@@ -109,6 +110,24 @@ set_status_reg(void)
 
 pcb_t *p1, *p2;
 
+pcb_t *
+idle_pcb;
+
+void
+idle_func(void);
+void
+idle_func(void)
+{
+    while (1)
+    {
+        static int count = 0;
+        if ((count++ % 10000000) == 0)
+        {
+            kdebug_println("IDLE PROCESS whiling ...");
+        }
+    }
+}
+
 /*
  * Entry point for the C code. We start here when the assembly has finished
  * some initial work.
@@ -134,14 +153,16 @@ kinit(void)
     /* Setup status register in the CPU. */
     set_status_reg();
 
+    sch_init();
+    idle_pcb = spawn(idle_func);
+    idle_pcb->priority = 1;
+    idle_pcb->pid = 666;
+    sch_place_in_run(idle_pcb); /* Super bad. XXXXXX */
+    sch_schedule(spawn(fib));
 
-
-    {
-        p1 = spawn(fib);
-        p2 = spawn(inc);
-    }
     /* Initialise timer to interrupt in 50 ms (simulated time). */
     kload_timer(50 * timer_msec);
+
     /* XXXXXXXX run scheduler? start shell? */
     kdebug_println("KERNEL whiling ...");
     while (1)

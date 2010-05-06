@@ -3,6 +3,7 @@
 #include "debug.h"
 #include "utils.h"
 #include "pcb.h"
+#include "scheduler.h"
 
 #include "exception_timer.h"
 
@@ -26,38 +27,30 @@ copy_registers(registers_t *dst, registers_t *src)
         *pdst++ = *psrc++;
     }
 }
- 
+
 void
 execute_timer(cause_reg_t cause)
 {
-   
     /* Make sure that we are here because of a timer interrupt. */
     if (cause.field.exc == 0) /* External interrupt. */
     {
-        static int i = 1;
-        extern pcb_t *p1, *p2;
-        registers_t *tmp;
+        static int k = 0; /* XXXXXXXXXX */
+        pcb_t *current = sch_get_current_running();
         
-        
-        tmp = (i == 1) ? &p2->regs : kget_registers();        
-        
-        
-        
-        /* temp schedule */
-        if(i == 2) 
+        if (k == 0)
         {
-            copy_registers(&p1->regs, tmp);
-            kset_registers(&p2->regs);
-            i = 0;
-        } 
-        else 
-        {
-            copy_registers(&p2->regs, tmp);
-            kset_registers(&p1->regs);
-            i = 2;  
+            k = 1;
+            kset_registers(&current->regs);
         }
+        else
+        {
+            pcb_t *next = NULL;
+            copy_registers(&current->regs, kget_registers());
+            next = sch_run();
+            kset_registers(&next->regs);
+        }
+
         /* Reload timer for another 100 ms (simulated time) */
         kload_timer(50 * timer_msec);
-   
     }
 }

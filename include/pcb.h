@@ -36,4 +36,7 @@ pcb_alloc(void);
 pcb_t *
 pcb_free(pcb_t *pcb);
 
+int
+pcb_cmp_priority(void *p1, void *p2);
+
 #endif

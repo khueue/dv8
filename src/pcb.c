@@ -39,6 +39,18 @@ g_freelist;
  */
 
 /*
+ * XXXXXXXXX
+ */
+int
+pcb_cmp_priority(void *p1, void *p2)
+{
+    pcb_t *pcb1 = (pcb_t *)p1;
+    pcb_t *pcb2 = (pcb_t *)p2;
+
+    return pcb1->priority - pcb2->priority;
+}
+
+/*
  * Initializes the freelist like a normal linked list.
  */
 static void
