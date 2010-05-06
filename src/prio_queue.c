@@ -12,10 +12,14 @@
  * Init the queue.
  */
 void
-prio_init_queue(prio_queue_t *q, int (*cmp_fun)(void *, void *))
+prio_init_queue(
+    prio_queue_t *q, 
+    int (*cmp_fun)(void *, void *),
+    int (*find_fun)(void *, void *))
 {
     ZERO_STRUCT(q);
     q->cmp_fun = cmp_fun;
+    q->find_fun = find_fun;
 }
 
 /*
@@ -104,6 +108,59 @@ prio_dequeue(prio_queue_t *q)
 }
 
 /*
+ * Returns and removes the found data from the queue.
+ */
+void *
+prio_remove(prio_queue_t *q, void *find)
+{
+    list_node_t *node = q->foot;
+    void *data = NULL;
+
+   /* kdebug_assert(q != NULL);
+    kdebug_assert(q->length > 0); */
+    
+    /* While when still in queue or requested node is found */
+    while(node && !q->find_fun(node->data, find))
+    {
+        node = node->prev;
+    }
+    
+    if(node) 
+    {        
+        if(node->prev)
+        {
+            node->prev->next = node->next;
+        } 
+        else
+        {
+            q->head = node->next;
+        }
+        
+        if(node->next)
+        {
+            node->next->prev = node->prev; 
+        }
+        else
+        {
+            q->foot = node->prev;
+        }
+                        
+        data = node->data;        
+        node = list_node_free(node);
+        
+        q->length--;
+        
+        if (!q->length)
+        {
+            q->foot = NULL;
+            q->head = NULL;
+        }
+    }
+    
+    return data;
+}
+
+/*
  * ---------------------------------------------------------------------------
  * Main for module testing.
  * ---------------------------------------------------------------------------
@@ -127,25 +184,20 @@ comparefun(void *a, void *b)
     return x - y;
 }
 
-#if 0
-static void
-testprint(prio_queue_t *q)
+
+static int
+findfun(void *a, void *b)
 {
-    list_node_t *tmp_node = q->head;
-    while (tmp_node)
-    {
-        printf("%d, ", *(int *)tmp_node->data);
-        tmp_node = tmp_node->next;
-    }
-    printf("\n");
+    int x = *(int *)a;
+    int y = *(int *)b;
+    return x == y;
 }
-#endif
 
 static void
 print_list_node(list_node_t *node)
 {
     printf("\n");
-    
+
     if (node)
     {
         printf("\tList Node %d:\n", *(int *)node->data);
@@ -154,7 +206,7 @@ print_list_node(list_node_t *node)
     {
         printf("\tList Node:\n");
     }
-    
+
     if (!node)
     {
         printf("\t\tNode is NULL!!!\n");
@@ -193,7 +245,7 @@ print_queue(prio_queue_t *q)
     else
     {
         printf("\tlength: %d\n", q->length);
-            
+
         if (q->head)
         {
             printf("\thead: %d\n", *(int *)q->head->data);
@@ -222,7 +274,7 @@ print_queue(prio_queue_t *q)
             }
         }
     }
-    
+
     printf("\n");
     printf("========================================================\n\n");
 }
@@ -230,26 +282,21 @@ print_queue(prio_queue_t *q)
 int
 main(void)
 {
-#if 0
-    int d1 = 10;
-    int d2 = 20;
-    int d3 = 30;
-    int d4 = 5;
-    int d5 = 15;
-#endif
 
-    int idle = 1;
-    int fib = 20;
+    int one   = 1;
+    int two   = 2;
+    int three = 3;
 
     prio_queue_t q;
 
-    prio_init_queue(&q, &comparefun);
+    prio_init_queue(&q, &comparefun, &findfun);
+    
     print_queue(&q);
 
-    prio_enqueue(&q, &idle);
+    prio_enqueue(&q, &two);
     print_queue(&q);
 
-    prio_enqueue(&q, &fib);
+    prio_enqueue(&q, &one);
     print_queue(&q);
 
     prio_dequeue(&q);
@@ -257,67 +304,49 @@ main(void)
 
     prio_dequeue(&q);
     print_queue(&q);
+    
+    printf("*** Insert 3 remove 3 ***\n");
+    
+    prio_enqueue(&q, &three);
+    print_queue(&q);
+    
+    prio_remove(&q, &three);
+    print_queue(&q);
+    
+    printf("*** Insert 3 try remove 2 ***\n");
+    prio_enqueue(&q, &three);
+    print_queue(&q);
+    
+    prio_remove(&q, &two);
+    print_queue(&q);
+    
+    printf("*** Insert 2,3 remove 2 ***\n");
+    prio_enqueue(&q, &two);
+    print_queue(&q);
+    
+    prio_remove(&q, &two);
+    print_queue(&q);
+    
+    printf("*** Insert 2,3 remove 3 ***\n");
+    prio_enqueue(&q, &two);
+    print_queue(&q);
+    
+    prio_remove(&q, &three);
+    print_queue(&q);
+    
+    printf("*** Insert 1,2,3 remove 2 ***\n");
+    prio_enqueue(&q, &one);
+    prio_enqueue(&q, &three);
+    print_queue(&q);
+    
+    prio_remove(&q, &two);
+    print_queue(&q);
+    
+    printf("*** Insert 1,3 remove 1,3 ***\n");
+    prio_remove(&q, &one);
+    prio_remove(&q, &three);
+    print_queue(&q);
 
-    #if 0
-    prio_enqueue(&q, &d1);
-    printf("enqueue: \"%d\"\n",d1);
-    testprint(&q);
-    prio_enqueue(&q, &d2);
-    printf("enqueue: \"%d\"\n",d2);
-    testprint(&q);
-    prio_enqueue(&q, &d3);
-    printf("enqueue: \"%d\"\n",d3);
-    testprint(&q);
-    prio_enqueue(&q, &d4);
-    printf("enqueue: \"%d\"\n",d4);
-    testprint(&q);
-    prio_enqueue(&q, &d5);
-    printf("enqueue: \"%d\"\n",d5);
-
-    printf("dequeue: \"%d\"\n", *(int *)prio_dequeue(&q));
-    testprint(&q);
-    printf("dequeue: \"%d\"\n", *(int *)prio_dequeue(&q));
-    testprint(&q);
-    printf("dequeue: \"%d\"\n", *(int *)prio_dequeue(&q));
-    testprint(&q);
-    printf("dequeue: \"%d\"\n", *(int *)prio_dequeue(&q));
-    testprint(&q);
-    printf("dequeue: \"%d\"\n", *(int *)prio_dequeue(&q));
-
-    prio_enqueue(&q, &d1);
-    printf("enqueue: \"%d\"\n",d1);
-    testprint(&q);
-    prio_enqueue(&q, &d2);
-    printf("enqueue: \"%d\"\n",d2);
-    testprint(&q);
-    prio_enqueue(&q, &d3);
-    printf("enqueue: \"%d\"\n",d3);
-    testprint(&q);
-
-    printf("dequeue: \"%d\"\n", *(int *)prio_dequeue(&q));
-    testprint(&q);
-
-    prio_enqueue(&q, &d4);
-    printf("enqueue: \"%d\"\n",d4);
-    prio_enqueue(&q, &d4);
-    printf("enqueue: \"%d\"\n",d4);
-    prio_enqueue(&q, &d4);
-    printf("enqueue: \"%d\"\n",d4);
-    testprint(&q);
-    prio_enqueue(&q, &d5);
-    printf("enqueue: \"%d\"\n",d5);
-    testprint(&q);
-
-    printf("dequeue: \"%d\"\n", *(int *)prio_dequeue(&q));
-    testprint(&q);
-    printf("dequeue: \"%d\"\n", *(int *)prio_dequeue(&q));
-    testprint(&q);
-    printf("dequeue: \"%d\"\n", *(int *)prio_dequeue(&q));
-    testprint(&q);
-    printf("dequeue: \"%d\"\n", *(int *)prio_dequeue(&q));
-    testprint(&q);
-    printf("dequeue: \"%d\"\n", *(int *)prio_dequeue(&q));
-    #endif
     return 0;
 }
 
