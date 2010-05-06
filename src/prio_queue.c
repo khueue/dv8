@@ -289,19 +289,24 @@ main(void)
 
     prio_queue_t q;
 
-    prio_init_queue(&q, &comparefun, &findfun);
+    prio_init_queue(&q, comparefun, findfun);
     
+    printf("*** Empty queue ***\n");
     print_queue(&q);
-
+    
+    printf("*** Enqueue 2 ***\n");
     prio_enqueue(&q, &two);
     print_queue(&q);
-
+    
+    printf("*** Enqueue 1 ***\n");
     prio_enqueue(&q, &one);
     print_queue(&q);
 
+    printf("*** Dequeue (2) ***\n");
     prio_dequeue(&q);
     print_queue(&q);
 
+    printf("*** Dequeue (1) ***\n");
     prio_dequeue(&q);
     print_queue(&q);
     
