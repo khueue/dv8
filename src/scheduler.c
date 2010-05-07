@@ -41,24 +41,41 @@ sch_init(void)
     prio_init_queue(&g_wait,  pcb_cmp_priority, pcb_has_pid);
 }
 
+static void
+save_process_state(pcb_t *pcb)
+{
+    memcpy(&pcb->regs, kget_registers(), sizeof(pcb->regs));
+}
+
+static void
+restore_process_state(pcb_t *pcb)
+{
+    kset_registers(&pcb->regs);
+}
+
 void
 sch_run(void)
 {
-    pcb_t *prev = NULL;
-    pcb_t *next = NULL;
+    pcb_t *process = sch_get_current_running();
 
-    pcb_t *current = sch_get_current_running();
-
-    if(current) 
+    /*
+     * If a process was using the CPU, save it and move it from the run queue
+     * to the ready queue.
+     */
+    if (process)
     {
-        memcpy(&current->regs, kget_registers(), sizeof(registers_t));
-        prev = prio_dequeue(&g_run);
-        prio_enqueue(&g_ready, prev);
+        save_process_state(process);
+        prio_dequeue(&g_run);
+        prio_enqueue(&g_ready, process);
     }
 
-    next = prio_dequeue(&g_ready);
-    prio_enqueue(&g_run, next);
-    kset_registers(&next->regs);    
+    /*
+     * Fetch the next process to be run (from the ready queue) and prepare to
+     * load its state into the CPU.
+     */
+    process = prio_dequeue(&g_ready);
+    prio_enqueue(&g_run, process);
+    restore_process_state(process);
 }
 
 void
