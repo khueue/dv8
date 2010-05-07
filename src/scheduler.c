@@ -56,12 +56,13 @@ restore_process_state(pcb_t *pcb)
 void
 sch_run(void)
 {
-    pcb_t *process = sch_get_current_running();
+    pcb_t *process = NULL;
 
     /*
      * If a process was using the CPU, save it and move it from the run queue
      * to the ready queue.
      */
+    process = sch_get_current_running();
     if (process)
     {
         save_process_state(process);
