@@ -20,7 +20,7 @@ execute_timer(cause_reg_t cause)
     {
         static int k = 0; /* XXXXXXXXXX */
         pcb_t *current = sch_get_current_running();
-        
+
         if (k == 0)
         {
             k = 1;
