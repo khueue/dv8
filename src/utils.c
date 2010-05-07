@@ -7,6 +7,24 @@
  */
 
 /*
+ * XXXXXXXX
+ */
+void *
+memcpy(void *dst, const void *src, size_t num_bytes)
+{
+    uint8_t       *dst_byte = dst;
+    const uint8_t *src_byte = src;
+    size_t i = 0;
+
+    for (i = 0; i < num_bytes; ++i)
+    {
+        *dst_byte++ = *src_byte++;
+    }
+
+    return dst;
+}
+
+/*
  * XXXXX
  */
 void *
@@ -31,10 +49,12 @@ size_t
 strlen(const char *s)
 {
     size_t len = 0;
+
     while (*s++)
     {
         ++len;
     }
+
     return len;
 }
 
@@ -71,24 +91,6 @@ strcpy(char *dst, const char *src)
 }
 
 /*
- * XXXXXXXX
- */
-void *
-memcpy(void *dst, const void *src, size_t num_bytes)
-{
-    uint8_t       *dst_byte = dst;
-    const uint8_t *src_byte = src;
-    size_t i = 0;
-
-    for (i = 0; i < num_bytes; ++i)
-    {
-        *dst_byte++ = *src_byte++;
-    }
-
-    return dst;
-}
-
-/*
  * ---------------------------------------------------------------------------
  * Main for module testing.
  * ---------------------------------------------------------------------------
@@ -101,10 +103,9 @@ memcpy(void *dst, const void *src, size_t num_bytes)
  */
 #ifdef UTILS_MAIN
 
-#include <stdlib.h>
 #include <stdio.h>
 
-struct pair
+struct stuff
 {
     double d[2];
     char str[10];
@@ -122,11 +123,12 @@ main(void)
         ZERO_ARRAY(d); /* Pass pointer to array. */
         printf("d[0]    = %f\n", d[0]);
         printf("d[1]    = %f\n", d[1]);
+        printf("\n");
     }
 
     /* Zero a struct. */
     {
-        struct pair st;
+        struct stuff st;
         st.d[0]   = 1.0;
         st.d[1]   = 2.0;
         st.str[0] = 'O';
@@ -139,12 +141,14 @@ main(void)
         printf("st.d[1] = %f\n",     st.d[1]);
         printf("st.str  = \"%s\"\n", st.str);
         printf("st.x    = %d\n",     st.x);
+        printf("\n");
     }
 
     /* Count array length. */
     {
         double d[3];
         printf("length  = %d\n", COUNT_ARRAY(d));
+        printf("\n");
     }
 
     /* Test maximum. */
@@ -153,6 +157,7 @@ main(void)
         int b = 5;
         printf("max     = %d\n", MAX(a, b));
         printf("max     = %d\n", MAX(b, a));
+        printf("\n");
     }
 
     /* Test strcmp. */
@@ -160,6 +165,7 @@ main(void)
         char a[] = "ab";
         char b[] = "abd";
         printf("strcmp  = %d\n", strcmp(a, b));
+        printf("\n");
     }
 
     /* Test strlen. */
@@ -168,6 +174,7 @@ main(void)
         char b[] = "";
         printf("strlen  = %d\n", strlen(a)); /* = 3 */
         printf("strlen  = %d\n", strlen(b)); /* = 0 */
+        printf("\n");
     }
 
     /* Test strcpy. */
@@ -175,12 +182,29 @@ main(void)
         char dst[20] = "";
         char src[20] = "baba";
         printf("strcpy  = %s\n", strcpy(dst, src));
+        printf("\n");
     }
 
     /* Test memset. */
     {
         char dst[20] = "";
         printf("memset  = %s\n", (char *)memset(dst, 97, sizeof(dst)-1));
+        printf("\n");
+    }
+
+    /* Test FILL_ARRAY. */
+    {
+        int arr[2];
+        size_t i = 0;
+        uint8_t *byte = (uint8_t *)arr;
+        FILL_ARRAY(arr, 0xba);
+        printf("arr[0]  = %d\n", arr[0]);
+        printf("arr[1]  = %d\n", arr[1]);
+        for (i = 0; i < sizeof(arr); ++i)
+        {
+            printf("arr as byte[%d]  = 0x%x\n", i, *byte++);
+        }
+        printf("\n");
     }
 
     return 0;
