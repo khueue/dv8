@@ -13,6 +13,8 @@ uint32_t
 kexec(user_prog_pointer program);
 
 void
+    kkill_self(void);
+void
 kinit(void);
 
 void

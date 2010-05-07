@@ -5,6 +5,7 @@
 #include "pcb.h"
 #include "spawn.h"
 #include "kernel_api.h"
+#include "kernel.h"
 
 void
 terminate_this_process(void)
@@ -16,9 +17,12 @@ terminate_this_process(void)
 void
 kfunc_to_go_to_when_the_process_ends_normally(void)
 {
-    while (1)
+    kill_self();
+    while(1)
     {
+        kdebug_println("Nej nej!");
     }
+    
 }
 
 pcb_t *

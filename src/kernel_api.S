@@ -5,6 +5,7 @@
     .text
     .globl ksyscall_handler
     .globl exec
+    .globl kill_self
 
     # syscall_handler:
     #   Enables argument passing for up
@@ -26,5 +27,12 @@ ksyscall_handler:
     # Input:XXXXXX
 exec:
     la v0, kexec
+    syscall
+    jr ra
+    
+
+    # Input:XXXXXX
+kill_self:
+    la v0, kkill_self
     syscall
     jr ra

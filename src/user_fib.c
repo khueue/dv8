@@ -50,6 +50,7 @@ fib(void)
         if ((count++ % 10000000) == 0)
         {
             kdebug_println("- fib whiling ...");
+            break;
         }
     }
     /* We should never get here! */

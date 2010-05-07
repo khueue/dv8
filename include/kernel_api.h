@@ -11,6 +11,8 @@
  */
 
 /* kill */
+void
+kill_self(void);
 
 void
 ksyscall_handler(registers_t* regs);

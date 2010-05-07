@@ -82,6 +82,8 @@ display_word(uint32_t word)
 }
 #endif
 
+
+
 /*
  * Configures the CPU to enable interrupts etc.
  */
@@ -140,6 +142,16 @@ kexec(user_prog_pointer program)
     return pcb->pid;
 }
 
+
+void
+kkill_self(void)
+{
+    pcb_t* pcb = sch_get_current_running();
+    sch_remove_from_run(pcb);
+    pcb_free(pcb);
+    sch_run();
+}
+
 /*
  * Entry point for the C code. We start here when the assembly has finished
  * some initial work.
@@ -169,7 +181,7 @@ kinit(void)
     idle_pcb = spawn(idle_func);
     idle_pcb->priority = 1;
     idle_pcb->pid = 666;
-    sch_place_in_run(idle_pcb); /* Super bad. XXXXXX */
+    sch_schedule(idle_pcb); /* Super bad. XXXXXX */
     sch_schedule(spawn(fib));
     sch_schedule(spawn(incr));
 
