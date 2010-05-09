@@ -8,8 +8,8 @@
 #include "exception_timer.h"
 #include "exception_syscall.h"
 #include "pcb.h"
-#include "spawn.h" /* XXX probably remove */
-#include "scheduler.h" /* XXX probably remove */
+#include "spawn.h"
+#include "scheduler.h"
 
 #include "user_fib.h"
 #include "user_incr.h"
@@ -155,14 +155,34 @@ kkill_self(void)
 }
 
 /*
+ * Sets up the
+ */
+static void
+setup_scheduler(void)
+{
+    pcb_t *idle_process = NULL;
+
+    sch_init();
+
+    idle_process = spawn(idle);
+    idle_process->priority = 1;
+    idle_process->pid = 666;
+
+    sch_schedule(idle_process);
+    sch_schedule(spawn(fib));  /* remove XXXXX */
+    sch_schedule(spawn(incr)); /* remove XXXXX */
+
+    /* Initialise timer to interrupt in 50 ms (simulated time). */
+    kload_timer(50 * timer_msec);
+}
+
+/*
  * Entry point for the C code. We start here when the assembly has finished
  * some initial work.
  */
 void
 kinit(void)
 {
-    pcb_t *idle_process = NULL;
-    
     /*
      * Set UART word length ('3' meaning 8 bits).
      * Do this early to enable debug printouts (e.g. kdebug_print).
@@ -181,16 +201,7 @@ kinit(void)
     /* Setup status register in the CPU. */
     set_status_reg();
 
-    sch_init();
-    idle_process = spawn(idle);
-    idle_process->priority = 1;
-    idle_process->pid = 666;
-    sch_schedule(idle_process);
-    sch_schedule(spawn(fib));
-    sch_schedule(spawn(incr));
-
-    /* Initialise timer to interrupt in 50 ms (simulated time). */
-    kload_timer(50 * timer_msec);
+    setup_scheduler();
 
     /* XXXXXXXX run scheduler? start shell? */
     do_nothing_forever("Kernel doing nothing ...", 10000000);
