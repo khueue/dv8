@@ -35,13 +35,12 @@ fib(void)
         kdebug_printint(fib_recursive(i));
         kdebug_println("");
     }
-    
+
+    /* Spawn an increment, just for fun. */
     {
         uint32_t pid = exec(incr);
         kdebug_print("pid = ");
         kdebug_printint(pid);
         kdebug_println("");
     }
-
-    do_nothing_forever("fib doing nothing ...", 10000000);
 }

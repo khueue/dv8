@@ -19,6 +19,12 @@ restore_process_state(const pcb_t *pcb);
 uint32_t
 kexec(user_prog_pointer program);
 
+uint32_t
+kgetpid(void);
+
+uint32_t
+getpid(void);
+
 void
 kkill_self(void);
 

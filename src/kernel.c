@@ -146,6 +146,20 @@ kexec(user_prog_pointer program)
     return pcb->pid;
 }
 
+uint32_t
+kgetpid(void)
+{
+    pcb_t *pcb = sch_get_currently_running_process();
+    return pcb->pid;
+}
+
+uint32_t
+getpid(void)
+{
+    return do_syscall(kgetpid);
+}
+
+
 void
 kkill_self(void)
 {

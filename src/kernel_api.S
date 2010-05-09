@@ -5,6 +5,7 @@
     .text
     .globl ksyscall_handler
     .globl exec
+    .globl do_syscall
     .globl kill_self
 
     # syscall_handler:
@@ -29,7 +30,11 @@ exec:
     la v0, kexec
     syscall
     jr ra
-    
+
+do_syscall:
+    addi v0, a0, 0
+    syscall
+    jr ra
 
     # Input:XXXXXX
 kill_self:
