@@ -91,6 +91,54 @@ strcpy(char *dst, const char *src)
 }
 
 /*
+ * XXX
+ */
+int
+atoi(const char * str)
+{
+    int x = 0;
+    int i = 0;
+    int j = 1;
+    int k = 0;
+       
+    /* Skip white space */
+    while (str[i] == 32 && str[i])
+    {
+        i++;
+    }
+    
+    if (str[i] == 45 || str[i] == 43) /* +/- */
+    {
+        i++;
+    }
+    
+    /* index of start */
+    k = i;
+    
+    /* 0-9 = 48-57 */
+    while (str[i] > 47 && str[i] < 58 && str[i])
+    {
+        i++;
+    }
+    
+    /* remove last char \0 */
+    i--;
+
+    for ( ; i >= k; i--)
+    {
+        x += (str[i] - 48) * j;
+        j *= 10;
+    }
+    
+    if (str[i] == 45) /* - */
+    {
+        x = -x;
+    }
+
+    return x;
+}
+
+/*
  * ---------------------------------------------------------------------------
  * Main for module testing.
  * ---------------------------------------------------------------------------
@@ -204,6 +252,21 @@ main(void)
         {
             printf("arr as byte[%d]  = 0x%x\n", i, *byte++);
         }
+        printf("\n");
+    }
+
+    /* Test atoi. */
+    {
+        char str[] = "0123456789";
+        char str1[] = "-489";
+        char str2[] = "  9 white space";
+        char str3[] = "--5";
+        char str4[] = "";
+        printf("%s = %d\n", str, atoi(str));
+        printf("%s = %d\n", str1, atoi(str1));
+        printf("%s = %d\n", str2, atoi(str2));
+        printf("%s = %d\n", str3, atoi(str3));
+        printf("%s = %d\n", str4, atoi(str4));
         printf("\n");
     }
 

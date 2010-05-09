@@ -72,4 +72,7 @@ memset(void *dst, int value, size_t num_bytes);
 void *
 memcpy(void *dst, const void *src, size_t num_bytes);
 
+int 
+atoi(const char * str);
+
 #endif
