@@ -5,12 +5,23 @@
 
 /*
  * ---------------------------------------------------------------------------
+ * Constants.
+ * ---------------------------------------------------------------------------
+ */
+
+#ifndef PROCESS_STACK_SIZE
+#define PROCESS_STACK_SIZE 0x4000
+#endif
+
+/*
+ * ---------------------------------------------------------------------------
  * Types.
  * ---------------------------------------------------------------------------
  */
 
 /*
- * XXX
+ * Process Control Block. Contains a process' registers and stack, and
+ * anything else relevant to the process.
  */
 typedef struct pcb pcb_t;
 struct pcb
@@ -18,7 +29,7 @@ struct pcb
     uint32_t pid;
     uint32_t priority;
     registers_t regs;
-    uint8_t stack[0x4000];
+    uint8_t stack[PROCESS_STACK_SIZE];
 
     /* Internal freelist pointer. */
     pcb_t *next_free;

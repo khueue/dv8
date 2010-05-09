@@ -2,6 +2,7 @@
 #define KERNEL_H
 
 #include "utils.h"
+#include "pcb.h"
 
 /*
  * ---------------------------------------------------------------------------
@@ -9,11 +10,18 @@
  * ---------------------------------------------------------------------------
  */
 
+void
+save_process_state(pcb_t *pcb);
+
+void
+restore_process_state(const pcb_t *pcb);
+
 uint32_t
 kexec(user_prog_pointer program);
 
 void
-    kkill_self(void);
+kkill_self(void);
+
 void
 kinit(void);
 

@@ -7,7 +7,7 @@
 #include "exception_uart.h"
 #include "exception_timer.h"
 #include "exception_syscall.h"
-#include "pcb.h" /* XXX probably remove */
+#include "pcb.h"
 #include "spawn.h" /* XXX probably remove */
 #include "scheduler.h" /* XXX probably remove */
 
@@ -21,16 +21,42 @@
  */
 
 /*
- * XXXXXXXXXXX
+ * Registers used by the exception handler.
  */
 static registers_t
-g_regs;
+g_excn_regs;
+
+/*
+ * ---------------------------------------------------------------------------
+ * Private functions.
+ * ---------------------------------------------------------------------------
+ */
 
 /*
  * ---------------------------------------------------------------------------
  * Functions.
  * ---------------------------------------------------------------------------
  */
+
+/*
+ * Must be called from within an exception. Saves the state of the CPU (the
+ * state just before the exception occurred) into the given process.
+ */
+void
+save_process_state(pcb_t *pcb)
+{
+    memcpy(&pcb->regs, kget_registers(), sizeof(pcb->regs));
+}
+
+/*
+ * Must be called from within an exception. When the exception finishes, the
+ * CPU is loaded with the state of the given process.
+ */
+void
+restore_process_state(const pcb_t *pcb)
+{
+    kset_registers(&pcb->regs);
+}
 
 #if 0
 static void
@@ -103,9 +129,7 @@ set_status_reg(void)
 
     or.reg = 0;               /* All zeroes: preserve all bits. */
     or.field.ie  = 1;         /* Enable interrupts. */
-    //or.field.ie  = 0;         /* Enable interrupts. */
     or.field.im  = BIT7|BIT2; /* XXXXXX todo: Enable HW interrupt 0. */
-    //or.field.im  = 0; /* XXXXXX todo: Enable HW interrupt 0. */
     or.field.cu0 = 1;         /* Coprocessor 0 usable. */
 
     kset_sr(and.reg, or.reg);
@@ -167,7 +191,7 @@ kinit(void)
     tty->mcr.field.out2 = 1;
 
     /* Setup storage-area for saving registers on exception. */
-    kset_registers(&g_regs);
+    kset_registers(&g_excn_regs);
 
     /* Setup status register in the CPU. */
     set_status_reg();
@@ -176,7 +200,7 @@ kinit(void)
     idle_pcb = spawn(idle_func);
     idle_pcb->priority = 1;
     idle_pcb->pid = 666;
-    sch_schedule(idle_pcb); /* Super bad. XXXXXX */
+    sch_schedule(idle_pcb);
     sch_schedule(spawn(fib));
     sch_schedule(spawn(incr));
 
