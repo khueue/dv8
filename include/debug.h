@@ -17,7 +17,7 @@ void kdebug_print(const char* text);
 void kdebug_println(const char* text);
 void kdebug_printint(int value);
 void kdebug_assert_at(int assertion, const char* file, int line);
-#define kdebug_assert(a) kdebug_assert_at(a,__FILE__,__LINE__)
+#define kdebug_assert(a) kdebug_assert_at((int)(a),__FILE__,__LINE__)
 #endif
 
 #endif
