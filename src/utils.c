@@ -100,37 +100,37 @@ atoi(const char * str)
     int i = 0;
     int j = 1;
     int k = 0;
-       
+
     /* Skip white space */
-    while (str[i] == 32 && str[i])
+    while (str[i] == ' ' && str[i])
     {
         i++;
     }
-    
-    if (str[i] == 45 || str[i] == 43) /* +/- */
+
+    if (str[i] == '-' || str[i] == '+')
     {
         i++;
     }
-    
+
     /* index of start */
     k = i;
-    
+
     /* 0-9 = 48-57 */
-    while (str[i] > 47 && str[i] < 58 && str[i])
+    while (str[i] >= '0' && str[i] <= '9' && str[i])
     {
         i++;
     }
-    
+
     /* remove last char \0 */
     i--;
 
     for ( ; i >= k; i--)
     {
-        x += (str[i] - 48) * j;
+        x += (str[i] - '0') * j;
         j *= 10;
     }
-    
-    if (str[i] == 45) /* - */
+
+    if (str[i] == '-')
     {
         x = -x;
     }
