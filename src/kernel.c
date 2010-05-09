@@ -82,8 +82,6 @@ display_word(uint32_t word)
 }
 #endif
 
-
-
 /*
  * Configures the CPU to enable interrupts etc.
  */
@@ -140,13 +138,12 @@ kexec(user_prog_pointer program)
     return pcb->pid;
 }
 
-
 void
 kkill_self(void)
 {
-    pcb_t* pcb = sch_get_current_running();
+    pcb_t* pcb = sch_get_currently_running_process();
     sch_remove_from_run(pcb);
-    pcb_free(pcb);
+    pcb = pcb_free(pcb);
     sch_run();
 }
 
