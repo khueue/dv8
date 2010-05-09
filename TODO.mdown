@@ -9,3 +9,10 @@ __Simon:__ group leader, kinit supervisor
 __Jon:__ more scheduler, generic lists/queues
 
 __David:__ user programs, more scheduler
+
+
+settings.h?
+remove terminate_this_process?
+relocate spawn and associated functionality?
+think through syscalls a bit more, again
+fix input and shell
