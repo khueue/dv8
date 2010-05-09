@@ -7,7 +7,7 @@
  */
 
 /*
- * XXXXXXXX
+ * See string.h documentation.
  */
 void *
 memcpy(void *dst, const void *src, size_t num_bytes)
@@ -25,7 +25,7 @@ memcpy(void *dst, const void *src, size_t num_bytes)
 }
 
 /*
- * XXXXX
+ * See string.h documentation.
  */
 void *
 memset(void *dst, int value, size_t num_bytes)
@@ -43,7 +43,7 @@ memset(void *dst, int value, size_t num_bytes)
 }
 
 /*
- * XXXXXXX
+ * See string.h documentation.
  */
 size_t
 strlen(const char *s)
@@ -59,7 +59,7 @@ strlen(const char *s)
 }
 
 /*
- * XXXXXXXXX
+ * See string.h documentation.
  */
 int
 strcmp(const char *a, const char *b)
@@ -74,7 +74,7 @@ strcmp(const char *a, const char *b)
 }
 
 /*
- * XXXXXX
+ * See string.h documentation.
  */
 char *
 strcpy(char *dst, const char *src)
@@ -91,7 +91,7 @@ strcpy(char *dst, const char *src)
 }
 
 /*
- * XXX
+ * See string.h documentation.
  */
 int
 atoi(const char * str)
@@ -100,27 +100,27 @@ atoi(const char * str)
     int i = 0;
     int j = 1;
     int k = 0;
-       
+
     /* Skip white space */
     while (str[i] == 32 && str[i])
     {
         i++;
     }
-    
+
     if (str[i] == 45 || str[i] == 43) /* +/- */
     {
         i++;
     }
-    
+
     /* index of start */
     k = i;
-    
+
     /* 0-9 = 48-57 */
     while (str[i] > 47 && str[i] < 58 && str[i])
     {
         i++;
     }
-    
+
     /* remove last char \0 */
     i--;
 
@@ -129,7 +129,7 @@ atoi(const char * str)
         x += (str[i] - 48) * j;
         j *= 10;
     }
-    
+
     if (str[i] == 45) /* - */
     {
         x = -x;
@@ -145,9 +145,9 @@ atoi(const char * str)
  */
 
 /*
- * Define this constant and compile this and required modules, e.g.:
- *   gcc <this_module>.c <other_modules>.c -D<THIS_MODULE>_MAIN -Iinclude
- *   ./a.out
+    gcc -DUNITTEST -DUTILS_MAIN src/utils.c \
+    -Iinclude -W -Wall -Werror -Wshadow -Wpointer-arith \
+    -Wcast-qual -Wstrict-prototypes -Wmissing-prototypes -ansi -pedantic
  */
 #ifdef UTILS_MAIN
 
