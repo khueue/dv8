@@ -107,11 +107,7 @@ atoi(const char * str)
         i++;
     }
     
-    if (str[i] == 45) /* - */
-    {
-        i++;
-    }
-    else if (str[i] == 43) /* + */
+    if (str[i] == 45 || str[i] == 43) /* +/- */
     {
         i++;
     }
