@@ -6,6 +6,16 @@
 #include "bits.h"
 
 /*
+ * Hack for easy unit testing. This lets us use kdebug_assert() without
+ * compiling debug.c (which requires tty etc.).
+ */
+#ifdef UNITTEST
+    #include <assert.h>
+    #undef kdebug_assert
+    #define kdebug_assert(condition) assert(condition)
+#endif
+
+/*
  * ---------------------------------------------------------------------------
  * Macros.
  * ---------------------------------------------------------------------------
