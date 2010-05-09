@@ -1,5 +1,5 @@
-#ifndef USER_SCROLLER_H
-#define USER_SCROLLER_H
+#ifndef USER_IDLE_H
+#define USER_IDLE_H
 
 #include "utils.h"
 
@@ -10,6 +10,6 @@
  */
 
 void
-maltascr(void);
+idle(void);
 
 #endif

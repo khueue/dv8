@@ -4,6 +4,12 @@
 #include "user_fib.h"
 #include "user_incr.h"
 
+/*
+ * ---------------------------------------------------------------------------
+ * Functions.
+ * ---------------------------------------------------------------------------
+ */
+
 int
 fib_recursive(int n)
 {
@@ -18,25 +24,18 @@ fib_recursive(int n)
 }
 
 void
-fib_impl(void)
-{
-    /* TODO: We should actually read arguments from messages. */
-    int n = 5;
-    /* TODO: Print to tty.
-    printf("fib(5) = %d\n", fib_recursive(n)); */
-    kdebug_print("fib_recursive(5) = ");
-    kdebug_printint(fib_recursive(n));
-    kdebug_println("");
-}
-
-void
 fib(void)
 {
-    kdebug_println("start of fib");
-    fib_impl();
-    /*terminate_this_process();*/
-    kdebug_println("end of fib");
-
+    size_t i = 0;
+    for (i = 0; i < 10; ++i)
+    {
+        kdebug_print("fib(");
+        kdebug_printint(i);
+        kdebug_print(") = ");
+        kdebug_printint(fib_recursive(i));
+        kdebug_println("");
+    }
+    
     {
         uint32_t pid = exec(incr);
         kdebug_print("pid = ");
@@ -44,14 +43,5 @@ fib(void)
         kdebug_println("");
     }
 
-    while (1)
-    {
-        static int count = 0;
-        if ((count++ % 10000000) == 0)
-        {
-            kdebug_println("- fib whiling ...");
-            break;
-        }
-    }
-    /* We should never get here! */
+    do_nothing_forever("fib doing nothing ...", 10000000);
 }

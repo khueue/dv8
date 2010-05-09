@@ -13,6 +13,7 @@
 
 #include "user_fib.h"
 #include "user_incr.h"
+#include "user_idle.h"
 
 /*
  * ---------------------------------------------------------------------------
@@ -135,24 +136,6 @@ set_status_reg(void)
     kset_sr(and.reg, or.reg);
 }
 
-pcb_t *
-idle_pcb;
-
-void
-idle_func(void);
-void
-idle_func(void)
-{
-    while (1)
-    {
-        static int count = 0;
-        if ((count++ % 10000000) == 0)
-        {
-            kdebug_println("IDLE PROCESS whiling ...");
-        }
-    }
-}
-
 uint32_t
 kexec(user_prog_pointer program)
 {
@@ -178,6 +161,8 @@ kkill_self(void)
 void
 kinit(void)
 {
+    pcb_t *idle_process = NULL;
+    
     /*
      * Set UART word length ('3' meaning 8 bits).
      * Do this early to enable debug printouts (e.g. kdebug_print).
@@ -197,10 +182,10 @@ kinit(void)
     set_status_reg();
 
     sch_init();
-    idle_pcb = spawn(idle_func);
-    idle_pcb->priority = 1;
-    idle_pcb->pid = 666;
-    sch_schedule(idle_pcb);
+    idle_process = spawn(idle);
+    idle_process->priority = 1;
+    idle_process->pid = 666;
+    sch_schedule(idle_process);
     sch_schedule(spawn(fib));
     sch_schedule(spawn(incr));
 
@@ -208,15 +193,7 @@ kinit(void)
     kload_timer(50 * timer_msec);
 
     /* XXXXXXXX run scheduler? start shell? */
-    kdebug_println("KERNEL whiling ...");
-    while (1)
-    {
-        static int count = 0;
-        if ((count++ % 10000000) == 0)
-        {
-            kdebug_println("Kernel whiling ...");
-        }
-    }
+    do_nothing_forever("Kernel doing nothing ...", 10000000);
 }
 
 /*

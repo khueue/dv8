@@ -75,4 +75,7 @@ memcpy(void *dst, const void *src, size_t num_bytes);
 int 
 atoi(const char * str);
 
+void
+do_nothing_forever(const char msg[], uint32_t interval);
+
 #endif

@@ -1,7 +1,5 @@
-#ifndef USER_SCROLLER_H
-#define USER_SCROLLER_H
-
 #include "utils.h"
+#include "user_idle.h"
 
 /*
  * ---------------------------------------------------------------------------
@@ -10,6 +8,7 @@
  */
 
 void
-maltascr(void);
-
-#endif
+idle(void)
+{
+    do_nothing_forever("Idle process idling ...", 10000000);
+}
