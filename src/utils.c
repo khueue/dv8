@@ -102,12 +102,12 @@ atoi(const char * str)
     int k = 0;
 
     /* Skip white space */
-    while (str[i] == 32 && str[i])
+    while (str[i] == ' ' && str[i])
     {
         i++;
     }
 
-    if (str[i] == 45 || str[i] == 43) /* +/- */
+    if (str[i] == '-' || str[i] == '+')
     {
         i++;
     }
@@ -116,7 +116,7 @@ atoi(const char * str)
     k = i;
 
     /* 0-9 = 48-57 */
-    while (str[i] > 47 && str[i] < 58 && str[i])
+    while (str[i] >= '0' && str[i] <= '9' && str[i])
     {
         i++;
     }
@@ -126,11 +126,11 @@ atoi(const char * str)
 
     for ( ; i >= k; i--)
     {
-        x += (str[i] - 48) * j;
+        x += (str[i] - '0') * j;
         j *= 10;
     }
 
-    if (str[i] == 45) /* - */
+    if (str[i] == '-')
     {
         x = -x;
     }
