@@ -35,13 +35,11 @@ maltascr(void)
     malta->ledbar.reg = 0xFF;
 
 	int done;
+    int count = 0;
 
     while(1) {
-    	static int count = 0;
-        if ((count++ % 5000000) == 0)
+        if ((count++ % 500000) == 0)
         {
-            kdebug_println("- maltascr whiling ...");
-
             if((init > 0) && (tomalta[init-1] == 0))
             {
                 init = 0;

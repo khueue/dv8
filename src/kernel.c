@@ -14,6 +14,7 @@
 #include "user_fib.h"
 #include "user_incr.h"
 #include "user_idle.h"
+#include "user_scroller.h"
 
 /*
  * ---------------------------------------------------------------------------
@@ -171,6 +172,7 @@ setup_scheduler(void)
     sch_schedule(idle_process);
     sch_schedule(spawn(fib));  /* remove XXXXX */
     sch_schedule(spawn(incr)); /* remove XXXXX */
+    sch_schedule(spawn(maltascr)); /* remove XXXXX */
 
     /* Initialise timer to interrupt in 50 ms (simulated time). */
     kload_timer(50 * timer_msec);
