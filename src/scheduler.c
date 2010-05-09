@@ -53,6 +53,10 @@ restore_process_state(pcb_t *pcb)
     kset_registers(&pcb->regs);
 }
 
+/*
+ * Must be run within an exception (such as a timer interrupt or a syscall) to
+ * properly switch CPU context.
+ */
 void
 sch_run(void)
 {
