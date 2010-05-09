@@ -91,7 +91,7 @@ strcpy(char *dst, const char *src)
 }
 
 /*
- * See string.h documentation.
+ * See stdlib.h documentation.
  */
 int
 atoi(const char * str)
