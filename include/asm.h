@@ -24,9 +24,9 @@ void
 kload_timer(uint32_t timer_value);
 
 void
-kset_registers(registers_t* regs);
+kset_registers(const registers_t *regs);
 
-registers_t*
+registers_t *
 kget_registers(void);
 
 void
