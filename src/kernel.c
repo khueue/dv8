@@ -113,8 +113,6 @@ set_status_reg(void)
     kset_sr(and.reg, or.reg);
 }
 
-pcb_t *p1, *p2;
-
 pcb_t *
 idle_pcb;
 

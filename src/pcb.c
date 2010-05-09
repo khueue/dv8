@@ -34,33 +34,9 @@ g_freelist;
 
 /*
  * ---------------------------------------------------------------------------
- * Functions.
+ * Private functions.
  * ---------------------------------------------------------------------------
  */
-
-/*
- * XXXXXXXXX
- */
-int
-pcb_cmp_priority(void *p1, void *p2)
-{
-    pcb_t *pcb1 = (pcb_t *)p1;
-    pcb_t *pcb2 = (pcb_t *)p2;
-
-    return pcb1->priority - pcb2->priority;
-}
-
-/*
- * XXXXXX
- */
-int
-pcb_has_pid(void *ppcb, void *ppid)
-{
-    pcb_t *pcb = (pcb_t *)ppcb;
-    uint32_t pid = *(uint32_t *)ppid;
-
-    return pcb->pid == pid;
-}
 
 /*
  * Initializes the freelist like a normal linked list.
@@ -78,6 +54,49 @@ pcb_init_freelist(void)
     }
 
     g_pcbs[COUNT_ARRAY(g_pcbs)-1].next_free = NULL;
+}
+
+/*
+ * ---------------------------------------------------------------------------
+ * Functions.
+ * ---------------------------------------------------------------------------
+ */
+
+/*
+ * Compares the priority of two pcbs, returns:
+ *   >0 : First argument has greater priority.
+ *    0 : Equal.
+ *   <0 : Second argument has greater priority.
+ */
+int
+pcb_cmp_priority(void *ppcb1, void *ppcb2)
+{
+    pcb_t *pcb1 = (pcb_t *)ppcb1;
+    pcb_t *pcb2 = (pcb_t *)ppcb2;
+
+    kdebug_assert(pcb1);
+    kdebug_assert(pcb2);
+
+    return pcb1->priority - pcb2->priority;
+}
+
+/*
+ * Returns true if the pcb pointed to by ppcb has the same pid as the pid
+ * pointed to by ppid.
+ */
+int
+pcb_has_pid(void *ppcb, void *ppid)
+{
+    pcb_t *pcb = NULL;
+    uint32_t pid = 0;
+
+    kdebug_assert(ppcb);
+    kdebug_assert(ppid);
+
+    pcb = (pcb_t *)ppcb;
+    pid = *(uint32_t *)ppid;
+
+    return pcb->pid == pid;
 }
 
 /*
@@ -118,6 +137,8 @@ pcb_alloc(void)
 pcb_t *
 pcb_free(pcb_t *pcb)
 {
+    kdebug_assert(pcb);
+    
     pcb->next_free = g_freelist;
     g_freelist = pcb;
     return NULL;
@@ -130,9 +151,10 @@ pcb_free(pcb_t *pcb)
  */
 
 /*
- * Define this constant and compile this and required modules, e.g.:
- *   gcc <this_module>.c <other_modules>.c -D<THIS_MODULE>_MAIN -Iinclude
- *   ./a.out
+    gcc -DUNITTEST -DPCB_MAIN src/pcb.c \
+    src/utils.c \
+    -Iinclude -W -Wall -Werror -Wshadow -Wpointer-arith \
+    -Wcast-qual -Wstrict-prototypes -Wmissing-prototypes -ansi -pedantic
  */
 #ifdef PCB_MAIN
 

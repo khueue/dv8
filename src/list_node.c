@@ -95,6 +95,8 @@ list_node_alloc(void)
 list_node_t *
 list_node_free(list_node_t *node)
 {
+    kdebug_assert(node);
+    
     node->next_free = g_freelist;
     g_freelist = node;
     return NULL;
@@ -107,10 +109,10 @@ list_node_free(list_node_t *node)
  */
 
 /*
- * Define this constant and compile this and any required modules, e.g.:
- *
- *   gcc <this_module>.c <other_modules>.c -D<THIS_MODULE>_MAIN -Iinclude
- *   ./a.out
+    gcc -DUNITTEST -DLIST_NODE_MAIN src/list_node.c \
+    src/utils.c src/pcb.c \
+    -Iinclude -W -Wall -Werror -Wshadow -Wpointer-arith \
+    -Wcast-qual -Wstrict-prototypes -Wmissing-prototypes -ansi -pedantic
  */
 #ifdef LIST_NODE_MAIN
 

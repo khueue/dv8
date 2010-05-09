@@ -37,9 +37,9 @@ pcb_t *
 pcb_free(pcb_t *pcb);
 
 int
-pcb_has_pid(void *pcb, void *pid);
+pcb_has_pid(void *ppcb, void *ppid);
 
 int
-pcb_cmp_priority(void *p1, void *p2);
+pcb_cmp_priority(void *pcb1, void *pcb2);
 
 #endif

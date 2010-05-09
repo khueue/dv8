@@ -13,7 +13,7 @@
  */
 void
 prio_init_queue(
-    prio_queue_t *q, 
+    prio_queue_t *q,
     int (*cmp_fun)(void *, void *),
     int (*match_fun)(void *, void *))
 {
@@ -30,9 +30,9 @@ prio_enqueue(prio_queue_t *q, void *data)
 {
     list_node_t *new_node = list_node_alloc();
 
-    /* kdebug_assert(q != NULL);
-    kdebug_assert(data != NULL);
-    kdebug_assert(new_node != NULL);*/
+    kdebug_assert(q);
+    kdebug_assert(data);
+    kdebug_assert(new_node);
 
     new_node->data = data;
 
@@ -86,8 +86,8 @@ prio_dequeue(prio_queue_t *q)
     list_node_t *node = q->head;
     void *data = node->data;
 
-   /* kdebug_assert(q != NULL);
-    kdebug_assert(q->length > 0); */
+    kdebug_assert(q);
+    kdebug_assert(q->length > 0);
 
     q->head = node->next;
     node = list_node_free(node);
@@ -116,47 +116,47 @@ prio_remove(prio_queue_t *q, void *find)
     list_node_t *node = q->foot;
     void *data = NULL;
 
-   /* kdebug_assert(q != NULL);
-    kdebug_assert(q->length > 0); */
-    
+    kdebug_assert(q != NULL);
+    kdebug_assert(q->length > 0);
+
     /* While when still in queue or requested node is found */
-    while(node && !q->match_fun(node->data, find))
+    while (node && !q->match_fun(node->data, find))
     {
         node = node->prev;
     }
-    
-    if(node) 
-    {        
-        if(node->prev)
+
+    if (node)
+    {
+        if (node->prev)
         {
             node->prev->next = node->next;
-        } 
+        }
         else
         {
             q->head = node->next;
         }
-        
-        if(node->next)
+
+        if (node->next)
         {
-            node->next->prev = node->prev; 
+            node->next->prev = node->prev;
         }
         else
         {
             q->foot = node->prev;
         }
-                        
-        data = node->data;        
+
+        data = node->data;
         node = list_node_free(node);
-        
+
         q->length--;
-        
+
         if (!q->length)
         {
             q->foot = NULL;
             q->head = NULL;
         }
     }
-    
+
     return data;
 }
 
@@ -183,7 +183,6 @@ comparefun(void *a, void *b)
     int y = *(int *)b;
     return x - y;
 }
-
 
 static int
 findfun(void *a, void *b)
@@ -290,14 +289,14 @@ main(void)
     prio_queue_t q;
 
     prio_init_queue(&q, comparefun, findfun);
-    
+
     printf("*** Empty queue ***\n");
     print_queue(&q);
-    
+
     printf("*** Enqueue 2 ***\n");
     prio_enqueue(&q, &two);
     print_queue(&q);
-    
+
     printf("*** Enqueue 1 ***\n");
     prio_enqueue(&q, &one);
     print_queue(&q);
@@ -309,44 +308,44 @@ main(void)
     printf("*** Dequeue (1) ***\n");
     prio_dequeue(&q);
     print_queue(&q);
-    
+
     printf("*** Insert 3 remove 3 ***\n");
-    
+
     prio_enqueue(&q, &three);
     print_queue(&q);
-    
+
     prio_remove(&q, &three);
     print_queue(&q);
-    
+
     printf("*** Insert 3 try remove 2 ***\n");
     prio_enqueue(&q, &three);
     print_queue(&q);
-    
+
     prio_remove(&q, &two);
     print_queue(&q);
-    
+
     printf("*** Insert 2,3 remove 2 ***\n");
     prio_enqueue(&q, &two);
     print_queue(&q);
-    
+
     prio_remove(&q, &two);
     print_queue(&q);
-    
+
     printf("*** Insert 2,3 remove 3 ***\n");
     prio_enqueue(&q, &two);
     print_queue(&q);
-    
+
     prio_remove(&q, &three);
     print_queue(&q);
-    
+
     printf("*** Insert 1,2,3 remove 2 ***\n");
     prio_enqueue(&q, &one);
     prio_enqueue(&q, &three);
     print_queue(&q);
-    
+
     prio_remove(&q, &two);
     print_queue(&q);
-    
+
     printf("*** Insert 1,3 remove 1,3 ***\n");
     prio_remove(&q, &one);
     prio_remove(&q, &three);
