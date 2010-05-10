@@ -46,7 +46,6 @@ spawn(user_prog_pointer program)
     pcb->regs.sp_reg  =
         (uint32_t)(pcb->stack + sizeof(pcb->stack) - 32); /* -32 ???? XXX */
 
-#define GLOBAL_DATA_OFFSET 0x80000000
     pcb->regs.gp_reg  = GLOBAL_DATA_OFFSET;
 
     pcb->regs.ra_reg  =
