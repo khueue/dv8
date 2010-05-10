@@ -108,8 +108,6 @@ sch_run(void)
 
         if (pcb_is_done_sleeping(process) && !process->is_blocked)
         {
-            kdebug_printint(process->pid);
-            kdebug_println("");
             prio_remove(&g_wait, &process->pid);
             prio_iterator_reset(&g_wait);
             
