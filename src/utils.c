@@ -102,7 +102,7 @@ atoi(const char * str)
     int k = 0;
 
     /* Skip white space */
-    while (str[i] == ' ' && str[i])
+    while (str[i] == ' ')
     {
         i++;
     }
@@ -116,7 +116,7 @@ atoi(const char * str)
     k = i;
 
     /* 0-9 = 48-57 */
-    while (str[i] >= '0' && str[i] <= '9' && str[i])
+    while (str[i] >= '0' && str[i] <= '9')
     {
         i++;
     }
@@ -136,22 +136,6 @@ atoi(const char * str)
     }
 
     return x;
-}
-
-/*
- * Blocks and counts. When counted to interval, prints msg and starts over.
- */
-void
-do_nothing_forever(const char msg[], uint32_t interval)
-{
-    uint32_t i = 0;
-    for (;;)
-    {
-        if ((i++ % interval) == 0)
-        {
-            kdebug_println(msg);
-        }
-    }
 }
 
 /*
