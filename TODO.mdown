@@ -27,14 +27,14 @@ PH1: Process States
 
 * Processes should be possible to block.
 * A blocked process should not be able to run until it is unblocked.
-* It should be possible to delay a process for a specified amount of time.
-* When a process is delayed, it should not be able to execute any code.
+* __FIXED__ It should be possible to delay a process for a specified amount of time.
+* __XXX__ When a process is delayed, it should not be able to execute any code.
 
 ###PH2: Process Priorities
 
-* Each process should have a priority.
-* The number of priority levels should be at least 30.
-* Priorities should be specified at process start.
+* __FIXED__ Each process should have a priority.
+* __FIXED__ The number of priority levels should be at least 30.
+* __FIXED__ Priorities should be specified at process start.
 * Priorities should be changeable at run-time.
 
 ###PH3: Process Scheduling
@@ -42,34 +42,34 @@ PH1: Process States
 Scheduling should be highest-priority first, with preemption. In particular:
 
 * A higher-priority process should be scheduled in preference to a lower-priority process.
-* Between processes of the same priority, round-robin scheduling should be used.
+* __FIXED__ Between processes of the same priority, round-robin scheduling should be used.
 * Higher-priority processes should be able to preempt lower-priority processes.
-* There should be a recurring regular check for which process to run, unrelated to whether a particular task has finished its work.
-* A lower priority process should not be allowed to run if there is a higher priority process ready to run. We expect strict highest-priority-first scheduling.
+* __FIXED__ There should be a recurring regular check for which process to run, unrelated to whether a particular task has finished its work.
+* __FIXED__ A lower priority process should not be allowed to run if there is a higher priority process ready to run. We expect strict highest-priority-first scheduling.
 
 ###PH4: Process Identities
 
-* Each process should have a unique ID that can be used to address the process and perform operations on it.
-* A process may have a human-readable name.
+* __FIXED__ Each process should have a unique ID that can be used to address the process and perform operations on it.
+* __XXX__ A process may have a human-readable name.
 
 ###PH5: Process Creation
 
-* Processes should be able to create new processes.
-* Processes are created by a spawn operation that starts a new process with a given code to run (see requirement PH7).
-* The spawn operation should return the ID of the created process.
+* __FIXED__ Processes should be able to create new processes.
+* __XXX__ Processes are created by a spawn operation that starts a new process with a given code to run (see requirement PH7).
+* __XXX__ The spawn operation should return the ID of the created process.
 * If the process spawning fails for some reason, an error should be reported.
 
 ###PH6: Process Termination
 
-* Processes should be able to terminate themselves.
+* __FIXED__ Processes should be able to terminate themselves.
 * Processes should be able to terminate other processes.
 * The operating system should be able to terminate processes.
 
 ###PH7: Programs and Processes
 
-* Each process runs the code of a particular program.
-* The program to execute in a process is specified when the process starts.
-* Each program should have an ID that is used to identify it when starting a process.
+* __FIXED__ Each process runs the code of a particular program.
+* __XXX__ The program to execute in a process is specified when the process starts.
+* __XXX__ Each program should have an ID that is used to identify it when starting a process.
 * Each program should have a human-readable name associated with it. This might be the same as the ID.
 * There should be a global table of available programs.
 * It should be possible to start every program in multiple simultaneous instances.
