@@ -159,13 +159,21 @@ getpid(void)
     return do_syscall(kgetpid);
 }
 
-
 void
 kkill_self(void)
 {
     pcb_t* pcb = sch_get_currently_running_process();
     sch_remove_from_run(pcb);
     pcb = pcb_free(pcb);
+    sch_run();
+}
+
+void
+ksleep(int time)
+{
+    pcb_t* pcb = sch_get_currently_running_process();
+    pcb->sleepleft = time * timer_msec;
+    sch_sleep();
     sch_run();
 }
 

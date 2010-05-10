@@ -34,4 +34,7 @@ kinit(void);
 void
 kexception(void);
 
+void
+ksleep(int time);
+
 #endif

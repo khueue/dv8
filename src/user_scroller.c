@@ -1,6 +1,6 @@
 #include "utils.h"
 #include "malta.h"
-
+#include "kernel_api.h"
 #include "user_scroller.h"
 
 /*
@@ -24,11 +24,9 @@ maltascr(void)
     malta->ledbar.reg = 0xFF;
 
 	int done;
-    int count = 0;
 
     while(1) {
-        if ((count++ % 500000) == 0)
-        {
+    
             if((init > 0) && (tomalta[init-1] == 0))
             {
                 init = 0;
@@ -49,8 +47,7 @@ maltascr(void)
                 }
             }
 
-        }
-
         /* Done printing to malta, jump back to scheduler ...somehow*/
+        sleep(5000);
     }
 }

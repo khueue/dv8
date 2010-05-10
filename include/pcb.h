@@ -28,6 +28,8 @@ struct pcb
 {
     uint32_t pid;
     uint32_t priority;
+    uint32_t sleepleft;
+    uint8_t blocked;
     registers_t regs;
     uint8_t stack[PROCESS_STACK_SIZE];
 
@@ -52,5 +54,11 @@ pcb_has_pid(void *ppcb, void *ppid);
 
 int
 pcb_cmp_priority(void *pcb1, void *pcb2);
+
+int
+pcb_cmp_sleepleft(void *pcb1, void *pcb2);
+
+int
+pcb_is_done_sleeping(pcb_t *pcb);
 
 #endif

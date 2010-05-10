@@ -21,8 +21,5 @@ execute_timer(cause_reg_t cause)
     {
         /* Run schedular */
         sch_run();
-
-        /* Reload timer for another 100 ms (simulated time) */
-        kload_timer(50 * timer_msec);
     }
 }

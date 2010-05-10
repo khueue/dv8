@@ -81,6 +81,24 @@ pcb_cmp_priority(void *ppcb1, void *ppcb2)
 }
 
 /*
+ * Compares the sleep left of two pcbs, returns:
+ *   >0 : First argument has less sleep left.
+ *    0 : Equal.
+ *   <0 : Second argument has less sleep left.
+ */
+int
+pcb_cmp_sleepleft(void *ppcb1, void *ppcb2)
+{
+    pcb_t *pcb1 = (pcb_t *)ppcb1;
+    pcb_t *pcb2 = (pcb_t *)ppcb2;
+
+    kdebug_assert(pcb1);
+    kdebug_assert(pcb2);
+
+    return pcb2->sleepleft - pcb1->sleepleft;
+}
+
+/*
  * Returns true if the pcb pointed to by ppcb has the same pid as the pid
  * pointed to by ppid.
  */
@@ -97,6 +115,17 @@ pcb_has_pid(void *ppcb, void *ppid)
     pid = *(uint32_t *)ppid;
 
     return pcb->pid == pid;
+}
+
+/*
+ * Returns true if the pcb pointed to by ppcb has sleep left 0 or less.
+ */
+int
+pcb_is_done_sleeping(pcb_t *pcb)
+{
+    kdebug_assert(pcb);
+
+    return pcb->sleepleft <= 0;
 }
 
 /*

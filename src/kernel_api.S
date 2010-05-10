@@ -7,6 +7,7 @@
     .globl exec
     .globl do_syscall
     .globl kill_self
+    .globl sleep
 
     # syscall_handler:
     #   Enables argument passing for up
@@ -39,5 +40,10 @@ do_syscall:
     # Input:XXXXXX
 kill_self:
     la v0, kkill_self
+    syscall
+    jr ra
+
+sleep:
+    la v0, ksleep
     syscall
     jr ra

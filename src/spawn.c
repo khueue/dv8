@@ -38,6 +38,8 @@ spawn(user_prog_pointer program)
 
     pcb->pid = 1;
     pcb->priority = 20;
+    pcb->sleepleft = 0;
+    pcb->blocked = 0;
 
     pcb->regs.epc_reg = (uint32_t)program;
 

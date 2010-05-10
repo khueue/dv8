@@ -18,6 +18,7 @@ struct prio_queue
 {
     list_node_t *head;
     list_node_t *foot;
+    list_node_t *current;
     int (*cmp_fun)(void *, void *);
     int (*match_fun)(void *, void *);
     size_t length;
@@ -43,5 +44,14 @@ prio_dequeue(prio_queue_t *q);
 
 void *
 prio_remove(prio_queue_t *q, void *find);
+
+void
+prio_iterator_reset(prio_queue_t *q);
+
+int
+prio_iterator_has_next(prio_queue_t *q);
+
+void *
+prio_iterator_next(prio_queue_t *q);
 
 #endif

@@ -160,6 +160,26 @@ prio_remove(prio_queue_t *q, void *find)
     return data;
 }
 
+void
+prio_iterator_reset(prio_queue_t *q)
+{
+    q->current = q->head;
+}
+
+int
+prio_iterator_has_next(prio_queue_t *q)
+{
+    return q->current != NULL;
+}
+
+void *
+prio_iterator_next(prio_queue_t *q)
+{
+    void *data = q->current->data;
+    q->current = q->current->next;
+    return data;
+}
+
 /*
  * ---------------------------------------------------------------------------
  * Main for module testing.

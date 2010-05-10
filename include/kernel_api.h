@@ -22,4 +22,7 @@ ksyscall_handler(registers_t *regs);
 uint32_t
 exec(user_prog_pointer program);
 
+void
+sleep(int time);
+
 #endif

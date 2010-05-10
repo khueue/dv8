@@ -11,6 +11,9 @@ void
 sch_run(void);
 
 void
+sch_sleep(void);
+
+void
 sch_schedule(pcb_t *pcb);
 
 void

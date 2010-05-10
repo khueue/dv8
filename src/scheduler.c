@@ -48,9 +48,9 @@ g_wait;
 void
 sch_init(void)
 {
-    prio_init_queue(&g_ready, pcb_cmp_priority, pcb_has_pid);
-    prio_init_queue(&g_run,   pcb_cmp_priority, pcb_has_pid);
-    prio_init_queue(&g_wait,  pcb_cmp_priority, pcb_has_pid);
+    prio_init_queue(&g_ready, pcb_cmp_priority,  pcb_has_pid);
+    prio_init_queue(&g_run,   pcb_cmp_priority,  pcb_has_pid);
+    prio_init_queue(&g_wait,  pcb_cmp_sleepleft, pcb_has_pid);
 }
 
 /*
@@ -90,6 +90,26 @@ sch_run(void)
     pcb_t *process = NULL;
 
     /*
+     * Update wait queue and move anything ready to wake up back into ready
+     */
+     
+    prio_iterator_reset(&g_wait);
+    while(prio_iterator_has_next(&g_wait))
+    {
+        process = (pcb_t *)prio_iterator_next(&g_wait);
+        
+        process->sleepleft -= 50 * timer_msec;
+    }
+    
+    while(g_wait.head && pcb_is_done_sleeping(g_wait.head->data))
+    {
+        process = prio_dequeue(&g_wait);
+
+        prio_enqueue(&g_ready, process);
+    }
+        
+    
+    /*
      * If a process was using the CPU, save it and move it from the run queue
      * to the ready queue.
      */
@@ -108,13 +128,40 @@ sch_run(void)
     process = prio_dequeue(&g_ready);
     prio_enqueue(&g_run, process);
     restore_process_state(process);
+    
+    /* Reload timer for another 100 ms (simulated time) */
+    kload_timer(50 * timer_msec);
 }
 
 /*
  * Schedules a process for CPU usage.
  */
+ 
 void
 sch_schedule(pcb_t *pcb)
 {
     prio_enqueue(&g_ready, pcb);
+}
+
+
+/*
+ * Lulls a process to sleep.
+ */
+
+void
+sch_sleep(void)
+{
+    pcb_t *process = NULL;
+
+    /*
+     * If a process was using the CPU, save it and move it from the run queue
+     * to the wait queue.
+     */
+    process = sch_get_currently_running_process();
+    if (process)
+    {
+        save_process_state(process);
+        prio_dequeue(&g_run);
+        prio_enqueue(&g_wait, process);
+    }
 }
