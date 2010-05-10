@@ -4,6 +4,7 @@
 #include "types.h"
 #include "debug.h"
 #include "bits.h"
+#include "settings.h"
 
 /*
  * Hack for easy unit testing. This lets us use kdebug_assert() without

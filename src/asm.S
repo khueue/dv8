@@ -5,13 +5,11 @@
 #include <mips/regdef.h>
 #include <cp0_regdef.h>
 #include "asm_regs.h"
+#include "settings.h"
 
 # -------------------------------------------------------------------------
 # Data segment
 # -------------------------------------------------------------------------
-
-#define INIT_STACK_SIZE     0x4000
-#define EXCN_STACK_SIZE     0x4000
 
     .data
 
