@@ -1,9 +1,5 @@
 # Code Convention Suggestions
 
-- lista
-  - <strike>testar strike</strike>
-  - asdfasd
-
 All of this is of course up for debate, but here is an outline of what I feel
 is a reasonable code convention for C code. I've included arguments where
 appropriate. I think.
