@@ -78,10 +78,10 @@ Scheduling should be highest-priority first, with preemption. In particular:
 
 * A process should be able to obtain information about another process.
 * The information should include:
- - Process priority
- - Process name, if such is used
- - Name of the program running in the process
- - Current scheduling state of the process
+  - Process priority
+  - Process name, if such is used
+  - Name of the program running in the process
+  - Current scheduling state of the process
 * This information should be readable by the process requesting it.
 * The information should not be printed directly to the console; if it is to be presented to the user, a program (or function in the shell program) will have to be written for that purpose.
 
