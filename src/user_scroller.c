@@ -42,12 +42,13 @@ maltascr(void)
                     malta->asciipos[done++].value = 32;
                 }
 
-                if(done < 8) {
+                if(done < 8) 
+                {
                     malta->asciipos[done].value = tomalta[strpos++];
                 }
             }
 
         /* Done printing to malta, jump back to scheduler ...somehow*/
-        sleep(5000);
+        sleep(1000);
     }
 }

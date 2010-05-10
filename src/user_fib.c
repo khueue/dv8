@@ -26,15 +26,6 @@ fib_recursive(int n)
 void
 fib(void)
 {
-    size_t i = 0;
-    for (i = 0; i < 10; ++i)
-    {
-        kdebug_print("fib(");
-        kdebug_printint(i);
-        kdebug_print(") = ");
-        kdebug_printint(fib_recursive(i));
-        kdebug_println("");
-    }
 
     /* Spawn an increment, just for fun. */
     {
@@ -43,4 +34,16 @@ fib(void)
         kdebug_printint(pid);
         kdebug_println("");
     }
+
+    size_t i = 0;
+    for (i = 0; i < 10; ++i)
+    {
+        kdebug_print("fib(");
+        kdebug_printint(i);
+        kdebug_print(") = ");
+        kdebug_printint(fib_recursive(i));
+        kdebug_println("");
+        sleep(500);
+    }
+
 }

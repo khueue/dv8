@@ -1,5 +1,6 @@
 #include "user_incr.h"
 #include "utils.h"
+#include "kernel_api.h"
 
 void
 incr_impl(void)
@@ -21,11 +22,8 @@ incr(void)
     kdebug_println("end of incr");
     while (1)
     {
-        static int count = 0;
-        if ((count++ % 10000000) == 0)
-        {
-            kdebug_println("--- incr whiling ...");
-        }
+        kdebug_println("Incr zombieing");
+        sleep(700);
     }
     /* We should never get here! */
 }
