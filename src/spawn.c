@@ -29,17 +29,18 @@ pcb_t *
 spawn(user_prog_pointer program)
 {
     pcb_t *pcb = pcb_alloc();
-
+    static uint32_t next_pid = 0;
+    
     if (!pcb)
     {
         /* XXX no more pcbs! */
         return NULL;
     }
 
-    pcb->pid = 1;
+    pcb->pid = ++next_pid;
     pcb->priority = 20;
     pcb->sleepleft = 0;
-    pcb->blocked = 0;
+    pcb->is_blocked = 0;
 
     pcb->regs.epc_reg = (uint32_t)program;
 

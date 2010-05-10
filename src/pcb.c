@@ -118,14 +118,14 @@ pcb_has_pid(void *ppcb, void *ppid)
 }
 
 /*
- * Returns true if the pcb pointed to by ppcb has sleep left 0 or less.
+ * Returns true if the pcb pointed to by pcb has sleep left 0 or less.
  */
 int
 pcb_is_done_sleeping(pcb_t *pcb)
 {
     kdebug_assert(pcb);
 
-    return pcb->sleepleft <= 0;
+    return (pcb->sleepleft <= 0);
 }
 
 /*

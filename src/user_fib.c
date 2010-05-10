@@ -43,7 +43,8 @@ fib(void)
         kdebug_print(") = ");
         kdebug_printint(fib_recursive(i));
         kdebug_println("");
-        sleep(500);
+        sleep(1002);
+
     }
 
 }

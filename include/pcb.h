@@ -28,8 +28,8 @@ struct pcb
 {
     uint32_t pid;
     uint32_t priority;
-    uint32_t sleepleft;
-    uint8_t blocked;
+    int32_t sleepleft;
+    uint8_t is_blocked;
     registers_t regs;
     uint8_t stack[PROCESS_STACK_SIZE];
 
