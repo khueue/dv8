@@ -5,6 +5,9 @@
 #include "stack.h"
 #include "msg.h"
 
+#include "kernel_api.h"
+#include "kernel.h"
+
 /*
  * ---------------------------------------------------------------------------
  * Types.
@@ -132,7 +135,6 @@ tty_manager_put_char(uint8_t c)
         *--line_buf_pos = '\0';
         line_buf_pos = line_buf;
 
-        /* copy line_buf into some top of stack process' message XXXXXXXXX */
         {
             pcb_t *process = NULL;
             msg_t *msg = msg_alloc();
@@ -140,11 +142,12 @@ tty_manager_put_char(uint8_t c)
             {
                 /* Fail! XXXXXX */
             }
-            msg->type = MSG_TYPE_ARGUMENT;
+            msg->type = MSG_TYPE_UNKNOWN;
             msg->data_type = MSG_DATA_TYPE_STRING;
             strcpy(msg->data.string, line_buf);
             process = stack_peek(&g_input_stack);
             fifo_enqueue(&process->inbox_q, msg);
+            kunblock(process->pid);
         }
 
         kdebug_println("");

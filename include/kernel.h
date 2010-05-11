@@ -11,10 +11,6 @@
  * ---------------------------------------------------------------------------
  */
 
-/* crap remove XXXXXX */
-msg_t *
-read_inbox_message(void);
-
 void
 save_process_state(pcb_t *pcb);
 
@@ -41,6 +37,9 @@ kexception(void);
 
 void
 ksleep(int time);
+
+msg_t *
+read_from_console(void);
 
 uint32_t
 kchange_priority(uint32_t pid, uint32_t priority);

@@ -129,16 +129,23 @@ kexec(user_program_pointer program, uint32_t priority)
     return pcb->pid;
 }
 
-/*
- * XXXXXXX remove etc
- */
+#if 0
+static msg_t *
+dequeue_first_message_by_type(fifo_queue_t *q, msg_type_t msg_type)
+{
+    
+}
+#endif
+
 msg_t *
-read_inbox_message(void)
+read_from_console(void)
 {
     pcb_t *pcb = sch_get_currently_running_process();
-    while (pcb->inbox_q.length == 0)
-    {
-    }
+    
+    tty_manager_subscribe_for_input(pcb);
+    block_self();
+    tty_manager_unsubscribe_from_input(pcb);
+
     return fifo_dequeue(&pcb->inbox_q);
 }
 
