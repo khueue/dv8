@@ -225,7 +225,6 @@ setup_scheduler(void)
     sch_schedule(idle_process);
     fib_process = spawn(fib, PROCESS_DEFAULT_PRIORITY);
     sch_schedule(fib_process);  /* remove XXXXX */
-    tty_manager_subscribe_for_input(fib_process);
     sch_schedule(spawn(maltascr, PROCESS_DEFAULT_PRIORITY)); /* remove XXXXX */
 
     /* Initialise timer to interrupt in 50 ms (simulated time). */

@@ -135,16 +135,27 @@ tty_manager_put_char(uint8_t c)
         *--line_buf_pos = '\0';
         line_buf_pos = line_buf;
 
+        if (g_input_stack.length > 0)
         {
             pcb_t *process = NULL;
             msg_t *msg = msg_alloc();
+            int x;
             if (!msg)
             {
                 /* Fail! XXXXXX */
             }
-            msg->type = MSG_TYPE_UNKNOWN;
-            msg->data_type = MSG_DATA_TYPE_STRING;
-            strcpy(msg->data.string, line_buf);
+            msg->type = MSG_TYPE_CONSOLE_INPUT;
+            x = atoi(line_buf);
+            if (x != 0 || strcmp(line_buf, "0") == 0)
+            {
+                msg->data_type = MSG_DATA_TYPE_INTEGER;
+                msg->data.integer = x;
+            }
+            else
+            {
+                msg->data_type = MSG_DATA_TYPE_STRING;
+                strcpy(msg->data.string, line_buf);
+            }
             process = stack_peek(&g_input_stack);
             fifo_enqueue(&process->inbox_q, msg);
             kunblock(process->pid);
