@@ -3,12 +3,17 @@
 
 #include "utils.h"
 #include "pcb.h"
+#include "msg.h"
 
 /*
  * ---------------------------------------------------------------------------
  * Functions.
  * ---------------------------------------------------------------------------
  */
+
+/* crap remove XXXXXX */
+msg_t *
+read_inbox_message(void);
 
 void
 save_process_state(pcb_t *pcb);
@@ -17,7 +22,7 @@ void
 restore_process_state(const pcb_t *pcb);
 
 uint32_t
-kexec(user_prog_pointer program, uint32_t priority);
+kexec(user_program_pointer program, uint32_t priority);
 
 uint32_t
 kgetpid(void);
@@ -45,5 +50,8 @@ kblock(uint32_t pid);
 
 void
 kunblock(uint32_t pid);
+
+void
+kblock_self(void);
 
 #endif

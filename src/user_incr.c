@@ -19,16 +19,7 @@ incr(void)
 {
     kdebug_println("start of incr");
     incr_impl();
-    /*terminate_this_process();*/
-    if(change_priority(776776,99))
-    {
-        kdebug_println("Changed");
-    } else {
-        kdebug_println("Failed to change");
-    }
-    
-    
-    
+    kdebug_println("end of incr");
     while (1)
     {
         kdebug_println("Incr zombieing");

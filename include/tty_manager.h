@@ -2,12 +2,17 @@
 #define TTY_MANAGER_H
 
 #include "utils.h"
+#include "pcb.h"
 
 /*
  * ---------------------------------------------------------------------------
  * Functions.
  * ---------------------------------------------------------------------------
  */
+
+void
+tty_manager_register_for_input(pcb_t *pcb);
+
 int
 tty_manager_has_characters(void);
 

@@ -11,6 +11,7 @@
     .globl change_priority
     .globl block
     .globl unblock
+    .globl block_self
 
     # syscall_handler:
     #   Enables argument passing for up
@@ -63,5 +64,10 @@ block:
 
 unblock:
     la v0, kunblock
+    syscall
+    jr ra
+    
+block_self:
+    la v0, kblock_self
     syscall
     jr ra

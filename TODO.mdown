@@ -10,9 +10,6 @@ __Jon:__ more scheduler, generic lists/queues
 
 __David:__ user programs, more scheduler
 
-
-settings.h?
-remove terminate_this_process?
 relocate spawn and associated functionality?
 think through syscalls a bit more, again
 fix input and shell
@@ -97,7 +94,6 @@ Scheduling should be highest-priority first, with preemption. In particular:
 * __FIXED__ Process IDs should be reused, as per requirement PH9.
 * __FIXED__ Any fixed upper limits must be easy to modify, using a #define or similar C construct.
 
- 
 ##Input and Output
 
 The system has to provide some kind of input and output facility to do interesting work.
@@ -123,7 +119,6 @@ The system has to provide some kind of input and output facility to do interesti
 
 * __XXX__ It should be possible for a process to output text to the Malta LCD display
 
- 
 ##System Application Programming Interface (API)
 
 The operating system should provide an API for user programs.
@@ -249,14 +244,12 @@ This demonstrates process synchronization (you will need to work out how to sync
 think(random())
 get one fork
 get other fork
-eat(random()) 
+eat(random())
 drop forks
 restart
 
 * Like UP3, the entire setup should be started by a single process.
 * Like UP3, the main program should return and make it possible to observe the processes running.
-
-
 
 ##Process Supervision (2 pts)
 
@@ -271,5 +264,3 @@ So far, process lives on its own. Nobody else cares if a process terminates. In 
 ###UP7: Process Supervision
 
 * A demo application and application note should describe the mechanism and demonstrate that you have a working implementation of process supervision. The demo should include a supervisor that restarts its subordinates if they crash.
-
-

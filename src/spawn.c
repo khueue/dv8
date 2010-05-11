@@ -8,13 +8,6 @@
 #include "kernel.h"
 
 void
-terminate_this_process(void)
-{
-    /* What does this do? */
-    kdebug_println("terminating process");
-}
-
-void
 kfunc_to_go_to_when_the_process_ends_normally(void)
 {
     kill_self();
@@ -26,7 +19,7 @@ kfunc_to_go_to_when_the_process_ends_normally(void)
 }
 
 pcb_t *
-spawn(user_prog_pointer program, uint32_t priority)
+spawn(user_program_pointer program, uint32_t priority)
 {
     pcb_t *pcb = pcb_alloc();
 

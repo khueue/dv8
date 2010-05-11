@@ -10,6 +10,8 @@
 #include "pcb.h"
 #include "spawn.h"
 #include "scheduler.h"
+#include "tty_manager.h"
+#include "msg.h"
 
 #include "user_fib.h"
 #include "user_incr.h"
@@ -91,25 +93,6 @@ printstr(const char str[])
 }
 #endif
 
-#if 0
-/*
- * Displays a value on the Malta display.
- */
-void
-display_word(uint32_t word);
-void
-display_word(uint32_t word)
-{
-    int i = 0;
-    malta->ledbar.reg = 0xFF;
-    for (i = 7; i >= 0; --i)
-    {
-        malta->asciipos[i].value = '0' + (word % 10);
-        word /= 10;
-    }
-}
-#endif
-
 /*
  * Configures the CPU to enable interrupts etc.
  */
@@ -138,12 +121,25 @@ set_status_reg(void)
 }
 
 uint32_t
-kexec(user_prog_pointer program, uint32_t priority)
+kexec(user_program_pointer program, uint32_t priority)
 {
     pcb_t *pcb = spawn(program, priority);
     /* Error handling here XXXXXXX */
     sch_schedule(pcb);
     return pcb->pid;
+}
+
+/*
+ * XXXXXXX remove etc
+ */
+msg_t *
+read_inbox_message(void)
+{
+    pcb_t *pcb = sch_get_currently_running_process();
+    while (pcb->inbox_q.length == 0)
+    {
+    }
+    return fifo_dequeue(&pcb->inbox_q);
 }
 
 uint32_t
@@ -198,6 +194,13 @@ kunblock(uint32_t pid)
     sch_run();
 }
 
+void
+kblock_self()
+{
+    uint32_t pid = sch_get_currently_running_process()->pid;
+    kblock(pid);
+}
+
 /*
  * Sets up the
  */
@@ -205,12 +208,15 @@ static void
 setup_scheduler(void)
 {
     pcb_t *idle_process = NULL;
+    pcb_t *fib_process = NULL;
     
     sch_init();
 
     idle_process = spawn(idle, 0);
     sch_schedule(idle_process);
-    sch_schedule(spawn(fib, PROCESS_DEFAULT_PRIORITY));  /* remove XXXXX */
+    fib_process = spawn(fib, PROCESS_DEFAULT_PRIORITY);
+    sch_schedule(fib_process);  /* remove XXXXX */
+    tty_manager_register_for_input(fib_process);
     sch_schedule(spawn(incr, PROCESS_DEFAULT_PRIORITY)); /* remove XXXXX */
     sch_schedule(spawn(maltascr, PROCESS_DEFAULT_PRIORITY)); /* remove XXXXX */
     
