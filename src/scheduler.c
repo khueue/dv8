@@ -178,7 +178,7 @@ sch_sleep(void)
 /*
  * Change priority
  */
-void
+uint32_t
 sch_change_priority(uint32_t pid, uint32_t priority)
 {
     pcb_t *process = NULL;
@@ -188,7 +188,7 @@ sch_change_priority(uint32_t pid, uint32_t priority)
     {
         process->priority = priority;
         prio_enqueue(&g_run, process);
-        return;
+        return 1;
     }
 
     process = prio_remove(&g_ready, &pid);
@@ -196,7 +196,7 @@ sch_change_priority(uint32_t pid, uint32_t priority)
     {
         process->priority = priority;
         prio_enqueue(&g_ready, process);
-        return;
+        return 1;
     }
 
     process = prio_remove(&g_wait, &pid);
@@ -204,8 +204,10 @@ sch_change_priority(uint32_t pid, uint32_t priority)
     {
         process->priority = priority;
         prio_enqueue(&g_wait, process);
-        return;
+        return 1;
     }
+    
+    return 0;
 }
 
 /*

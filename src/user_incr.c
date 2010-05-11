@@ -1,6 +1,7 @@
 #include "user_incr.h"
 #include "utils.h"
 #include "kernel_api.h"
+#include "scheduler.h"
 
 void
 incr_impl(void)
@@ -19,11 +20,19 @@ incr(void)
     kdebug_println("start of incr");
     incr_impl();
     /*terminate_this_process();*/
-    kdebug_println("end of incr");
+    if(change_priority(776776,99))
+    {
+        kdebug_println("Changed");
+    } else {
+        kdebug_println("Failed to change");
+    }
+    
+    
+    
     while (1)
     {
         kdebug_println("Incr zombieing");
-        sleep(700);
+       
     }
     /* We should never get here! */
 }
