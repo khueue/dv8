@@ -25,4 +25,10 @@ sch_get_currently_running_process(void);
 void
 sch_change_priority(uint32_t pid, uint32_t prio);
 
+void
+sch_block(uint32_t pid);
+
+void
+sch_unblock(uint32_t pid);
+
 #endif

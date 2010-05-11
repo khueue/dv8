@@ -40,4 +40,10 @@ ksleep(int time);
 void
 kchange_priority(uint32_t pid, uint32_t priority);
 
+void
+kblock(uint32_t pid);
+
+void
+kunblock(uint32_t pid);
+
 #endif

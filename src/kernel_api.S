@@ -9,6 +9,8 @@
     .globl kill_self
     .globl sleep
     .globl change_priority
+    .globl block
+    .globl unblock
 
     # syscall_handler:
     #   Enables argument passing for up
@@ -51,5 +53,15 @@ sleep:
 
 change_priority:
     la v0, kchange_priority
+    syscall
+    jr ra
+    
+block:
+    la v0, kblock
+    syscall
+    jr ra
+
+unblock:
+    la v0, kunblock
     syscall
     jr ra

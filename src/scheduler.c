@@ -207,3 +207,54 @@ sch_change_priority(uint32_t pid, uint32_t priority)
         return;
     }
 }
+
+/*
+ * Block process
+ */
+void
+sch_block(uint32_t pid)
+{
+    pcb_t *process = NULL;
+
+    process = prio_remove(&g_run, &pid);
+    if (process)
+    {
+        process->state = PROCESS_STATE_BLOCKED;
+        prio_enqueue(&g_wait, process);
+        return;
+    }
+
+    process = prio_remove(&g_ready, &pid);
+    if (process)
+    {
+        process->state = PROCESS_STATE_BLOCKED;
+        prio_enqueue(&g_wait, process);
+        return;
+    }
+
+    process = prio_remove(&g_wait, &pid);
+    if (process)
+    {
+        process->state = PROCESS_STATE_BLOCKED;
+        prio_enqueue(&g_wait, process);
+        return;
+    }
+}
+
+/*
+ * Unblock process
+ */
+void
+sch_unblock(uint32_t pid)
+{
+    pcb_t *process = NULL;
+
+    process = prio_remove(&g_wait, &pid);
+    if (process)
+    {
+        process->state = PROCESS_STATE_READY;
+        process->sleepleft = 0;
+        
+        return;
+    }
+}

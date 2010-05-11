@@ -184,6 +184,20 @@ kchange_priority(uint32_t pid, uint32_t priority)
     sch_change_priority(pid, priority);
 }
 
+void
+kblock(uint32_t pid)
+{
+    sch_block(pid);
+    sch_run();
+}
+
+void
+kunblock(uint32_t pid)
+{
+    sch_unblock(pid);
+    sch_run();
+}
+
 /*
  * Sets up the
  */
