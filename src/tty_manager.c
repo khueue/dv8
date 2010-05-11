@@ -17,7 +17,7 @@ typedef struct bounded_fifo bounded_fifo_t;
 struct bounded_fifo
 {
   uint8_t buf[TTY_FIFO_SIZE];
-  uint32_t pos_free;
+  uint32_t pos_next_free;
 };
 
 /*
@@ -36,10 +36,10 @@ g_input_stack;
 #endif
 
 static char
-str_buf[STR_BUF_SIZE];
+line_buf[STR_BUF_SIZE];
 
 static char *
-str_buf_pos = str_buf;
+line_buf_pos = line_buf;
 
 /*
  * XXXXXXXXXX
@@ -61,9 +61,9 @@ bfifo_put(bounded_fifo_t *bfifo, uint8_t c)
 {
     kdebug_assert(bfifo);
 
-    if (bfifo->pos_free < COUNT_ARRAY(bfifo->buf))
+    if (bfifo->pos_next_free < COUNT_ARRAY(bfifo->buf))
     {
-        bfifo->buf[bfifo->pos_free++] = c;
+        bfifo->buf[bfifo->pos_next_free++] = c;
     }
 }
 
@@ -77,11 +77,11 @@ bfifo_get(bounded_fifo_t *bfifo)
     uint8_t c = '\0';
 
     kdebug_assert(bfifo);
-    kdebug_assert(bfifo->pos_free > 0);
+    kdebug_assert(bfifo->pos_next_free > 0);
 
     c = bfifo->buf[0];
-    --bfifo->pos_free;
-    for (i = 0; i < bfifo->pos_free; ++i)
+    --bfifo->pos_next_free;
+    for (i = 0; i < bfifo->pos_next_free; ++i)
     {
         bfifo->buf[i] = bfifo->buf[i+1];
     }
@@ -95,7 +95,7 @@ bfifo_get(bounded_fifo_t *bfifo)
 int
 tty_manager_has_characters(void)
 {
-    return g_bfifo.pos_free > 0;
+    return g_bfifo.pos_next_free > 0;
 }
 
 /*
@@ -110,16 +110,15 @@ tty_manager_put_char(uint8_t c)
         bfifo_put(&g_bfifo, '\n');
     }
 
-    *str_buf_pos++ = c;
+    *line_buf_pos++ = c;
     if (c == '\r')
     {
-        *str_buf_pos++ = '\n';
-        *str_buf_pos++ = '\0';
-        str_buf_pos = str_buf;
-        /* copy str_buf into some top of stack process' message XXXXXXXXX */
+        *line_buf_pos++ = '\0';
+        line_buf_pos = line_buf;
+        /* copy line_buf into some top of stack process' message XXXXXXXXX */
         kdebug_println("");
-        kdebug_print("str_buf: ");
-        kdebug_println(str_buf);
+        kdebug_print("line_buf: ");
+        kdebug_println(line_buf);
     }
 }
 

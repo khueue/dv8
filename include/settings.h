@@ -15,6 +15,13 @@
 #endif
 
 /*
+ * XXXXXXX
+ */
+#ifndef NUM_MESSAGES
+#define NUM_MESSAGES 1024
+#endif
+
+/*
  * Maximum number of list nodes available in the system.
  */
 #ifndef NUM_LIST_NODES

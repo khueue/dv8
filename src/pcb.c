@@ -76,6 +76,15 @@ pcb_assign_pid(pcb_t *pcb)
 }
 
 /*
+ * XXXXXXX
+ */
+void
+pcb_init(pcb_t *pcb)
+{
+    pcb_assign_pid(pcb);
+}
+
+/*
  * Compares the priority of two pcbs, returns:
  *   >0 : First argument has greater priority.
  *    0 : Equal.

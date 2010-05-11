@@ -2,6 +2,7 @@
 #define PCB_FREELIST_H
 
 #include "registers.h"
+#include "fifo_queue.h"
 
 /*
  * ---------------------------------------------------------------------------
@@ -20,6 +21,7 @@ struct pcb
     uint32_t priority;
     int32_t sleepleft;
     uint8_t is_blocked;
+    fifo_queue_t inbox_q;
     registers_t regs;
     uint8_t stack[PROCESS_STACK_SIZE];
 
@@ -41,6 +43,9 @@ pcb_free(pcb_t *pcb);
 
 void
 pcb_assign_pid(pcb_t *pcb);
+
+void
+pcb_init(pcb_t *pcb);
 
 int
 pcb_has_pid(void *ppcb, void *ppid);

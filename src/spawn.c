@@ -36,7 +36,7 @@ spawn(user_prog_pointer program, uint32_t priority)
         return NULL;
     }
 
-    pcb_assign_pid(pcb);
+    pcb_init(pcb);
     kdebug_print("*** PID = ");
     kdebug_printint(pcb->pid);
     kdebug_println("");
