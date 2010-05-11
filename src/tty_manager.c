@@ -37,10 +37,10 @@ static stack_t
 g_input_stack;
 
 static char
-line_buf[STR_BUF_SIZE];
+g_line_buf[STR_BUF_SIZE];
 
-static char *
-line_buf_pos = line_buf;
+static size_t
+g_line_buf_pos;
 
 /*
  * XXXXXXXXXX
@@ -129,12 +129,21 @@ tty_manager_put_char(uint8_t c)
         bfifo_put(&g_bfifo, '\n');
     }
 
-    *line_buf_pos++ = c;
+    /* Add to buffer only if there is room. */
+    if (g_line_buf_pos < sizeof(g_line_buf))
+    {
+        g_line_buf[g_line_buf_pos++] = c;
+    }
+
+    /* If the last character pressed was a return, proceed to finish. */
     if (c == '\r')
     {
-        *--line_buf_pos = '\0';
-        line_buf_pos = line_buf;
+        /* Terminate both the newline and at end of string, to be safe. */
+        g_line_buf[g_line_buf_pos-1] = '\0';
+        g_line_buf[sizeof(g_line_buf)-1] = '\0';
+        g_line_buf_pos = 0;
 
+        /* Send input message to process if we have any input listeners. */
         if (g_input_stack.length > 0)
         {
             pcb_t *process = NULL;
@@ -145,8 +154,8 @@ tty_manager_put_char(uint8_t c)
                 /* Fail! XXXXXX */
             }
             msg->type = MSG_TYPE_CONSOLE_INPUT;
-            x = atoi(line_buf);
-            if (x != 0 || strcmp(line_buf, "0") == 0)
+            x = atoi(g_line_buf);
+            if (x != 0 || strcmp(g_line_buf, "0") == 0)
             {
                 msg->data_type = MSG_DATA_TYPE_INTEGER;
                 msg->data.integer = x;
@@ -154,16 +163,12 @@ tty_manager_put_char(uint8_t c)
             else
             {
                 msg->data_type = MSG_DATA_TYPE_STRING;
-                strcpy(msg->data.string, line_buf);
+                strcpy(msg->data.string, g_line_buf);
             }
             process = stack_peek(&g_input_stack);
             fifo_enqueue(&process->inbox_q, msg);
             kunblock(process->pid);
         }
-
-        kdebug_println("");
-        kdebug_print("line_buf: ");
-        kdebug_println(line_buf);
     }
 }
 
