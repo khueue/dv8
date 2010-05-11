@@ -22,22 +22,25 @@ kfunc_to_go_to_when_the_process_ends_normally(void)
     {
         kdebug_println("Nej nej!");
     }
-    
+
 }
 
 pcb_t *
 spawn(user_prog_pointer program)
 {
     pcb_t *pcb = pcb_alloc();
-    static uint32_t next_pid = 0;
-    
+
     if (!pcb)
     {
         /* XXX no more pcbs! */
         return NULL;
     }
 
-    pcb->pid = ++next_pid;
+    pcb_assign_pid(pcb);
+    kdebug_print("*** PID = ");
+    kdebug_printint(pcb->pid);
+    kdebug_println("");
+
     pcb->priority = 20;
     pcb->sleepleft = 0;
     pcb->is_blocked = 0;

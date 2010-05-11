@@ -39,6 +39,9 @@ pcb_alloc(void);
 pcb_t *
 pcb_free(pcb_t *pcb);
 
+void
+pcb_assign_pid(pcb_t *pcb);
+
 int
 pcb_has_pid(void *ppcb, void *ppid);
 

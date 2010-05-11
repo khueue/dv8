@@ -50,6 +50,21 @@ pcb_init_freelist(void)
  */
 
 /*
+ * Assigns the given PCB a pid which is guaranteed to be unique among the
+ * currently running processes. This implementation depends on the fact that
+ * all PCBs are statically allocated as an array. This makes it possible to
+ * base the pid calculation on the memory location of each PCB.
+ */
+void
+pcb_assign_pid(pcb_t *pcb)
+{
+    /* pcb1@0, pcb2@1*sizeof(pcb_t), pcb3@2*sizeof(pcb_t), ... */
+    size_t mem_offset = (size_t)pcb - (size_t)g_pcbs;
+    /* pid1:1, pid2:2, pid3:3, ... */
+    pcb->pid = (mem_offset / sizeof(*pcb)) + 1;
+}
+
+/*
  * Compares the priority of two pcbs, returns:
  *   >0 : First argument has greater priority.
  *    0 : Equal.
@@ -154,7 +169,7 @@ pcb_t *
 pcb_free(pcb_t *pcb)
 {
     kdebug_assert(pcb);
-    
+
     pcb->next_free = g_freelist;
     g_freelist = pcb;
     return NULL;
