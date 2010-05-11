@@ -26,7 +26,7 @@ kfunc_to_go_to_when_the_process_ends_normally(void)
 }
 
 pcb_t *
-spawn(user_prog_pointer program)
+spawn(user_prog_pointer program, uint32_t priority)
 {
     pcb_t *pcb = pcb_alloc();
 
@@ -41,7 +41,7 @@ spawn(user_prog_pointer program)
     kdebug_printint(pcb->pid);
     kdebug_println("");
 
-    pcb->priority = 20;
+    pcb->priority = priority;
     pcb->sleepleft = 0;
     pcb->is_blocked = 0;
 

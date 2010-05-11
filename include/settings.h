@@ -63,4 +63,8 @@
 #define EXCN_STACK_SIZE 0x4000
 #endif
 
+#ifndef PROCESS_DEFAULT_PRIORITY 
+#define PROCESS_DEFAULT_PRIORITY 100
+#endif
+
 #endif

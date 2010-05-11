@@ -138,9 +138,9 @@ set_status_reg(void)
 }
 
 uint32_t
-kexec(user_prog_pointer program)
+kexec(user_prog_pointer program, uint32_t priority)
 {
-    pcb_t *pcb = spawn(program);
+    pcb_t *pcb = spawn(program, priority);
     /* Error handling here XXXXXXX */
     sch_schedule(pcb);
     return pcb->pid;
@@ -187,14 +187,12 @@ setup_scheduler(void)
 
     sch_init();
 
-    idle_process = spawn(idle);
-    idle_process->priority = 1;
-    idle_process->pid = 666;
+    idle_process = spawn(idle, 0);
 
     sch_schedule(idle_process);
-    sch_schedule(spawn(fib));  /* remove XXXXX */
-    sch_schedule(spawn(incr)); /* remove XXXXX */
-    sch_schedule(spawn(maltascr)); /* remove XXXXX */
+    sch_schedule(spawn(fib, PROCESS_DEFAULT_PRIORITY));  /* remove XXXXX */
+    sch_schedule(spawn(incr, PROCESS_DEFAULT_PRIORITY)); /* remove XXXXX */
+    sch_schedule(spawn(maltascr, PROCESS_DEFAULT_PRIORITY)); /* remove XXXXX */
 
     /* Initialise timer to interrupt in 50 ms (simulated time). */
     kload_timer(50 * timer_msec);
