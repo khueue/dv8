@@ -122,17 +122,17 @@ tty_manager_dispatch_message(const char str[])
     {
         pcb_t *process = NULL;
         msg_t *msg = msg_alloc();
-        int integer = 0;
+        
         if (!msg)
         {
             /* Fail! XXXXXX */
         }
+        
         msg->type = MSG_TYPE_CONSOLE_INPUT;
-        integer = atoi(str);
-        if (integer != 0 || strcmp(str, "0") == 0)
+        msg->data.integer = atoi(str);
+        if (msg->data.integer != 0 || strcmp(str, "0") == 0)
         {
             msg->data_type = MSG_DATA_TYPE_INTEGER;
-            msg->data.integer = integer;
         }
         else
         {
