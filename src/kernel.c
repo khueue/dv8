@@ -142,9 +142,9 @@ read_from_console(void)
 {
     pcb_t *pcb = sch_get_currently_running_process();
     
-    tty_manager_subscribe_to_input(pcb);
+    tty_manager_add_input_listener(pcb);
     block_self();
-    tty_manager_unsubscribe_from_input(pcb);
+    tty_manager_remove_input_listener(pcb);
 
     return fifo_dequeue(&pcb->inbox_q);
 }

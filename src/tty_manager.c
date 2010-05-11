@@ -20,8 +20,8 @@
 typedef struct bounded_fifo bounded_fifo_t;
 struct bounded_fifo
 {
-  uint8_t buf[TTY_FIFO_SIZE];
-  uint32_t pos_next_free;
+    uint8_t buf[TTY_FIFO_SIZE];
+    uint32_t pos_next_free;
 };
 
 /*
@@ -35,12 +35,6 @@ struct bounded_fifo
  */
 static stack_t
 g_input_stack;
-
-static char
-g_line_buf[STR_BUF_SIZE];
-
-static size_t
-g_line_buf_pos;
 
 /*
  * XXXXXXXXXX
@@ -94,7 +88,7 @@ bfifo_get(bounded_fifo_t *bfifo)
  * XXXXX
  */
 void
-tty_manager_subscribe_to_input(pcb_t *pcb)
+tty_manager_add_input_listener(pcb_t *pcb)
 {
     stack_push(&g_input_stack, pcb);
 }
@@ -103,7 +97,7 @@ tty_manager_subscribe_to_input(pcb_t *pcb)
  * XXXXX
  */
 void
-tty_manager_unsubscribe_from_input(pcb_t *pcb)
+tty_manager_remove_input_listener(pcb_t *pcb)
 {
     stack_remove(&g_input_stack, pcb);
 }
@@ -118,6 +112,67 @@ tty_manager_has_characters(void)
 }
 
 /*
+ * XXXXXXXX
+ */
+static void
+tty_manager_dispatch_message(const char str[])
+{
+    /* Send input message to process if we have any input listeners. */
+    if (g_input_stack.length > 0)
+    {
+        pcb_t *process = NULL;
+        msg_t *msg = msg_alloc();
+        int integer = 0;
+        if (!msg)
+        {
+            /* Fail! XXXXXX */
+        }
+        msg->type = MSG_TYPE_CONSOLE_INPUT;
+        integer = atoi(str);
+        if (integer != 0 || strcmp(str, "0") == 0)
+        {
+            msg->data_type = MSG_DATA_TYPE_INTEGER;
+            msg->data.integer = integer;
+        }
+        else
+        {
+            msg->data_type = MSG_DATA_TYPE_STRING;
+            strcpy(msg->data.string, str);
+        }
+        process = stack_peek(&g_input_stack);
+        fifo_enqueue(&process->inbox_q, msg);
+        kunblock(process->pid);
+    }
+}
+
+/*
+ * Successively builds a complete line of characters from input.
+ */
+static void
+tty_manager_build_line(uint8_t c)
+{
+    static char buf[STR_BUF_SIZE] = { '\0' };
+    static size_t pos = 0;
+
+    /* Add to buffer only if there is room. */
+    if (pos < sizeof(buf))
+    {
+        buf[pos++] = c;
+    }
+
+    /* If the last character received was a return, proceed to finish. */
+    if (c == '\r')
+    {
+        /* Terminate both the newline and the end of string, to be safe. */
+        buf[pos-1] = '\0';
+        buf[sizeof(buf)-1] = '\0';
+        pos = 0;
+
+        tty_manager_dispatch_message(buf);
+    }
+}
+
+/*
  * XXXXXX
  */
 void
@@ -129,47 +184,7 @@ tty_manager_put_char(uint8_t c)
         bfifo_put(&g_bfifo, '\n');
     }
 
-    /* Add to buffer only if there is room. */
-    if (g_line_buf_pos < sizeof(g_line_buf))
-    {
-        g_line_buf[g_line_buf_pos++] = c;
-    }
-
-    /* If the last character pressed was a return, proceed to finish. */
-    if (c == '\r')
-    {
-        /* Terminate both the newline and at end of string, to be safe. */
-        g_line_buf[g_line_buf_pos-1] = '\0';
-        g_line_buf[sizeof(g_line_buf)-1] = '\0';
-        g_line_buf_pos = 0;
-
-        /* Send input message to process if we have any input listeners. */
-        if (g_input_stack.length > 0)
-        {
-            pcb_t *process = NULL;
-            msg_t *msg = msg_alloc();
-            int x;
-            if (!msg)
-            {
-                /* Fail! XXXXXX */
-            }
-            msg->type = MSG_TYPE_CONSOLE_INPUT;
-            x = atoi(g_line_buf);
-            if (x != 0 || strcmp(g_line_buf, "0") == 0)
-            {
-                msg->data_type = MSG_DATA_TYPE_INTEGER;
-                msg->data.integer = x;
-            }
-            else
-            {
-                msg->data_type = MSG_DATA_TYPE_STRING;
-                strcpy(msg->data.string, g_line_buf);
-            }
-            process = stack_peek(&g_input_stack);
-            fifo_enqueue(&process->inbox_q, msg);
-            kunblock(process->pid);
-        }
-    }
+    tty_manager_build_line(c);
 }
 
 /*
