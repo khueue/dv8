@@ -46,4 +46,7 @@ kblock(uint32_t pid);
 void
 kunblock(uint32_t pid);
 
+void
+kblock_self(void);
+
 #endif

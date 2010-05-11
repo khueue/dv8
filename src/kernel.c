@@ -198,6 +198,13 @@ kunblock(uint32_t pid)
     sch_run();
 }
 
+void
+kblock_self()
+{
+    uint32_t pid = sch_get_currently_running_process()->pid;
+    kblock(pid);
+}
+
 /*
  * Sets up the
  */
