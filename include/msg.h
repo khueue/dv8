@@ -13,7 +13,8 @@
 typedef enum
 {
    MSG_TYPE_ARGUMENT,
-   MSG_TYPE_OTHER
+   MSG_TYPE_CONSOLE_INPUT,
+   MSG_TYPE_UNKNOWN
 } msg_type_t;
 
 /*

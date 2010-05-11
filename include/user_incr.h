@@ -4,9 +4,6 @@
 #include "utils.h"
 
 void
-incr_impl(void);
-
-void
 incr(void);
 
 #endif
