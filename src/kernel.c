@@ -10,6 +10,8 @@
 #include "pcb.h"
 #include "spawn.h"
 #include "scheduler.h"
+#include "tty_manager.h"
+#include "msg.h"
 
 #include "user_fib.h"
 #include "user_incr.h"
@@ -146,6 +148,19 @@ kexec(user_prog_pointer program, uint32_t priority)
     return pcb->pid;
 }
 
+/*
+ * XXXXXXX remove etc
+ */
+msg_t *
+read_inbox_message(void)
+{
+    pcb_t *pcb = sch_get_currently_running_process();
+    while (pcb->inbox_q.length == 0)
+    {
+    }
+    return fifo_dequeue(&pcb->inbox_q);
+}
+
 uint32_t
 kgetpid(void)
 {
@@ -191,12 +206,15 @@ static void
 setup_scheduler(void)
 {
     pcb_t *idle_process = NULL;
+    pcb_t *fib_process = NULL;
     
     sch_init();
 
     idle_process = spawn(idle, 0);
     sch_schedule(idle_process);
-    sch_schedule(spawn(fib, PROCESS_DEFAULT_PRIORITY));  /* remove XXXXX */
+    fib_process = spawn(fib, PROCESS_DEFAULT_PRIORITY);
+    sch_schedule(fib_process);  /* remove XXXXX */
+    tty_manager_register_for_input(fib_process);
     sch_schedule(spawn(incr, PROCESS_DEFAULT_PRIORITY)); /* remove XXXXX */
     sch_schedule(spawn(maltascr, PROCESS_DEFAULT_PRIORITY)); /* remove XXXXX */
     

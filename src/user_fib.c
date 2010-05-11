@@ -1,6 +1,9 @@
 #include "utils.h"
 #include "kernel_api.h"
 
+#include "kernel.h" /* SUPER REMOVE XXXXXXXXX */
+#include "msg.h"
+
 #include "user_fib.h"
 #include "user_incr.h"
 
@@ -26,7 +29,8 @@ fib_recursive(int n)
 void
 fib(void)
 {
-
+    msg_t *msg = NULL;
+    
     /* Spawn an increment, just for fun. */
     {
         uint32_t pid = exec(incr);
@@ -34,6 +38,10 @@ fib(void)
         kdebug_printint(pid);
         kdebug_println("");
     }
+
+    msg = read_inbox_message();
+    kdebug_print("------ MESSAGE FOR FIB: ");
+    kdebug_println(msg->data.string);
 
     size_t i = 0;
     for (i = 0; i < 10; ++i)

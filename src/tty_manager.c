@@ -3,6 +3,7 @@
 #include "asm.h"
 #include "tty_manager.h"
 #include "stack.h"
+#include "msg.h"
 
 /*
  * ---------------------------------------------------------------------------
@@ -26,14 +27,11 @@ struct bounded_fifo
  * ---------------------------------------------------------------------------
  */
 
-#if 0
 /*
  * XXXXX processes wanting input
  */
 static stack_t
 g_input_stack;
-
-#endif
 
 static char
 line_buf[STR_BUF_SIZE];
@@ -90,6 +88,15 @@ bfifo_get(bounded_fifo_t *bfifo)
 }
 
 /*
+ * XXXXX
+ */
+void
+tty_manager_register_for_input(pcb_t *pcb)
+{
+    stack_push(&g_input_stack, pcb);
+}
+
+/*
  * XXXXXXXX
  */
 int
@@ -113,9 +120,26 @@ tty_manager_put_char(uint8_t c)
     *line_buf_pos++ = c;
     if (c == '\r')
     {
-        *line_buf_pos++ = '\0';
+        *--line_buf_pos = '\0';
         line_buf_pos = line_buf;
+
         /* copy line_buf into some top of stack process' message XXXXXXXXX */
+        {
+            pcb_t *process = NULL;
+            msg_t *msg = msg_alloc();
+            if (!msg)
+            {
+                /* Fail! XXXXXX */
+            }
+            msg->type = MSG_TYPE_ARGUMENT;
+            msg->data_type = MSG_DATA_TYPE_STRING;
+            kdebug_println("-----------############1------------");
+            strcpy(msg->data.string, line_buf);
+            kdebug_println("-----------############2------------");
+            process = stack_peek(&g_input_stack);
+            fifo_enqueue(&process->inbox_q, msg);
+        }
+
         kdebug_println("");
         kdebug_print("line_buf: ");
         kdebug_println(line_buf);

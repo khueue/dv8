@@ -61,6 +61,25 @@ stack_pop(stack_t *stack)
     return data;
 }
 
+
+
+/*
+ * XXXXXXReturns the first data of the queue.
+ */
+void *
+stack_peek(stack_t *stack)
+{
+    kdebug_assert(stack);
+
+    if (stack->length == 0)
+    {
+        /* XXXXXXX ojojojoj */
+    }
+
+    return stack->head->data;
+}
+
+
 /*
  * ---------------------------------------------------------------------------
  * Main for module testing.

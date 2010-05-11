@@ -3,12 +3,17 @@
 
 #include "utils.h"
 #include "pcb.h"
+#include "msg.h"
 
 /*
  * ---------------------------------------------------------------------------
  * Functions.
  * ---------------------------------------------------------------------------
  */
+
+/* crap remove XXXXXX */
+msg_t *
+read_inbox_message(void);
 
 void
 save_process_state(pcb_t *pcb);
