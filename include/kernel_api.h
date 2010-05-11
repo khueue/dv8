@@ -34,4 +34,7 @@ block(uint32_t pid);
 void
 unblock(uint32_t pid);
 
+void
+block_self(void);
+
 #endif
