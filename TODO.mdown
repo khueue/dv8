@@ -22,8 +22,8 @@ Process Handling
 The operating system should provide the concept of processes that run pseudo-parallel to each other by sharing time on the single processor in the system.
 ###PH1: Process States
 
-* Processes should be possible to block.
-* A blocked process should not be able to run until it is unblocked.
+* __FIXED__ Processes should be possible to block.
+* __FIXED__ A blocked process should not be able to run until it is unblocked.
 * __FIXED__ It should be possible to delay a process for a specified amount of time.
 * __FIXED__ When a process is delayed, it should not be able to execute any code.
 
@@ -32,7 +32,7 @@ The operating system should provide the concept of processes that run pseudo-par
 * __FIXED__ Each process should have a priority.
 * __FIXED__ The number of priority levels should be at least 30.
 * __FIXED__ Priorities should be specified at process start.
-* __XXX__ (return status) Priorities should be changeable at run-time. 
+* __FIXED__ Priorities should be changeable at run-time. 
 
 ###PH3: Process Scheduling
 
@@ -52,8 +52,8 @@ Scheduling should be highest-priority first, with preemption. In particular:
 ###PH5: Process Creation
 
 * __FIXED__ Processes should be able to create new processes.
-* __XXX__ Processes are created by a spawn operation that starts a new process with a given code to run (see requirement PH7).
-* __XXX__ The spawn operation should return the ID of the created process.
+* __FIXED__ Processes are created by a spawn operation that starts a new process with a given code to run (see requirement PH7).
+* __FIXED__ The spawn operation should return the ID of the created process.
 * If the process spawning fails for some reason, an error should be reported.
 
 ###PH6: Process Termination

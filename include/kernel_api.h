@@ -28,10 +28,10 @@ sleep(int time);
 uint32_t
 change_priority(uint32_t pid, uint32_t priority);
 
-void
+uint32_t
 block(uint32_t pid);
 
-void
+uint32_t
 unblock(uint32_t pid);
 
 void
