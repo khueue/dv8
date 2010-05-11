@@ -61,8 +61,6 @@ stack_pop(stack_t *stack)
     return data;
 }
 
-
-
 /*
  * XXXXXXReturns the first data of the queue.
  */
@@ -78,7 +76,6 @@ stack_peek(stack_t *stack)
 
     return stack->head->data;
 }
-
 
 /*
  * ---------------------------------------------------------------------------

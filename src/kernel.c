@@ -93,25 +93,6 @@ printstr(const char str[])
 }
 #endif
 
-#if 0
-/*
- * Displays a value on the Malta display.
- */
-void
-display_word(uint32_t word);
-void
-display_word(uint32_t word)
-{
-    int i = 0;
-    malta->ledbar.reg = 0xFF;
-    for (i = 7; i >= 0; --i)
-    {
-        malta->asciipos[i].value = '0' + (word % 10);
-        word /= 10;
-    }
-}
-#endif
-
 /*
  * Configures the CPU to enable interrupts etc.
  */

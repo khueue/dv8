@@ -133,9 +133,7 @@ tty_manager_put_char(uint8_t c)
             }
             msg->type = MSG_TYPE_ARGUMENT;
             msg->data_type = MSG_DATA_TYPE_STRING;
-            kdebug_println("-----------############1------------");
             strcpy(msg->data.string, line_buf);
-            kdebug_println("-----------############2------------");
             process = stack_peek(&g_input_stack);
             fifo_enqueue(&process->inbox_q, msg);
         }
