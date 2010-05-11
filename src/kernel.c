@@ -164,6 +164,7 @@ kkill_self(void)
 {
     pcb_t* pcb = sch_get_currently_running_process();
     sch_remove_from_run(pcb);
+    pcb->state = PROCESS_STATE_TERMINATED;
     pcb = pcb_free(pcb);
     sch_run();
 }
@@ -177,6 +178,12 @@ ksleep(int time)
     sch_run();
 }
 
+void
+kchange_priority(uint32_t pid, uint32_t priority)
+{
+    sch_change_priority(pid, priority);
+}
+
 /*
  * Sets up the
  */
@@ -184,16 +191,15 @@ static void
 setup_scheduler(void)
 {
     pcb_t *idle_process = NULL;
-
+    
     sch_init();
 
     idle_process = spawn(idle, 0);
-
     sch_schedule(idle_process);
     sch_schedule(spawn(fib, PROCESS_DEFAULT_PRIORITY));  /* remove XXXXX */
     sch_schedule(spawn(incr, PROCESS_DEFAULT_PRIORITY)); /* remove XXXXX */
     sch_schedule(spawn(maltascr, PROCESS_DEFAULT_PRIORITY)); /* remove XXXXX */
-
+    
     /* Initialise timer to interrupt in 50 ms (simulated time). */
     kload_timer(50 * timer_msec);
 }

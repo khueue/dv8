@@ -8,6 +8,7 @@
     .globl do_syscall
     .globl kill_self
     .globl sleep
+    .globl change_priority
 
     # syscall_handler:
     #   Enables argument passing for up
@@ -45,5 +46,10 @@ kill_self:
 
 sleep:
     la v0, ksleep
+    syscall
+    jr ra
+
+change_priority:
+    la v0, kchange_priority
     syscall
     jr ra
