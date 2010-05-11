@@ -67,4 +67,16 @@
 #define PROCESS_DEFAULT_PRIORITY 100
 #endif
 
+#ifndef MALTA_SLEEP_TIME
+#define MALTA_SLEEP_TIME 500
+#endif
+
+#ifndef DEFAULT_MALTA_TEXT
+#define DEFAULT_MALTA_TEXT "Kernel Panic ***"
+#endif
+
+#ifndef MESSAGE_MAX_LENGTH
+#define MESSAGE_MAX_LENGTH 1024
+#endif
+
 #endif

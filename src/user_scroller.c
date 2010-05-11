@@ -2,6 +2,7 @@
 #include "malta.h"
 #include "kernel_api.h"
 #include "user_scroller.h"
+#include "settings.h"
 
 /*
  * ---------------------------------------------------------------------------
@@ -17,16 +18,19 @@ maltascr(void)
     int strpos = 0;
     int init = 0;
 
-    /* Funkar för alla strängar utom något som BÖRJAR med null */
-
-    uint8_t tomalta[] = "Kernel Panic ***";
+    uint8_t tomalta[MAX_MESSAGE_LENGTH];
+    tomalta[] = DEFAULT_MALTA_TEXT;
 
     malta->ledbar.reg = 0xFF;
 
 	int done;
 
     while(1) {
-    
+        /* Kolla inbox efter meddelanden, ladda isf in meddelande i tomalta[] */
+        
+        /* Sen kör vi! */
+        if (tomalta[0] != 0)
+        {
             if((init > 0) && (tomalta[init-1] == 0))
             {
                 init = 0;
@@ -47,8 +51,14 @@ maltascr(void)
                     malta->asciipos[done].value = tomalta[strpos++];
                 }
             }
-
-        /* Done printing to malta, jump back to scheduler ...somehow*/
-        sleep(1000);
+        }
+        else
+        {
+            for (done = 0; done < 8; done++)
+            {
+                malta->ascipos[done].value = 0;
+            }
+        }
+        sleep(MALTA_SLEEP_TIME);
     }
 }
