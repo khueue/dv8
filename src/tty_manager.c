@@ -94,7 +94,7 @@ bfifo_get(bounded_fifo_t *bfifo)
  * XXXXX
  */
 void
-tty_manager_subscribe_for_input(pcb_t *pcb)
+tty_manager_subscribe_to_input(pcb_t *pcb)
 {
     stack_push(&g_input_stack, pcb);
 }

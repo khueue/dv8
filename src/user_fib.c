@@ -42,6 +42,10 @@ fib(void)
         msg_t *msg = read_from_console();
         if (msg->data_type == MSG_DATA_TYPE_STRING)
         {
+            if (strcmp(msg->data.string, "kill") == 0)
+            {
+                kill_self();
+            }
             kdebug_print("------ STRING FOR FIB: \"");
             kdebug_print(msg->data.string);
             kdebug_println("\"");

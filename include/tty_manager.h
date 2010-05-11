@@ -11,7 +11,7 @@
  */
 
 void
-tty_manager_subscribe_for_input(pcb_t *pcb);
+tty_manager_subscribe_to_input(pcb_t *pcb);
 
 void
 tty_manager_unsubscribe_from_input(pcb_t *pcb);
