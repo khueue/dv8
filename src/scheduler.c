@@ -213,7 +213,7 @@ sch_change_priority(uint32_t pid, uint32_t priority)
 /*
  * Block process
  */
-void
+uint32_t
 sch_block(uint32_t pid)
 {
     pcb_t *process = NULL;
@@ -223,7 +223,7 @@ sch_block(uint32_t pid)
     {
         process->state = PROCESS_STATE_BLOCKED;
         prio_enqueue(&g_wait, process);
-        return;
+        return 1;
     }
 
     process = prio_remove(&g_ready, &pid);
@@ -231,7 +231,7 @@ sch_block(uint32_t pid)
     {
         process->state = PROCESS_STATE_BLOCKED;
         prio_enqueue(&g_wait, process);
-        return;
+        return 1;
     }
 
     process = prio_remove(&g_wait, &pid);
@@ -239,14 +239,16 @@ sch_block(uint32_t pid)
     {
         process->state = PROCESS_STATE_BLOCKED;
         prio_enqueue(&g_wait, process);
-        return;
+        return 1;
     }
+    
+    return 0;
 }
 
 /*
  * Unblock process
  */
-void
+uint32_t
 sch_unblock(uint32_t pid)
 {
     pcb_t *process = NULL;
@@ -254,9 +256,12 @@ sch_unblock(uint32_t pid)
     process = prio_remove(&g_wait, &pid);
     if (process)
     {
-        process->state = PROCESS_STATE_READY;
         process->sleepleft = 0;
+        process->state = PROCESS_STATE_READY;
+        prio_enqueue(&g_ready, process);    
         
-        return;
+        return 1;
     }
+    
+    return 0;
 }
