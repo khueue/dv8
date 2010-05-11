@@ -22,7 +22,7 @@ void
 restore_process_state(const pcb_t *pcb);
 
 uint32_t
-kexec(user_prog_pointer program, uint32_t priority);
+kexec(user_program_pointer program, uint32_t priority);
 
 uint32_t
 kgetpid(void);

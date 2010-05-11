@@ -10,7 +10,7 @@
  */
 
 pcb_t *
-spawn(user_prog_pointer program, uint32_t priority);
+spawn(user_program_pointer program, uint32_t priority);
 
 void
 terminate_this_process(void);

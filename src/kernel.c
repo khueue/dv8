@@ -121,7 +121,7 @@ set_status_reg(void)
 }
 
 uint32_t
-kexec(user_prog_pointer program, uint32_t priority)
+kexec(user_program_pointer program, uint32_t priority)
 {
     pcb_t *pcb = spawn(program, priority);
     /* Error handling here XXXXXXX */
