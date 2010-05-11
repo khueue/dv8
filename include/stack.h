@@ -18,6 +18,7 @@ struct stack
     list_node_t *head;
     list_node_t *foot;
     size_t length;
+    int (*is_match)(void *data, void *id);
 };
 
 /*
@@ -27,7 +28,7 @@ struct stack
  */
 
 void
-stack_init(stack_t *stack);
+stack_init(stack_t *stack, int (*is_match)(void *data, void *id));
 
 void
 stack_push(stack_t *stack, void *data);
@@ -36,6 +37,9 @@ void *
 stack_pop(stack_t *stack);
 
 void *
-stack_peek(stack_t *stack);
+stack_remove(stack_t *stack, void *date);
+
+void *
+stack_peek(const stack_t *stack);
 
 #endif

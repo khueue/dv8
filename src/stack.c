@@ -12,9 +12,10 @@
  * XXXXXXXXInit the queue.
  */
 void
-stack_init(stack_t *stack)
+stack_init(stack_t *stack, int (*is_match)(void *data, void *id))
 {
     ZERO_STRUCT(stack);
+    stack->is_match = is_match;
 }
 
 /*
@@ -65,7 +66,19 @@ stack_pop(stack_t *stack)
  * XXXXXXReturns the first data of the queue.
  */
 void *
-stack_peek(stack_t *stack)
+stack_remove(stack_t *stack, void *id)
+{
+    /* XXXXXXXXXX should implement remove instead!!! */
+    (void)id;
+    stack_pop(stack);
+    return NULL;
+}
+
+/*
+ * XXXXXXReturns the first data of the queue.
+ */
+void *
+stack_peek(const stack_t *stack)
 {
     kdebug_assert(stack);
 
@@ -115,7 +128,8 @@ main(void)
 
     stack_t stack;
 
-    stack_init(&stack);
+    stack_init(&stack, pcb_has_pid);
+
     stack_push(&stack, &d1);
     printf("push: \"%f\"\n",d1);
     stack_testprint(&stack);
