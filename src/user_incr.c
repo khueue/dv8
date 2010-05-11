@@ -1,6 +1,7 @@
 #include "user_incr.h"
 #include "utils.h"
 #include "kernel_api.h"
+#include "scheduler.h"
 
 void
 incr_impl(void)
@@ -22,7 +23,7 @@ incr(void)
     while (1)
     {
         kdebug_println("Incr zombieing");
-        sleep(700);
+       
     }
     /* We should never get here! */
 }

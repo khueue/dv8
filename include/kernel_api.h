@@ -25,7 +25,7 @@ exec(user_prog_pointer program);
 void
 sleep(int time);
 
-void
+uint32_t
 change_priority(uint32_t pid, uint32_t priority);
 
 void

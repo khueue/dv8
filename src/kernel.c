@@ -174,10 +174,10 @@ ksleep(int time)
     sch_run();
 }
 
-void
+uint32_t
 kchange_priority(uint32_t pid, uint32_t priority)
 {
-    sch_change_priority(pid, priority);
+    return sch_change_priority(pid, priority);
 }
 
 void

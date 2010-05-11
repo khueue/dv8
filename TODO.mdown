@@ -31,8 +31,8 @@ The operating system should provide the concept of processes that run pseudo-par
 
 * __FIXED__ Each process should have a priority.
 * __FIXED__ The number of priority levels should be at least 30.
-* Priorities should be specified at process start.
-* Priorities should be changeable at run-time.
+* __FIXED__ Priorities should be specified at process start.
+* __XXX__ (return status) Priorities should be changeable at run-time. 
 
 ###PH3: Process Scheduling
 
