@@ -23,6 +23,7 @@ incr(void)
     while (1)
     {
         kdebug_println("Incr zombieing");
+        sleep(300);
        
     }
     /* We should never get here! */

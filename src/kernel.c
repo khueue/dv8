@@ -180,18 +180,20 @@ kchange_priority(uint32_t pid, uint32_t priority)
     return sch_change_priority(pid, priority);
 }
 
-void
+uint32_t
 kblock(uint32_t pid)
 {
-    sch_block(pid);
+    uint32_t r = sch_block(pid);
     sch_run();
+    return r;
 }
 
-void
+uint32_t
 kunblock(uint32_t pid)
 {
-    sch_unblock(pid);
+    uint32_t r = sch_unblock(pid);
     sch_run();
+    return r;
 }
 
 void
@@ -209,17 +211,16 @@ setup_scheduler(void)
 {
     pcb_t *idle_process = NULL;
     pcb_t *fib_process = NULL;
-    
+
     sch_init();
 
     idle_process = spawn(idle, 0);
     sch_schedule(idle_process);
     fib_process = spawn(fib, PROCESS_DEFAULT_PRIORITY);
     sch_schedule(fib_process);  /* remove XXXXX */
-    tty_manager_register_for_input(fib_process);
-    sch_schedule(spawn(incr, PROCESS_DEFAULT_PRIORITY)); /* remove XXXXX */
+    tty_manager_subscribe_for_input(fib_process);
     sch_schedule(spawn(maltascr, PROCESS_DEFAULT_PRIORITY)); /* remove XXXXX */
-    
+
     /* Initialise timer to interrupt in 50 ms (simulated time). */
     kload_timer(50 * timer_msec);
 }
