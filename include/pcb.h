@@ -11,6 +11,19 @@
  */
 
 /*
+ * Process state
+ */
+typedef enum
+{
+    PROCESS_STATE_RUNNING,
+    PROCESS_STATE_READY,
+    PROCESS_STATE_SLEEPING,
+    PROCESS_STATE_BLOCKED,
+    PROCESS_STATE_NEW,
+    PROCESS_STATE_TERMINATED
+} process_state_t;
+
+/*
  * Process Control Block. Contains a process' registers and stack, and
  * anything else relevant to the process.
  */
@@ -20,8 +33,8 @@ struct pcb
     uint32_t pid;
     uint32_t priority;
     int32_t sleepleft;
-    uint8_t is_blocked;
     fifo_queue_t inbox_q;
+    process_state_t state;
     registers_t regs;
     uint8_t stack[PROCESS_STACK_SIZE];
 

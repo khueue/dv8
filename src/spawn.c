@@ -43,7 +43,7 @@ spawn(user_prog_pointer program, uint32_t priority)
 
     pcb->priority = priority;
     pcb->sleepleft = 0;
-    pcb->is_blocked = 0;
+    pcb->state = PROCESS_STATE_NEW;
 
     pcb->regs.epc_reg = (uint32_t)program;
 

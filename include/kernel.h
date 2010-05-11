@@ -37,4 +37,7 @@ kexception(void);
 void
 ksleep(int time);
 
+void
+kchange_priority(uint32_t pid, uint32_t priority);
+
 #endif

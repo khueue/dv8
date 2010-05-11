@@ -22,4 +22,7 @@ sch_remove_from_run(pcb_t *pcb);
 pcb_t *
 sch_get_currently_running_process(void);
 
+void
+sch_change_priority(uint32_t pid, uint32_t prio);
+
 #endif

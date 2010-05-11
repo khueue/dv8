@@ -106,13 +106,14 @@ sch_run(void)
     {
         process = (pcb_t *)prio_iterator_next(&g_wait);
 
-        if (pcb_is_done_sleeping(process) && !process->is_blocked)
+        if (pcb_is_done_sleeping(process) && (process->state != PROCESS_STATE_BLOCKED))
         {
             prio_remove(&g_wait, &process->pid);
             prio_iterator_reset(&g_wait);
             
-            prio_enqueue(&g_ready, process);           
-        }        
+            process->state = PROCESS_STATE_READY;
+            prio_enqueue(&g_ready, process);
+        }
     }
 
     /*
@@ -123,6 +124,7 @@ sch_run(void)
     {
         save_process_state(process);
         prio_dequeue(&g_run);
+        process->state = PROCESS_STATE_READY;
         prio_enqueue(&g_ready, process);
     }
 
@@ -131,6 +133,8 @@ sch_run(void)
      * load its state into the CPU.
      */
     process = prio_dequeue(&g_ready);
+    
+    process->state = PROCESS_STATE_RUNNING;
     prio_enqueue(&g_run, process);
     restore_process_state(process);
 
@@ -145,13 +149,13 @@ sch_run(void)
 void
 sch_schedule(pcb_t *pcb)
 {
+    pcb->state = PROCESS_STATE_READY;
     prio_enqueue(&g_ready, pcb);
 }
 
 /*
  * Lulls a process to sleep.
  */
-
 void
 sch_sleep(void)
 {
@@ -166,6 +170,40 @@ sch_sleep(void)
     {
         save_process_state(process);
         prio_dequeue(&g_run);
+        process->state = PROCESS_STATE_SLEEPING;
         prio_enqueue(&g_wait, process);
+    }
+}
+
+/*
+ * Change priority
+ */
+void
+sch_change_priority(uint32_t pid, uint32_t priority)
+{
+    pcb_t *process = NULL;
+
+    process = prio_remove(&g_run, &pid);
+    if (process)
+    {
+        process->priority = priority;
+        prio_enqueue(&g_run, process);
+        return;
+    }
+
+    process = prio_remove(&g_ready, &pid);
+    if (process)
+    {
+        process->priority = priority;
+        prio_enqueue(&g_ready, process);
+        return;
+    }
+
+    process = prio_remove(&g_wait, &pid);
+    if (process)
+    {
+        process->priority = priority;
+        prio_enqueue(&g_wait, process);
+        return;
     }
 }
