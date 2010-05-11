@@ -18,8 +18,8 @@ maltascr(void)
     int strpos = 0;
     int init = 0;
 
-    uint8_t tomalta[MAX_MESSAGE_LENGTH];
-    tomalta[] = DEFAULT_MALTA_TEXT;
+    uint8_t tomalta[MESSAGE_MAX_LENGTH];
+    strcpy(tomalta, DEFAULT_MALTA_TEXT);
 
     malta->ledbar.reg = 0xFF;
 
@@ -56,7 +56,7 @@ maltascr(void)
         {
             for (done = 0; done < 8; done++)
             {
-                malta->ascipos[done].value = 0;
+                malta->asciipos[done].value = 0;
             }
         }
         sleep(MALTA_SLEEP_TIME);
