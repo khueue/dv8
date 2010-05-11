@@ -117,7 +117,6 @@ prio_remove(prio_queue_t *q, void *find)
     void *data = NULL;
 
     kdebug_assert(q != NULL);
-    kdebug_assert(q->length > 0);
 
     /* While when still in queue or requested node is found */
     while (node && !q->match_fun(node->data, find))
