@@ -12,6 +12,7 @@
     .globl block
     .globl unblock
     .globl block_self
+    .globl kill
 
     # syscall_handler:
     #   Enables argument passing for up
@@ -44,6 +45,11 @@ do_syscall:
     # Input:XXXXXX
 kill_self:
     la v0, kkill_self
+    syscall
+    jr ra
+
+kill:
+    la v0, kkill
     syscall
     jr ra
 

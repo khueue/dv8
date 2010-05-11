@@ -265,3 +265,32 @@ sch_unblock(uint32_t pid)
     
     return 0;
 }
+
+/*
+ * Remove process
+ */
+pcb_t *
+sch_unschedule(uint32_t pid)
+{
+    pcb_t *process = NULL;
+
+    process = prio_remove(&g_run, &pid);
+    if (process)
+    {
+        return process;
+    }
+
+    process = prio_remove(&g_ready, &pid);
+    if (process)
+    {
+        return process;
+    }
+
+    process = prio_remove(&g_wait, &pid);
+    if (process)
+    {
+        return process;
+    }
+    
+    return NULL;
+}

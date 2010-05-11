@@ -166,10 +166,19 @@ void
 kkill_self(void)
 {
     pcb_t* pcb = sch_get_currently_running_process();
-    sch_remove_from_run(pcb);
+    kkill(pcb->pid);
+}
+
+uint32_t
+kkill(uint32_t pid) 
+{
+    pcb_t *pcb = NULL;
+    
+    pcb = sch_unschedule(pid);
     pcb->state = PROCESS_STATE_TERMINATED;
     pcb = pcb_free(pcb);
     sch_run();
+    return pcb == NULL; /* XXXX */
 }
 
 void

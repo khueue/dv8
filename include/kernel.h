@@ -29,6 +29,9 @@ getpid(void);
 void
 kkill_self(void);
 
+uint32_t
+kkill(uint32_t pid);
+
 void
 kinit(void);
 
