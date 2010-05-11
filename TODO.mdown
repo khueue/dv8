@@ -23,34 +23,34 @@ The basic requirements are divided into a number of categories, each detailing a
 Process Handling
 
 The operating system should provide the concept of processes that run pseudo-parallel to each other by sharing time on the single processor in the system.
-PH1: Process States
+###PH1: Process States
 
 * Processes should be possible to block.
 * A blocked process should not be able to run until it is unblocked.
 * __FIXED__ It should be possible to delay a process for a specified amount of time.
-* __XXX__ When a process is delayed, it should not be able to execute any code.
+* __FIXED__ When a process is delayed, it should not be able to execute any code.
 
 ###PH2: Process Priorities
 
 * __FIXED__ Each process should have a priority.
 * __FIXED__ The number of priority levels should be at least 30.
-* __FIXED__ Priorities should be specified at process start.
+* Priorities should be specified at process start.
 * Priorities should be changeable at run-time.
 
 ###PH3: Process Scheduling
 
 Scheduling should be highest-priority first, with preemption. In particular:
 
-* A higher-priority process should be scheduled in preference to a lower-priority process.
+* __FIXED__ A higher-priority process should be scheduled in preference to a lower-priority process.
 * __FIXED__ Between processes of the same priority, round-robin scheduling should be used.
-* Higher-priority processes should be able to preempt lower-priority processes.
+* __FIXED__ Higher-priority processes should be able to preempt lower-priority processes.
 * __FIXED__ There should be a recurring regular check for which process to run, unrelated to whether a particular task has finished its work.
 * __FIXED__ A lower priority process should not be allowed to run if there is a higher priority process ready to run. We expect strict highest-priority-first scheduling.
 
 ###PH4: Process Identities
 
 * __FIXED__ Each process should have a unique ID that can be used to address the process and perform operations on it.
-* __XXX__ A process may have a human-readable name.
+* A process may have a human-readable name.
 
 ###PH5: Process Creation
 
@@ -68,17 +68,17 @@ Scheduling should be highest-priority first, with preemption. In particular:
 ###PH7: Programs and Processes
 
 * __FIXED__ Each process runs the code of a particular program.
-* __XXX__ The program to execute in a process is specified when the process starts.
+* __FIXED__  The program to execute in a process is specified when the process starts.
 * __XXX__ Each program should have an ID that is used to identify it when starting a process.
 * Each program should have a human-readable name associated with it. This might be the same as the ID.
 * There should be a global table of available programs.
-* It should be possible to start every program in multiple simultaneous instances.
+* __FIXED__ It should be possible to start every program in multiple simultaneous instances.
 
 ###PH8: Process Information
 
 * A process should be able to obtain information about another process.
 * The information should include:
-  - Process priority
+  - __FIXED__ Process priority
   - Process name, if such is used
   - Name of the program running in the process
   - Current scheduling state of the process
@@ -87,15 +87,15 @@ Scheduling should be highest-priority first, with preemption. In particular:
 
 ###PH9: Resource Recycling
 
-* When a process is terminated, all resources that it has allocated should be reclaimed.
-* Process IDs should be recycled.
-* The operating system should never "leak" memory, if there are dynamically allocated or assigned resources.
+* __FIXED__ When a process is terminated, all resources that it has allocated should be reclaimed.
+* __FIXED__ Process IDs should be recycled.
+* __FIXED__ The operating system should never "leak" memory, if there are dynamically allocated or assigned resources.
 
 ###PH10: Process Limitations
 
-* There can be a fixed upper limit on the number of processes allowed in the  system.
-* Process IDs should be reused, as per requirement PH9.
-* Any fixed upper limits must be easy to modify, using a #define or similar C construct.
+* __FIXED__ There can be a fixed upper limit on the number of processes allowed in the  system.
+* __FIXED__ Process IDs should be reused, as per requirement PH9.
+* __FIXED__ Any fixed upper limits must be easy to modify, using a #define or similar C construct.
 
  
 ##Input and Output
@@ -103,11 +103,11 @@ Scheduling should be highest-priority first, with preemption. In particular:
 The system has to provide some kind of input and output facility to do interesting work.
 ###IO1: Text Consoles
 
-* The system should provide at least one text console for input and output.
+* __FIXED__ The system should provide at least one text console for input and output.
 
 ###IO2: Interrupt-Driven IO
 
-* Text input and output shall be implemented using interrupt-driven IO on the serial port of the system.
+* __FIXED__ Text input and output shall be implemented using interrupt-driven IO on the serial port of the system.
 
 ###IO3: Text Output
 
@@ -121,7 +121,7 @@ The system has to provide some kind of input and output facility to do interesti
 
 ###IO5: Malta LCD Output
 
-* It should be possible for a process to output text to the Malta LCD display
+* __XXX__ It should be possible for a process to output text to the Malta LCD display
 
  
 ##System Application Programming Interface (API)
@@ -133,7 +133,7 @@ The operating system should provide an API for user programs.
 
 ###A2: Syscall
 
-* The MIPS Syscall exception mechanism should be used to implemented the API.
+* __FIXED__ The MIPS Syscall exception mechanism should be used to implemented the API.
 
 ###A3: Documentation
 
@@ -145,14 +145,14 @@ The operating system should provide an API for user programs.
 There are some other requirements that do not fit conveniently under the headings above.
 ###O1: No Shared Memory
 
-* Processes should never use shared variables or memory to communicate.
-* It is not necessary for the operating system to rigorously enforce this condition.
+* __FIXED__ Processes should never use shared variables or memory to communicate.
+* __FIXED__ It is not necessary for the operating system to rigorously enforce this condition.
 
 ###O2: Reentrancy
 
 It should be possible to execute multiple instances of the same program concurrently. In particular, this means that:
 
-* A program cannot use "static" variables in C or global variables.
+* __FIXED__ A program cannot use "static" variables in C or global variables.
 * Any attempts at using names to identify processes has to allow for the dynamic creation of names.
 
 ###O3: Error Handling
