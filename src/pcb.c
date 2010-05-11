@@ -58,9 +58,20 @@ pcb_init_freelist(void)
 void
 pcb_assign_pid(pcb_t *pcb)
 {
-    /* pcb1@0, pcb2@1*sizeof(pcb_t), pcb3@2*sizeof(pcb_t), ... */
+    /*
+     * pcb[0] @ mem_offset 0
+     * pcb[1] @ mem_offset 1*sizeof(pcb_t)
+     * pcb[2] @ mem_offset 2*sizeof(pcb_t)
+     * ...
+     */
     size_t mem_offset = (size_t)pcb - (size_t)g_pcbs;
-    /* pid1:1, pid2:2, pid3:3, ... */
+
+    /*
+     * pcb[0].pid == (0 / sizeof(pcb_t)) + 1 == 1
+     * pcb[0].pid == (1*sizeof(pcb_t) / sizeof(pcb_t)) + 1 == 2
+     * pcb[0].pid == (2*sizeof(pcb_t) / sizeof(pcb_t)) + 1 == 3
+     * ...
+     */
     pcb->pid = (mem_offset / sizeof(*pcb)) + 1;
 }
 
