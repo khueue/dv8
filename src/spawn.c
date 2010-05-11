@@ -8,13 +8,6 @@
 #include "kernel.h"
 
 void
-terminate_this_process(void)
-{
-    /* What does this do? */
-    kdebug_println("terminating process");
-}
-
-void
 kfunc_to_go_to_when_the_process_ends_normally(void)
 {
     kill_self();

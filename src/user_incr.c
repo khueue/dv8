@@ -18,7 +18,6 @@ incr(void)
 {
     kdebug_println("start of incr");
     incr_impl();
-    /*terminate_this_process();*/
     kdebug_println("end of incr");
     while (1)
     {
