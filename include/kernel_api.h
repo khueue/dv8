@@ -28,4 +28,13 @@ sleep(int time);
 void
 change_priority(uint32_t pid, uint32_t priority);
 
+void
+block(uint32_t pid);
+
+void
+unblock(uint32_t pid);
+
+void
+block_self(void);
+
 #endif
