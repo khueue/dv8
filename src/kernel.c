@@ -153,7 +153,7 @@ read_from_console(void)
  * XXXXXXXXXX
  */
 uint32_t
-ksend_message_to_pid(uint32_t pid, msg_t *msg)
+ksend_message_to_process(uint32_t pid, msg_t *msg)
 {
     pcb_t *receiver = NULL;
 
