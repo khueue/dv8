@@ -125,17 +125,8 @@ tty_manager_create_message(const char str[])
         /* Fail! XXXXXX */
     }
 
-    msg->type = MSG_TYPE_CONSOLE_INPUT;
-    msg->data.integer = atoi(str);
-    if (msg->data.integer != 0 || strcmp(str, "0") == 0)
-    {
-        msg->data_type = MSG_DATA_TYPE_INTEGER;
-    }
-    else
-    {
-        msg->data_type = MSG_DATA_TYPE_STRING;
-        strcpy(msg->data.string, str);
-    }
+    msg_type_set_console_input(msg);
+    msg_data_set_string(msg, str);
 
     return msg;
 }

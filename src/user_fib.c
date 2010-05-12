@@ -44,6 +44,7 @@ fib(void)
         {
             if (strcmp(msg_data_get_string(msg), "kill") == 0)
             {
+                kdebug_println("Killing fib now ...");
                 kill_self();
             }
             kdebug_print("------ STRING FOR FIB: \"");
