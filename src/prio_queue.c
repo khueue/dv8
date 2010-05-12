@@ -159,6 +159,24 @@ prio_remove(prio_queue_t *q, void *find)
     return data;
 }
 
+/*
+ * XXXXXXXXXXXX
+ */
+void *
+prio_find(prio_queue_t *q, void *id)
+{
+    list_node_t *node = q->foot;
+
+    kdebug_assert(q);
+
+    while (node && !q->match_fun(node->data, id))
+    {
+        node = node->prev;
+    }
+
+    return (node) ? node->data : NULL;
+}
+
 void
 prio_iterator_reset(prio_queue_t *q)
 {

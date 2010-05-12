@@ -63,6 +63,35 @@ sch_remove_from_run(pcb_t *pcb)
 }
 
 /*
+ * XXXXXX
+ */
+pcb_t *
+sch_find_process(uint32_t pid)
+{
+    pcb_t *process = NULL;
+
+    process = prio_find(&g_run, &pid);
+    if (process)
+    {
+        return process;
+    }
+
+    process = prio_find(&g_ready, &pid);
+    if (process)
+    {
+        return process;
+    }
+
+    process = prio_find(&g_wait, &pid);
+    if (process)
+    {
+        return process;
+    }
+    
+    return NULL;
+}
+
+/*
  * Returns the process currently in the run queue, or NULL if queue is empty.
  */
 pcb_t *
@@ -110,7 +139,7 @@ sch_run(void)
         {
             prio_remove(&g_wait, &process->pid);
             prio_iterator_reset(&g_wait);
-            
+
             process->state = PROCESS_STATE_READY;
             prio_enqueue(&g_ready, process);
         }
@@ -133,7 +162,7 @@ sch_run(void)
      * load its state into the CPU.
      */
     process = prio_dequeue(&g_ready);
-    
+
     process->state = PROCESS_STATE_RUNNING;
     prio_enqueue(&g_run, process);
     restore_process_state(process);
@@ -206,7 +235,7 @@ sch_change_priority(uint32_t pid, uint32_t priority)
         prio_enqueue(&g_wait, process);
         return 1;
     }
-    
+
     return 0;
 }
 
@@ -241,7 +270,7 @@ sch_block(uint32_t pid)
         prio_enqueue(&g_wait, process);
         return 1;
     }
-    
+
     return 0;
 }
 
@@ -258,11 +287,11 @@ sch_unblock(uint32_t pid)
     {
         process->sleepleft = 0;
         process->state = PROCESS_STATE_READY;
-        prio_enqueue(&g_ready, process);    
-        
+        prio_enqueue(&g_ready, process);
+
         return 1;
     }
-    
+
     return 0;
 }
 
@@ -291,6 +320,6 @@ sch_unschedule(uint32_t pid)
     {
         return process;
     }
-    
+
     return NULL;
 }

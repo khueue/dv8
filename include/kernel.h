@@ -45,6 +45,9 @@ msg_t *
 read_from_console(void);
 
 uint32_t
+ksend_message_to_pid(uint32_t pid, msg_t *msg);
+
+uint32_t
 kchange_priority(uint32_t pid, uint32_t priority);
 
 uint32_t

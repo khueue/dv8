@@ -133,7 +133,7 @@ kexec(user_program_pointer program, uint32_t priority)
 static msg_t *
 dequeue_first_message_by_type(fifo_queue_t *q, msg_type_t msg_type)
 {
-    
+
 }
 #endif
 
@@ -141,12 +141,37 @@ msg_t *
 read_from_console(void)
 {
     pcb_t *pcb = sch_get_currently_running_process();
-    
+
     tty_manager_add_input_listener(pcb);
     block_self();
     tty_manager_remove_input_listener(pcb);
 
     return fifo_dequeue(&pcb->inbox_q);
+}
+
+/*
+ * XXXXXXXXXX
+ */
+uint32_t
+ksend_message_to_pid(uint32_t pid, msg_t *msg)
+{
+    pcb_t *receiver = NULL;
+
+    receiver = sch_find_process(pid);
+    if (!receiver)
+    {
+        /* No such active process! */
+        return 0;
+    }
+
+    fifo_enqueue(&receiver->inbox_q, msg);
+    if (0)
+    {
+        /* full inbox! XXXXX */
+        return 0;
+    }
+
+    return 005;
 }
 
 uint32_t
@@ -170,10 +195,10 @@ kkill_self(void)
 }
 
 uint32_t
-kkill(uint32_t pid) 
+kkill(uint32_t pid)
 {
     pcb_t *pcb = NULL;
-    
+
     pcb = sch_unschedule(pid);
     pcb->state = PROCESS_STATE_TERMINATED;
     pcb = pcb_free(pcb);

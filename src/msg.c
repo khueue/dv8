@@ -83,7 +83,7 @@ msg_t *
 msg_free(msg_t *msg)
 {
     kdebug_assert(msg);
-    
+
     msg->next_free = g_freelist;
     g_freelist = msg;
     return NULL;

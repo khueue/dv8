@@ -3,6 +3,7 @@
 
 #include "utils.h"
 #include "registers.h"
+#include "msg.h"
 
 /*
  * ---------------------------------------------------------------------------
@@ -30,6 +31,9 @@ sleep(int time);
 
 uint32_t
 change_priority(uint32_t pid, uint32_t priority);
+
+uint32_t
+send_message_to_pid(uint32_t pid, msg_t *msg);
 
 uint32_t
 block(uint32_t pid);

@@ -13,6 +13,7 @@
     .globl unblock
     .globl block_self
     .globl kill
+    .globl send_message_to_pid
 
     # syscall_handler:
     #   Enables argument passing for up
@@ -75,5 +76,10 @@ unblock:
     
 block_self:
     la v0, kblock_self
+    syscall
+    jr ra
+
+send_message_to_pid:
+    la v0, ksend_message_to_pid
     syscall
     jr ra
