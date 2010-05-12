@@ -185,6 +185,22 @@ msg_get_sender_pid(const msg_t *msg)
     return msg->sender_pid;
 }
 
+void
+msg_set_receiver_pid(msg_t *msg, uint32_t receiver_pid)
+{
+    kdebug_assert(msg);
+
+    msg->receiver_pid = receiver_pid;
+}
+
+uint32_t
+msg_get_receiver_pid(const msg_t *msg)
+{
+    kdebug_assert(msg);
+
+    return msg->receiver_pid;
+}
+
 int
 msg_data_is_string(const msg_t *msg)
 {

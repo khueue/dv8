@@ -125,17 +125,8 @@ tty_manager_create_message(const char str[])
         /* Fail! XXXXXX */
     }
 
-    msg->type = MSG_TYPE_CONSOLE_INPUT;
-    msg->data.integer = atoi(str);
-    if (msg->data.integer != 0 || strcmp(str, "0") == 0)
-    {
-        msg->data_type = MSG_DATA_TYPE_INTEGER;
-    }
-    else
-    {
-        msg->data_type = MSG_DATA_TYPE_STRING;
-        strcpy(msg->data.string, str);
-    }
+    msg_type_set_console_input(msg);
+    msg_data_set_string(msg, str);
 
     return msg;
 }
@@ -154,8 +145,10 @@ tty_manager_dispatch_message(const char str[])
 
         msg = tty_manager_create_message(str);
         process = stack_peek(&g_input_stack);
-        fifo_enqueue(&process->inbox_q, msg);
-        kunblock(process->pid);
+        msg_set_receiver_pid(msg, process->pid);
+        ksend_message(msg);
+        /*fifo_enqueue(&process->inbox_q, msg);
+        kunblock(process->pid);*/
     }
 }
 

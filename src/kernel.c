@@ -154,11 +154,11 @@ read_from_console(void)
  * XXXXXXXXXX
  */
 uint32_t
-ksend_message_to_process(uint32_t pid, msg_t *msg)
+ksend_message(msg_t *msg)
 {
     pcb_t *receiver = NULL;
 
-    receiver = sch_find_process(pid);
+    receiver = sch_find_process(msg_get_receiver_pid(msg));
     if (!receiver)
     {
         /* No such active process! */
@@ -254,18 +254,19 @@ setup_scheduler(void)
 {
     pcb_t *idle_process = NULL;
     pcb_t *shell_process = NULL;
+    pcb_t *fib_process = NULL;
 
     sch_init();
 
     idle_process = spawn(idle, 0);
     sch_schedule(idle_process);
-   
+
+    fib_process = spawn(fib, PROCESS_DEFAULT_PRIORITY);
+    sch_schedule(fib_process);
+
     shell_process = spawn(shell, PROCESS_DEFAULT_PRIORITY);
     sch_schedule(shell_process);
-     /*
-    fib_process = spawn(fib, PROCESS_DEFAULT_PRIORITY);
-    sch_schedule(fib_process);   */
-    
+
     sch_schedule(spawn(maltascr, PROCESS_DEFAULT_PRIORITY)); /* remove XXXXX */
 
     /* Initialise timer to interrupt in 50 ms (simulated time). */

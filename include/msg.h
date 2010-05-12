@@ -44,6 +44,7 @@ struct _msg
     } data;
 
     uint32_t sender_pid;
+    uint32_t receiver_pid;
     uint32_t priority;
 
     /* Internal freelist pointer. */
@@ -79,6 +80,9 @@ uint32_t msg_get_priority(const msg_t *msg);
 
 void     msg_set_sender_pid(msg_t *msg, uint32_t sender_pid);
 uint32_t msg_get_sender_pid(const msg_t *msg);
+
+void     msg_set_receiver_pid(msg_t *msg, uint32_t receiver_pid);
+uint32_t msg_get_receiver_pid(const msg_t *msg);
 
 int         msg_data_is_string(const msg_t *msg);
 void        msg_data_set_string(msg_t *msg, const char string[]);
