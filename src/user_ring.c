@@ -36,4 +36,5 @@ ring(int number_of_nodes)
     send_int_message(pids[number_of_nodes], pids[0]);
     
     send_string_message_and_awaken(pids[0], "hej hopp");
+    */
 }

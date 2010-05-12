@@ -92,4 +92,7 @@ int  msg_data_is_integer(const msg_t *msg);
 void msg_data_set_integer(msg_t *msg, int integer);
 int  msg_data_get_integer(const msg_t *msg);
 
+msg_t *
+create_string_message(char *str, uint32_t receiver_pid);
+
 #endif

@@ -15,7 +15,7 @@
 
 
 void
-ringnode(void)
+ringnode()
 {
     /*
     msg_t *message = NULL;
