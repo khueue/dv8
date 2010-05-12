@@ -32,7 +32,7 @@ struct prio_queue
 
 void
 prio_init_queue(
-    prio_queue_t *q, 
+    prio_queue_t *q,
     int (*cmp_fun)(void *, void *),
     int (*match_fun)(void *, void *));
 
@@ -44,6 +44,9 @@ prio_dequeue(prio_queue_t *q);
 
 void *
 prio_remove(prio_queue_t *q, void *find);
+
+void *
+prio_find(prio_queue_t *q, void *id);
 
 void
 prio_iterator_reset(prio_queue_t *q);

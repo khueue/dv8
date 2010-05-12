@@ -23,6 +23,9 @@ void
 sch_remove_from_run(pcb_t *pcb);
 
 pcb_t *
+sch_find_process(uint32_t pid);
+
+pcb_t *
 sch_get_currently_running_process(void);
 
 uint32_t

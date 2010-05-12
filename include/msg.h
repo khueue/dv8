@@ -12,9 +12,9 @@
  */
 typedef enum
 {
-   MSG_TYPE_ARGUMENT,
-   MSG_TYPE_CONSOLE_INPUT,
-   MSG_TYPE_UNKNOWN
+    MSG_TYPE_UNKNOWN,
+    MSG_TYPE_ARGUMENT,
+    MSG_TYPE_CONSOLE_INPUT
 } msg_type_t;
 
 /*
@@ -22,8 +22,9 @@ typedef enum
  */
 typedef enum
 {
-   MSG_DATA_TYPE_INTEGER,
-   MSG_DATA_TYPE_STRING
+    MSG_DATA_TYPE_UNKNOWN,
+    MSG_DATA_TYPE_INTEGER,
+    MSG_DATA_TYPE_STRING
 } msg_data_type_t;
 
 /*
@@ -32,15 +33,16 @@ typedef enum
 typedef struct _msg msg_t;
 struct _msg
 {
-    uint32_t sender_pid;
     msg_type_t type;
-    int priority;
     msg_data_type_t data_type;
     union
     {
-        int  integer;
+        int integer;
         char string[1024];
     } data;
+
+    uint32_t sender_pid;
+    int priority;
 
     /* Internal freelist pointer. */
     msg_t *next_free;
@@ -51,6 +53,24 @@ struct _msg
  * Functions.
  * ---------------------------------------------------------------------------
  */
+
+int
+msg_is_unknown(const msg_t *msg);
+
+int
+msg_is_argument(const msg_t *msg);
+
+int
+msg_is_console_input(const msg_t *msg);
+
+int
+msg_contains_unknown(const msg_t *msg);
+
+int
+msg_contains_string(const msg_t *msg);
+
+int
+msg_contains_integer(const msg_t *msg);
 
 msg_t *
 msg_alloc(void);
