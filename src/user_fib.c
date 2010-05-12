@@ -42,7 +42,7 @@ fib(void)
         msg_t *msg = read_from_console();
         if (msg_data_is_string(msg))
         {
-            if (strcmp(msg_data_get_string(msg), "kill") == 0)
+            if (0 == strcmp(msg_data_get_string(msg), "exit"))
             {
                 kdebug_println("Killing fib now ...");
                 kill_self();

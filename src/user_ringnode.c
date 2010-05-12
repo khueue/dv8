@@ -15,25 +15,30 @@
 
 
 void
-ringnode(int dest_pid)
+ringnode()
 {
-    int i = dest_pid;
-    i++;
     /*
-    char message[];
-    while(!message)
+    msg_t *message = NULL;
+    while(1)
     {
-        block_self();
-        message = read_message()
-        if (message)
+        message = read_message();
+        if (!message)
+        {
+            block_self;
+        }
+        else if (dest_pid == 0)
+        {
+            dest_pid = message_data_get_integer;
+        }
+        else
         {
             print(getpid);
-            print(" recieved message ");
-            print(message);
+            print(" received message ");
+            print(message_data_get_string(message));
             print(" from ");
             println(sender);
-            sleep(2000);
-            send_with_wakeup(message, dest_pid);
+            sleep(1000);
+            send_message_and_awaken(dest_pid, message_data_get_string(message));
         }
     }
     */

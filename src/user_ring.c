@@ -19,14 +19,22 @@ ring(int number_of_nodes)
 {
     int i = number_of_nodes;
     i++;
-    /* int i first_pid, dest_pid;
-    first_pid = dest_pid = exec(ringnode, 0);
     
-    for (i = 0; i < number_of_nodes; i++)
+    /* 
+    
+    int pids[number_of_nodes]; 
+    
+    int i = 0;
+    pids[i] = exec(ringnode);
+    
+    for (i = 1; i < number_of_nodes; i++)
     {
-        dest_pid = exec(ringnode, dest_pid);
+        pids[i] = exec(ringnode);
+        send_int_message(pids[i-1], pids[i]);
     }
-    nån kod som ställer in dest_pid i den första noden
     
-    skicka meddelande till första noden */
+    send_int_message(pids[number_of_nodes], pids[0]);
+    
+    send_string_message_and_awaken(pids[0], "hej hopp");
+    */
 }

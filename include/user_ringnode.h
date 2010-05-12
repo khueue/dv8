@@ -8,6 +8,6 @@
  */
 
 void
-ringnode(int dest_pid);
+ringnode(void);
 
 #endif
