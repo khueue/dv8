@@ -89,6 +89,42 @@ msg_free(msg_t *msg)
     return NULL;
 }
 
+int
+msg_is_unknown(const msg_t *msg)
+{
+    return msg->type == MSG_TYPE_UNKNOWN;
+}
+
+int
+msg_is_argument(const msg_t *msg)
+{
+    return msg->type == MSG_TYPE_ARGUMENT;
+}
+
+int
+msg_is_console_input(const msg_t *msg)
+{
+    return msg->type == MSG_TYPE_CONSOLE_INPUT;
+}
+
+int
+msg_contains_unknown(const msg_t *msg)
+{
+    return msg->data_type == MSG_DATA_TYPE_UNKNOWN;
+}
+
+int
+msg_contains_string(const msg_t *msg)
+{
+    return msg->data_type == MSG_DATA_TYPE_STRING;
+}
+
+int
+msg_contains_integer(const msg_t *msg)
+{
+    return msg->data_type == MSG_DATA_TYPE_INTEGER;
+}
+
 /*
  * ---------------------------------------------------------------------------
  * Main for module testing.

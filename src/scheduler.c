@@ -125,7 +125,7 @@ sch_run(void)
     prio_iterator_reset(&g_wait);
     while (prio_iterator_has_next(&g_wait))
     {
-        process = (pcb_t *)prio_iterator_next(&g_wait);
+        process = prio_iterator_next(&g_wait);
 
         process->sleepleft -= 50 * timer_msec;
     }
@@ -133,7 +133,7 @@ sch_run(void)
     prio_iterator_reset(&g_wait);
     while (prio_iterator_has_next(&g_wait))
     {
-        process = (pcb_t *)prio_iterator_next(&g_wait);
+        process = prio_iterator_next(&g_wait);
 
         if (pcb_is_done_sleeping(process) && (process->state != PROCESS_STATE_BLOCKED))
         {
