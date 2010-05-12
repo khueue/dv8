@@ -170,6 +170,7 @@ ksend_message_to_process(uint32_t pid, msg_t *msg)
         /* full inbox! XXXXX */
         return 0;
     }
+    kunblock(receiver->pid);
 
     return 1;
 }
