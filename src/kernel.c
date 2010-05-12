@@ -171,7 +171,7 @@ ksend_message_to_pid(uint32_t pid, msg_t *msg)
         return 0;
     }
 
-    return 005;
+    return 1;
 }
 
 uint32_t
