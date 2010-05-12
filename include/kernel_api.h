@@ -24,7 +24,7 @@ uint32_t
 ksyscall_handler(registers_t *regs);
 
 uint32_t
-exec(user_program_pointer program);
+exec(const char *program, uint32_t priority);
 
 void
 sleep(int time);

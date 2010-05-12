@@ -43,6 +43,23 @@ g_excn_regs;
  * ---------------------------------------------------------------------------
  */
 
+static program_t 
+g_program_list[3];
+
+
+static void
+init_program_list(void) 
+{
+    strcpy(g_program_list[0].name, "fib");
+    g_program_list[0].func = fib;
+    
+    strcpy(g_program_list[1].name, "incr");
+    g_program_list[1].func = incr;
+    
+    strcpy(g_program_list[2].name, "shell");
+    g_program_list[2].func = shell;
+}
+
 /*
  * Must be called from within an exception. Saves the state of the CPU (the
  * state just before the exception occurred) into the given process.
@@ -122,9 +139,24 @@ set_status_reg(void)
 }
 
 uint32_t
-kexec(user_program_pointer program, uint32_t priority)
+kexec(const char program[], uint32_t priority)
 {
-    pcb_t *pcb = spawn(program, priority);
+    pcb_t *pcb = NULL;
+    int i = 0;
+    
+    for(i = 0; i < 3; i++) 
+    {
+        if(strcmp(program, g_program_list[i].name) == 0)
+        {
+            pcb = spawn(g_program_list[i].func, priority);
+        }      
+    }
+    
+    if(!pcb)
+    {
+        return 0;
+    }
+    
     /* Error handling here XXXXXXX */
     sch_schedule(pcb);
     return pcb->pid;
@@ -254,15 +286,15 @@ setup_scheduler(void)
 {
     pcb_t *idle_process = NULL;
     pcb_t *shell_process = NULL;
-    pcb_t *fib_process = NULL;
+   /* pcb_t *fib_process = NULL; */
 
     sch_init();
 
     idle_process = spawn(idle, 0);
     sch_schedule(idle_process);
 
-    fib_process = spawn(fib, PROCESS_DEFAULT_PRIORITY);
-    sch_schedule(fib_process);
+    /* fib_process = spawn(fib, PROCESS_DEFAULT_PRIORITY);
+    sch_schedule(fib_process);*/
 
     shell_process = spawn(shell, PROCESS_DEFAULT_PRIORITY);
     sch_schedule(shell_process);
@@ -297,6 +329,8 @@ kinit(void)
 
     /* Setup status register in the CPU. */
     set_status_reg();
+    
+    init_program_list();
 
     setup_scheduler();
 

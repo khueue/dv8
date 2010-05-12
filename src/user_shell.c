@@ -1,7 +1,10 @@
 #include "utils.h"
-#include "user_shell.h"
 #include "kernel.h"
 #include "kernel_api.h"
+
+#include "user_shell.h"
+#include "user_fib.h"
+#include "user_incr.h"
 
 static char
 g_line[1024];
@@ -58,12 +61,16 @@ split(char *cmd)
 static int
 command(void)
 {
-    int i = 0;
-    while(g_args[i]) 
+    if(exec(g_args[0], PROCESS_DEFAULT_PRIORITY)) 
     {
-        kdebug_println(g_args[i++]);
+        kdebug_print("Executed ");
+        kdebug_println(g_args[0]);
     }
-
+    else
+    {    
+        kdebug_print("Unknow command ");
+        kdebug_println(g_args[0]);    
+    }            
     return 1;
 }
 
@@ -91,7 +98,7 @@ run(char* cmd)
 void
 shell(void)
 {
-    kdebug_println("SIMPLE SHELL: Type 'exit' or send EOF to exit.");
+    kdebug_println("SIMPLE SHELL: Type 'exit' to exit.");
     while (1)
     {
         msg_t *msg = NULL;
@@ -99,7 +106,6 @@ shell(void)
         /* Print the command prompt */
         kdebug_print("$> ");
         msg = read_from_console();
-        /* Read a command lineXXXX We will use read_from_console()*/
         if (msg->data_type == MSG_DATA_TYPE_STRING)
         {
             strcpy(g_line, msg->data.string);
