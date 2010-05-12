@@ -141,7 +141,7 @@ atoi(const char * str)
 /*
  * See string.h documentation
  */
-char * 
+char *
 strchr(char *str, int character)
 {
     while (*str && *str != character)
