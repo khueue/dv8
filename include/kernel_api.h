@@ -33,7 +33,7 @@ uint32_t
 change_priority(uint32_t pid, uint32_t priority);
 
 uint32_t
-send_message_to_process(uint32_t pid, msg_t *msg);
+send_message(msg_t *msg);
 
 uint32_t
 block(uint32_t pid);
