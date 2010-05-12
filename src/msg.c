@@ -90,39 +90,154 @@ msg_free(msg_t *msg)
 }
 
 int
-msg_is_unknown(const msg_t *msg)
+msg_type_is_unknown(const msg_t *msg)
 {
+    kdebug_assert(msg);
+
     return msg->type == MSG_TYPE_UNKNOWN;
 }
 
-int
-msg_is_argument(const msg_t *msg)
+void
+msg_type_set_unknown(msg_t *msg)
 {
+    kdebug_assert(msg);
+
+    msg->type = MSG_TYPE_UNKNOWN;
+}
+
+int
+msg_type_is_argument(const msg_t *msg)
+{
+    kdebug_assert(msg);
+
     return msg->type == MSG_TYPE_ARGUMENT;
 }
 
-int
-msg_is_console_input(const msg_t *msg)
+void
+msg_type_set_argument(msg_t *msg)
 {
+    kdebug_assert(msg);
+
+    msg->type = MSG_TYPE_ARGUMENT;
+}
+
+int
+msg_type_is_console_input(const msg_t *msg)
+{
+    kdebug_assert(msg);
+
     return msg->type == MSG_TYPE_CONSOLE_INPUT;
 }
 
-int
-msg_contains_unknown(const msg_t *msg)
+void
+msg_type_set_console_input(msg_t *msg)
 {
+    kdebug_assert(msg);
+
+    msg->type = MSG_TYPE_CONSOLE_INPUT;
+}
+
+int
+msg_data_is_unknown(const msg_t *msg)
+{
+    kdebug_assert(msg);
+
     return msg->data_type == MSG_DATA_TYPE_UNKNOWN;
 }
 
-int
-msg_contains_string(const msg_t *msg)
+void
+msg_data_set_unknown(msg_t *msg)
 {
-    return msg->data_type == MSG_DATA_TYPE_STRING;
+    kdebug_assert(msg);
+
+    msg->data_type = MSG_DATA_TYPE_UNKNOWN;
+}
+
+void
+msg_set_priority(msg_t *msg, uint32_t priority)
+{
+    kdebug_assert(msg);
+
+    msg->priority = priority;
+}
+
+uint32_t
+msg_get_priority(const msg_t *msg)
+{
+    kdebug_assert(msg);
+
+    return msg->priority;
+}
+
+void
+msg_set_sender_pid(msg_t *msg, uint32_t sender_pid)
+{
+    kdebug_assert(msg);
+
+    msg->sender_pid = sender_pid;
+}
+
+uint32_t
+msg_get_sender_pid(const msg_t *msg)
+{
+    kdebug_assert(msg);
+
+    return msg->sender_pid;
 }
 
 int
-msg_contains_integer(const msg_t *msg)
+msg_data_is_string(const msg_t *msg)
 {
+    kdebug_assert(msg);
+
+    return msg->data_type == MSG_DATA_TYPE_STRING;
+}
+
+/*
+ * Makes a _copy_ of the string.
+ */
+void
+msg_data_set_string(msg_t *msg, const char string[])
+{
+    kdebug_assert(msg);
+    kdebug_assert(string);
+
+    msg->data_type = MSG_DATA_TYPE_STRING;
+    strcpy(msg->data.string, string);
+    msg->data.string[sizeof(msg->data.string)-1] = '\0';
+}
+
+const char *
+msg_data_get_string(const msg_t *msg)
+{
+    kdebug_assert(msg);
+
+    return msg_data_is_string(msg) ? msg->data.string : NULL;
+}
+
+int
+msg_data_is_integer(const msg_t *msg)
+{
+    kdebug_assert(msg);
+
     return msg->data_type == MSG_DATA_TYPE_INTEGER;
+}
+
+void
+msg_data_set_integer(msg_t *msg, int integer)
+{
+    kdebug_assert(msg);
+
+    msg->data_type = MSG_DATA_TYPE_INTEGER;
+    msg->data.integer = integer;
+}
+
+int
+msg_data_get_integer(const msg_t *msg)
+{
+    kdebug_assert(msg);
+
+    return msg_data_is_integer(msg) ? msg->data.integer : 0; /* XXXX 0? */
 }
 
 /*
