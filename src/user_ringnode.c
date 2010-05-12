@@ -27,7 +27,6 @@ ringnode(int dest_pid)
         message = read_message()
         if (message)
         {
-            println(name);
             println(" recieved message ");
             println(message);
             println(" from ");
