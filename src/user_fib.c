@@ -31,7 +31,7 @@ fib(void)
 {
     /* Spawn an increment, just for fun. */
     {
-        uint32_t pid = exec(incr);
+        uint32_t pid = exec("incr", PROCESS_DEFAULT_PRIORITY);
         kdebug_print("pid = ");
         kdebug_printint(pid);
         kdebug_println("");

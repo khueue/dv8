@@ -6,9 +6,11 @@
 void
 incr(void)
 {
-    while (1)
+    int i;
+    for(i = 0; i < 5; i += 1 )
     {
-        kdebug_println("Incr sleeping ...");
+        kdebug_printint(i);
+        kdebug_println(" - Incr sleeping ...");
         sleep(300);
     }
 }

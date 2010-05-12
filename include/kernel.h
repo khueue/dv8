@@ -5,6 +5,17 @@
 #include "pcb.h"
 #include "msg.h"
 
+
+/*
+ * XXXXXXx
+ */
+typedef struct program program_t;
+struct program
+{
+    char name[256];
+    user_program_pointer func;        
+};
+
 /*
  * ---------------------------------------------------------------------------
  * Functions.
@@ -18,7 +29,7 @@ void
 restore_process_state(const pcb_t *pcb);
 
 uint32_t
-kexec(user_program_pointer program, uint32_t priority);
+kexec(const char program[], uint32_t priority);
 
 uint32_t
 kgetpid(void);
