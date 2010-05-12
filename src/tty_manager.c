@@ -112,6 +112,35 @@ tty_manager_has_characters(void)
 }
 
 /*
+ * XXXXX
+ */
+static msg_t *
+tty_manager_create_message(const char str[])
+{
+    msg_t *msg = NULL;
+
+    msg = msg_alloc();
+    if (!msg)
+    {
+        /* Fail! XXXXXX */
+    }
+
+    msg->type = MSG_TYPE_CONSOLE_INPUT;
+    msg->data.integer = atoi(str);
+    if (msg->data.integer != 0 || strcmp(str, "0") == 0)
+    {
+        msg->data_type = MSG_DATA_TYPE_INTEGER;
+    }
+    else
+    {
+        msg->data_type = MSG_DATA_TYPE_STRING;
+        strcpy(msg->data.string, str);
+    }
+
+    return msg;
+}
+
+/*
  * XXXXXXXX
  */
 static void
@@ -120,25 +149,10 @@ tty_manager_dispatch_message(const char str[])
     /* Send input message to process if we have any input listeners. */
     if (g_input_stack.length > 0)
     {
+        msg_t *msg = NULL;
         pcb_t *process = NULL;
-        msg_t *msg = msg_alloc();
-        int integer = 0;
-        if (!msg)
-        {
-            /* Fail! XXXXXX */
-        }
-        msg->type = MSG_TYPE_CONSOLE_INPUT;
-        integer = atoi(str);
-        if (integer != 0 || strcmp(str, "0") == 0)
-        {
-            msg->data_type = MSG_DATA_TYPE_INTEGER;
-            msg->data.integer = integer;
-        }
-        else
-        {
-            msg->data_type = MSG_DATA_TYPE_STRING;
-            strcpy(msg->data.string, str);
-        }
+
+        msg = tty_manager_create_message(str);
         process = stack_peek(&g_input_stack);
         fifo_enqueue(&process->inbox_q, msg);
         kunblock(process->pid);
