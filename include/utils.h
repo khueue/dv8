@@ -76,4 +76,7 @@ memcpy(void *dst, const void *src, size_t num_bytes);
 int 
 atoi(const char * str);
 
+char * 
+strchr(char *str, int character);
+
 #endif
