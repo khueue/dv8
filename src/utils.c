@@ -139,6 +139,18 @@ atoi(const char * str)
 }
 
 /*
+ * See string.h documentation
+ */
+char * 
+strchr(char *str, int character)
+{
+    while (*str && *str != character)
+    {
+        ++str;
+    }
+    return (*str == character) ? str : NULL;
+}
+/*
  * ---------------------------------------------------------------------------
  * Main for module testing.
  * ---------------------------------------------------------------------------
@@ -270,6 +282,12 @@ main(void)
         printf("\n");
     }
 
+    /* Test strchar */
+    {
+        char str[] = "0123456789";
+        printf("%s\n",strchr(str,'5'));
+        printf("%s\n",strchr(str,'1'));
+    }
     return 0;
 }
 
