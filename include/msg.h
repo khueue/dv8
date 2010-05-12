@@ -32,17 +32,18 @@ typedef enum
 typedef struct _msg msg_t;
 struct _msg
 {
-   msg_type_t type;
-   int priority;
-   msg_data_type_t data_type;
-   union
-   {
-       int  integer;
-       char string[1024];
-   } data;
-   
-   /* Internal freelist pointer. */
-   msg_t *next_free;
+    uint32_t sender_pid;
+    msg_type_t type;
+    int priority;
+    msg_data_type_t data_type;
+    union
+    {
+        int  integer;
+        char string[1024];
+    } data;
+
+    /* Internal freelist pointer. */
+    msg_t *next_free;
 };
 
 /*

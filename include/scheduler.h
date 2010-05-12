@@ -16,6 +16,9 @@ sch_sleep(void);
 void
 sch_schedule(pcb_t *pcb);
 
+pcb_t *
+sch_unschedule(uint32_t pid);
+
 void
 sch_remove_from_run(pcb_t *pcb);
 

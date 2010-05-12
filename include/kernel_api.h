@@ -14,6 +14,9 @@ void
 kill_self(void);
 
 uint32_t
+kill(uint32_t pid);
+
+uint32_t
 do_syscall(uint32_t (*kfunc)(void));
 
 uint32_t

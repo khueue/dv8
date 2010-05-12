@@ -11,10 +11,10 @@
  */
 
 void
-tty_manager_subscribe_for_input(pcb_t *pcb);
+tty_manager_add_input_listener(pcb_t *pcb);
 
 void
-tty_manager_unsubscribe_from_input(pcb_t *pcb);
+tty_manager_remove_input_listener(pcb_t *pcb);
 
 int
 tty_manager_has_characters(void);

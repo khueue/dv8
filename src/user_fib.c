@@ -39,10 +39,27 @@ fib(void)
 
     while (1)
     {
-        msg_t *msg = NULL;
-        msg = read_from_console();
-        kdebug_print("------ MESSAGE FOR FIB: ");
-        kdebug_println(msg->data.string);
+        msg_t *msg = read_from_console();
+        if (msg->data_type == MSG_DATA_TYPE_STRING)
+        {
+            if (strcmp(msg->data.string, "kill") == 0)
+            {
+                kill_self();
+            }
+            kdebug_print("------ STRING FOR FIB: \"");
+            kdebug_print(msg->data.string);
+            kdebug_println("\"");
+        }
+        else if (msg->data_type == MSG_DATA_TYPE_INTEGER)
+        {
+            kdebug_print("------ INTEGER FOR FIB: ");
+            kdebug_printint(msg->data.integer);
+            kdebug_println("");
+        }
+        else
+        {
+            /* Unhandled data type. */
+        }
         msg = msg_free(msg);
     }
 
@@ -55,7 +72,5 @@ fib(void)
         kdebug_printint(fib_recursive(i));
         kdebug_println("");
         sleep(1002);
-
     }
-
 }

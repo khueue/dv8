@@ -59,8 +59,8 @@ Scheduling should be highest-priority first, with preemption. In particular:
 ###PH6: Process Termination
 
 * __FIXED__ Processes should be able to terminate themselves.
-* Processes should be able to terminate other processes.
-* The operating system should be able to terminate processes.
+* __FIXED__ Processes should be able to terminate other processes.
+* __ASK__ The operating system should be able to terminate processes.
 
 ###PH7: Programs and Processes
 

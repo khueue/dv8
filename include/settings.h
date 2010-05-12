@@ -53,7 +53,7 @@
  * XXXXXXXX
  */
 #ifndef STR_BUF_SIZE
-#define STR_BUF_SIZE 1000
+#define STR_BUF_SIZE 1024
 #endif
 
 /*
