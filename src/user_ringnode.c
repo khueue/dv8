@@ -27,9 +27,10 @@ ringnode(int dest_pid)
         message = read_message()
         if (message)
         {
-            println(" recieved message ");
-            println(message);
-            println(" from ");
+            print(getpid);
+            print(" recieved message ");
+            print(message);
+            print(" from ");
             println(sender);
             sleep(2000);
             send_with_wakeup(message, dest_pid);
