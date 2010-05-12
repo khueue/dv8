@@ -40,20 +40,20 @@ fib(void)
     while (1)
     {
         msg_t *msg = read_from_console();
-        if (msg->data_type == MSG_DATA_TYPE_STRING)
+        if (msg_data_is_string(msg))
         {
-            if (strcmp(msg->data.string, "kill") == 0)
+            if (strcmp(msg_data_get_string(msg), "kill") == 0)
             {
                 kill_self();
             }
             kdebug_print("------ STRING FOR FIB: \"");
-            kdebug_print(msg->data.string);
+            kdebug_print(msg_data_get_string(msg));
             kdebug_println("\"");
         }
-        else if (msg->data_type == MSG_DATA_TYPE_INTEGER)
+        else if (msg_data_is_integer(msg))
         {
             kdebug_print("------ INTEGER FOR FIB: ");
-            kdebug_printint(msg->data.integer);
+            kdebug_printint(msg_data_get_integer(msg));
             kdebug_println("");
         }
         else
