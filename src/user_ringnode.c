@@ -24,15 +24,15 @@ ringnode()
         message = read_message();
         if (!message)
         {
-            block_self;
+            block_self();
         }
         else if (dest_pid == 0)
         {
-            dest_pid = message_data_get_integer;
+            dest_pid = message_data_get_integer(message);
         }
         else
         {
-            print(getpid);
+            print(get_pid());
             print(" received message ");
             print(message_data_get_string(message));
             print(" from ");
