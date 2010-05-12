@@ -54,7 +54,7 @@ Scheduling should be highest-priority first, with preemption. In particular:
 * __FIXED__ Processes should be able to create new processes.
 * __FIXED__ Processes are created by a spawn operation that starts a new process with a given code to run (see requirement PH7).
 * __FIXED__ The spawn operation should return the ID of the created process.
-* If the process spawning fails for some reason, an error should be reported.
+* __FIXED__ If the process spawning fails for some reason, an error should be reported.
 
 ###PH6: Process Termination
 
@@ -66,9 +66,9 @@ Scheduling should be highest-priority first, with preemption. In particular:
 
 * __FIXED__ Each process runs the code of a particular program.
 * __FIXED__  The program to execute in a process is specified when the process starts.
-* __XXX__ Each program should have an ID that is used to identify it when starting a process.
-* Each program should have a human-readable name associated with it. This might be the same as the ID.
-* There should be a global table of available programs.
+* __FIXED__ Each program should have an ID that is used to identify it when starting a process.
+* __FIXED__ Each program should have a human-readable name associated with it. This might be the same as the ID.
+* __FIXED__ There should be a global table of available programs.
 * __FIXED__ It should be possible to start every program in multiple simultaneous instances.
 
 ###PH8: Process Information
