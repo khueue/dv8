@@ -154,11 +154,11 @@ read_from_console(void)
  * XXXXXXXXXX
  */
 uint32_t
-ksend_message_to_process(uint32_t pid, msg_t *msg)
+ksend_message(msg_t *msg)
 {
     pcb_t *receiver = NULL;
 
-    receiver = sch_find_process(pid);
+    receiver = sch_find_process(msg_get_receiver_pid(msg));
     if (!receiver)
     {
         /* No such active process! */

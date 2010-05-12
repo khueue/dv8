@@ -13,7 +13,7 @@
     .globl unblock
     .globl block_self
     .globl kill
-    .globl send_message_to_process
+    .globl send_message
 
     # syscall_handler:
     #   Enables argument passing for up
@@ -79,7 +79,7 @@ block_self:
     syscall
     jr ra
 
-send_message_to_process:
-    la v0, ksend_message_to_process
+send_message:
+    la v0, ksend_message
     syscall
     jr ra
