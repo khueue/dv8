@@ -1,5 +1,5 @@
-#include "utils.h"
-#include "user_idle.h"
+#ifndef USER_RINGNODE_H
+#define USER_RINGNODE_H
 
 /*
  * ---------------------------------------------------------------------------
@@ -8,8 +8,6 @@
  */
 
 void
-idle(void)
-{
-    /* do_nothing_forever("Idle process idling ...", 10000000); */
-        while(1) {}
-}
+ringnode(int dest_pid);
+
+#endif

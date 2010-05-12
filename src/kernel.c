@@ -17,6 +17,7 @@
 #include "user_incr.h"
 #include "user_idle.h"
 #include "user_scroller.h"
+#include "user_shell.h"
 
 /*
  * ---------------------------------------------------------------------------
@@ -252,14 +253,19 @@ static void
 setup_scheduler(void)
 {
     pcb_t *idle_process = NULL;
-    pcb_t *fib_process = NULL;
+    pcb_t *shell_process = NULL;
 
     sch_init();
 
     idle_process = spawn(idle, 0);
     sch_schedule(idle_process);
+   
+    shell_process = spawn(shell, PROCESS_DEFAULT_PRIORITY);
+    sch_schedule(shell_process);
+     /*
     fib_process = spawn(fib, PROCESS_DEFAULT_PRIORITY);
-    sch_schedule(fib_process);  /* remove XXXXX */
+    sch_schedule(fib_process);   */
+    
     sch_schedule(spawn(maltascr, PROCESS_DEFAULT_PRIORITY)); /* remove XXXXX */
 
     /* Initialise timer to interrupt in 50 ms (simulated time). */

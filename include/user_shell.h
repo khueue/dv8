@@ -1,9 +1,7 @@
-#include "scheduler.h"
-#include "pcb.h"
-#include "prio_queue.h"
+#ifndef USER_SHELL_H
+#define USER_SHELL_H
 
-void 
-print_tty(char[] str);
+void
+shell(void);
 
-
-
+#endif
