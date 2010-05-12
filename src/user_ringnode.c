@@ -18,7 +18,7 @@ void
 ringnode(void)
 {
     /*
-    message = NULL;
+    msg_t *message = NULL;
     while(1)
     {
         message = read_message();
@@ -28,17 +28,17 @@ ringnode(void)
         }
         else if (dest_pid == 0)
         {
-            dest_pid = message;
+            dest_pid = message_data_get_integer;
         }
         else
         {
             print(getpid);
-            print(" recieved message ");
-            print(message);
+            print(" received message ");
+            print(message_data_get_string(message));
             print(" from ");
             println(sender);
             sleep(1000);
-            send_message_and_awaken(dest_pid, message);
+            send_message_and_awaken(dest_pid, message_data_get_string(message));
         }
     }
     */

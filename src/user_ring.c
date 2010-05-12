@@ -30,10 +30,10 @@ ring(int number_of_nodes)
     for (i = 1; i < number_of_nodes; i++)
     {
         pids[i] = exec(ringnode);
-        send_message(pids[i-1], pids[i]);
+        send_int_message(pids[i-1], pids[i]);
     }
     
-    send_message(pids[number_of_nodes], pids[0]);
+    send_int_message(pids[number_of_nodes], pids[0]);
     
-    send_message_and_awaken(pids[0], "hej hopp");
+    send_string_message_and_awaken(pids[0], "hej hopp");
 }
