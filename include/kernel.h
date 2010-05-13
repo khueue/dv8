@@ -5,7 +5,6 @@
 #include "pcb.h"
 #include "msg.h"
 
-
 /*
  * XXXXXXx
  */
@@ -13,7 +12,7 @@ typedef struct program program_t;
 struct program
 {
     char name[256];
-    user_program_pointer func;        
+    user_program_pointer func;
 };
 
 /*
@@ -36,6 +35,9 @@ kgetpid(void);
 
 uint32_t
 getpid(void);
+
+uint32_t
+kprint_str(const char str[]);
 
 void
 kkill_self(void);

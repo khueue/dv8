@@ -194,14 +194,14 @@ tty_manager_remove_prutt(void)
 void
 tty_manager_put_char(uint8_t c)
 {
-    const uint8_t backspace = 0x8;
-    if (c == backspace)
+    const uint8_t BACKSPACE = 0x8;
+    if (c == BACKSPACE)
     {
         if (g_pos > 0)
         {
-            bfifo_put(&g_bfifo, backspace);
+            bfifo_put(&g_bfifo, BACKSPACE);
             bfifo_put(&g_bfifo, ' ');
-            bfifo_put(&g_bfifo, backspace);
+            bfifo_put(&g_bfifo, BACKSPACE);
             tty_manager_remove_prutt();
         }
     }

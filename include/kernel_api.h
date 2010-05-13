@@ -33,6 +33,9 @@ uint32_t
 change_priority(uint32_t pid, uint32_t priority);
 
 uint32_t
+print_str(const char str[]);
+
+uint32_t
 send_message(msg_t *msg);
 
 uint32_t

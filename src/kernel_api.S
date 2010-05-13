@@ -14,6 +14,7 @@
     .globl block_self
     .globl kill
     .globl send_message
+    .globl print_str
 
     # syscall_handler:
     #   Enables argument passing for up
@@ -76,6 +77,11 @@ unblock:
     
 block_self:
     la v0, kblock_self
+    syscall
+    jr ra
+
+print_str:
+    la v0, kprint_str
     syscall
     jr ra
 

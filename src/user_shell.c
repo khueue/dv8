@@ -81,13 +81,13 @@ command(void)
 {
     if (exec(g_args[0], PROCESS_DEFAULT_PRIORITY))
     {
-        kdebug_print("Executed ");
-        kdebug_println(g_args[0]);
+        print_str("Executed ");
+        print_str(g_args[0]);
     }
     else
     {
-        kdebug_print("Unknown command ");
-        kdebug_println(g_args[0]);
+        print_str("Unknown command ");
+        print_str(g_args[0]);
     }
 
     return 1;

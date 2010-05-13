@@ -43,19 +43,18 @@ g_excn_regs;
  * ---------------------------------------------------------------------------
  */
 
-static program_t 
+static program_t
 g_program_list[3];
 
-
 static void
-init_program_list(void) 
+init_program_list(void)
 {
     strcpy(g_program_list[0].name, "fib");
     g_program_list[0].func = fib;
-    
+
     strcpy(g_program_list[1].name, "incr");
     g_program_list[1].func = incr;
-    
+
     strcpy(g_program_list[2].name, "shell");
     g_program_list[2].func = shell;
 }
@@ -143,20 +142,20 @@ kexec(const char program[], uint32_t priority)
 {
     pcb_t *pcb = NULL;
     int i = 0;
-    
-    for(i = 0; i < 3; i++) 
+
+    for(i = 0; i < 3; i++)
     {
         if(strcmp(program, g_program_list[i].name) == 0)
         {
             pcb = spawn(g_program_list[i].func, priority);
-        }      
+        }
     }
-    
+
     if(!pcb)
     {
         return 0;
     }
-    
+
     /* Error handling here XXXXXXX */
     sch_schedule(pcb);
     return pcb->pid;
@@ -205,6 +204,13 @@ ksend_message(msg_t *msg)
     }
     kunblock(receiver->pid);
 
+    return 1;
+}
+
+uint32_t
+kprint_str(const char str[])
+{
+    kdebug_print(str);
     return 1;
 }
 
@@ -329,7 +335,7 @@ kinit(void)
 
     /* Setup status register in the CPU. */
     set_status_reg();
-    
+
     init_program_list();
 
     setup_scheduler();
