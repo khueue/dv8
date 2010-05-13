@@ -152,30 +152,39 @@ tty_manager_dispatch_message(const char str[])
     }
 }
 
+static char g_buf[STR_BUF_SIZE];
+static size_t g_pos;
+
 /*
  * Successively builds a complete line of characters from input.
  */
 static void
 tty_manager_build_line(uint8_t c)
 {
-    static char buf[STR_BUF_SIZE] = { '\0' };
-    static size_t pos = 0;
-
     /* Add to buffer only if there is room. */
-    if (pos < sizeof(buf))
+    if (g_pos < sizeof(g_buf))
     {
-        buf[pos++] = c;
+        g_buf[g_pos++] = c;
     }
 
     /* If the last character received was a return, proceed to finish. */
     if (c == '\r')
     {
         /* Terminate both the newline and the end of string, to be safe. */
-        buf[pos-1] = '\0';
-        buf[sizeof(buf)-1] = '\0';
-        pos = 0;
+        g_buf[g_pos-1] = '\0';
+        g_buf[sizeof(g_buf)-1] = '\0';
+        g_pos = 0;
 
-        tty_manager_dispatch_message(buf);
+        tty_manager_dispatch_message(g_buf);
+    }
+}
+
+static void
+tty_manager_remove_prutt(void)
+{
+    if (g_pos > 0)
+    {
+        g_buf[--g_pos] = '\0';
     }
 }
 
@@ -185,13 +194,26 @@ tty_manager_build_line(uint8_t c)
 void
 tty_manager_put_char(uint8_t c)
 {
-    bfifo_put(&g_bfifo, c);
-    if (c == '\r')
+    const uint8_t backspace = 0x8;
+    if (c == backspace)
     {
-        bfifo_put(&g_bfifo, '\n');
+        if (g_pos > 0)
+        {
+            bfifo_put(&g_bfifo, backspace);
+            bfifo_put(&g_bfifo, ' ');
+            bfifo_put(&g_bfifo, backspace);
+            tty_manager_remove_prutt();
+        }
     }
-
-    tty_manager_build_line(c);
+    else
+    {
+        bfifo_put(&g_bfifo, c);
+        if (c == '\r')
+        {
+            bfifo_put(&g_bfifo, '\n');
+        }
+        tty_manager_build_line(c);
+    }
 }
 
 /*
