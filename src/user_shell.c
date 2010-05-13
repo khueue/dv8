@@ -97,7 +97,7 @@ command(void)
  * XXXXX
  */
 static int
-run(const char cmd[])
+run(char cmd[])
 {
     split(cmd);
     if (g_args[0])
