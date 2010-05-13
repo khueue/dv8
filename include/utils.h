@@ -80,7 +80,7 @@ char *
 strchr(char *str, int character);
 
 void
-srand(unsigned long seed);
+srand(uint32_t seed);
 
 int
 rand(void);

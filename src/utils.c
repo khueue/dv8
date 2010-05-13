@@ -151,13 +151,18 @@ strchr(char *str, int c)
     return (*str == c) ? str : NULL;
 }
 
-#define RAND_MAX 32767
-static unsigned long g_next = 1;
+/*
+ * Seed used for random number generation.
+ */
+static uint32_t g_next_rand = 1;
 
+/*
+ * Seed the random number generator.
+ */
 void
-srand(unsigned long seed)
+srand(uint32_t seed)
 {
-    g_next = seed;
+    g_next_rand = seed;
 }
 
 /*
@@ -166,8 +171,8 @@ srand(unsigned long seed)
 int
 rand(void)
 {
-    g_next = g_next*1103515245 + 12345;
-    return (unsigned int)(g_next / 65536) % (RAND_MAX + 1);
+    g_next_rand = g_next_rand*1103515245 + 12345;
+    return (int)(g_next_rand / 65536) % (32767 + 1);
 }
 
 /*
@@ -177,6 +182,10 @@ int
 rand_between(int min, int max)
 {
     int r = rand();
+
+    kdebug_assert(min >= 0);
+    kdebug_assert(max >= 0);
+
     while (r < min || r > max)
     {
         r = rand();

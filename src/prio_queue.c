@@ -215,7 +215,12 @@ prio_iterator_has_next(prio_queue_t *q)
 void *
 prio_iterator_next(prio_queue_t *q)
 {
-    void *data = q->current->data;
+    void *data = NULL;
+    
+    kdebug_assert(q);
+    kdebug_assert(q->current);
+    
+    data = q->current->data;
     q->current = q->current->next;
     return data;
 }
@@ -237,18 +242,18 @@ prio_iterator_next(prio_queue_t *q)
 #include <stdio.h>
 
 static int
-comparefun(void *a, void *b)
+comparefun(const void *a, const void *b)
 {
-    int x = *(int *)a;
-    int y = *(int *)b;
+    int x = *(const int *)a;
+    int y = *(const int *)b;
     return x - y;
 }
 
 static int
-findfun(void *a, void *b)
+findfun(const void *a, const void *b)
 {
-    int x = *(int *)a;
-    int y = *(int *)b;
+    int x = *(const int *)a;
+    int y = *(const int *)b;
     return x == y;
 }
 
