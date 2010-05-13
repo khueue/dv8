@@ -21,6 +21,9 @@ typedef enum
     MSG_DATA_TYPE_STRING
 } msg_data_type_t;
 
+/*
+ * Message used for inter-process communication.
+ */
 struct _msg
 {
     msg_type_t type;
