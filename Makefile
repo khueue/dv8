@@ -67,8 +67,11 @@ boot: build
 	@- echo "--- Simulation complete!"
 	@- echo
 
-# Compile everything.
+# Clean and compile everything.
 build: clean $(EXE)
+
+# Compile everything that needs compiling.
+buildfast: $(EXE)
 
 # Build binary from object files.
 $(EXE): $(OBJECTS)
