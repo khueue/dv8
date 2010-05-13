@@ -64,7 +64,7 @@ change_priority:
     la v0, kchange_priority
     syscall
     jr ra
-    
+
 block:
     la v0, kblock
     syscall
@@ -74,7 +74,7 @@ unblock:
     la v0, kunblock
     syscall
     jr ra
-    
+
 block_self:
     la v0, kblock_self
     syscall
