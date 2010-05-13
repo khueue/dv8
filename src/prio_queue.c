@@ -14,12 +14,33 @@
 void
 prio_init_queue(
     prio_queue_t *q,
-    int (*cmp_fun)(void *, void *),
-    int (*match_fun)(void *, void *))
+    int (*cmp_fun)(const void *data1, const void *data2),
+    int (*match_fun)(const void *data, const void *id))
 {
     ZERO_STRUCT(q);
     q->cmp_fun = cmp_fun;
     q->match_fun = match_fun;
+}
+
+/*
+ * Returns true if the queue is empty, false otherwise.
+ */
+int
+prio_is_empty(const prio_queue_t *q)
+{
+    return q->length == 0;
+}
+
+/*
+ * Returns, but does not remove, the first item (highest priority) in the
+ * queue. Returns NULL if the queue is empty.
+ */
+void *
+prio_peek(const prio_queue_t *q)
+{
+    kdebug_assert(q);
+
+    return (prio_is_empty(q)) ? NULL : q->head->data;
 }
 
 /*
@@ -111,7 +132,7 @@ prio_dequeue(prio_queue_t *q)
  * Returns and removes the found data from the queue.
  */
 void *
-prio_remove(prio_queue_t *q, void *find)
+prio_remove(prio_queue_t *q, const void *id)
 {
     list_node_t *node = q->foot;
     void *data = NULL;
@@ -119,7 +140,7 @@ prio_remove(prio_queue_t *q, void *find)
     kdebug_assert(q != NULL);
 
     /* While when still in queue or requested node is found */
-    while (node && !q->match_fun(node->data, find))
+    while (node && !q->match_fun(node->data, id))
     {
         node = node->prev;
     }
@@ -160,15 +181,17 @@ prio_remove(prio_queue_t *q, void *find)
 }
 
 /*
- * XXXXXXXXXXXX
+ * Returns, but does not remove, the first item from the end of the queue that
+ * matches the given id.
  */
 void *
-prio_find(prio_queue_t *q, void *id)
+prio_find(const prio_queue_t *q, const void *id)
 {
-    list_node_t *node = q->foot;
+    list_node_t *node = NULL;
 
     kdebug_assert(q);
 
+    node = q->foot;
     while (node && !q->match_fun(node->data, id))
     {
         node = node->prev;

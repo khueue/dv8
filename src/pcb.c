@@ -91,10 +91,10 @@ pcb_init(pcb_t *pcb)
  *   <0 : Second argument has greater priority.
  */
 int
-pcb_cmp_priority(void *ppcb1, void *ppcb2)
+pcb_cmp_priority(const void *ppcb1, const void *ppcb2)
 {
-    pcb_t *pcb1 = (pcb_t *)ppcb1;
-    pcb_t *pcb2 = (pcb_t *)ppcb2;
+    const pcb_t *pcb1 = (const pcb_t *)ppcb1;
+    const pcb_t *pcb2 = (const pcb_t *)ppcb2;
 
     kdebug_assert(pcb1);
     kdebug_assert(pcb2);
@@ -109,10 +109,10 @@ pcb_cmp_priority(void *ppcb1, void *ppcb2)
  *   <0 : Second argument has less sleep left.
  */
 int
-pcb_cmp_sleepleft(void *ppcb1, void *ppcb2)
+pcb_cmp_sleepleft(const void *ppcb1, const void *ppcb2)
 {
-    pcb_t *pcb1 = (pcb_t *)ppcb1;
-    pcb_t *pcb2 = (pcb_t *)ppcb2;
+    const pcb_t *pcb1 = (const pcb_t *)ppcb1;
+    const pcb_t *pcb2 = (const pcb_t *)ppcb2;
 
     kdebug_assert(pcb1);
     kdebug_assert(pcb2);
@@ -125,25 +125,25 @@ pcb_cmp_sleepleft(void *ppcb1, void *ppcb2)
  * pointed to by ppid.
  */
 int
-pcb_has_pid(void *ppcb, void *ppid)
+pcb_has_pid(const void *ppcb, const void *ppid)
 {
-    pcb_t *pcb = NULL;
-    uint32_t pid = 0;
+    const pcb_t *pcb = NULL;
+    const uint32_t *pid = NULL;
 
     kdebug_assert(ppcb);
     kdebug_assert(ppid);
 
-    pcb = (pcb_t *)ppcb;
-    pid = *(uint32_t *)ppid;
+    pcb = (const pcb_t *)ppcb;
+    pid = (const uint32_t *)ppid;
 
-    return pcb->pid == pid;
+    return pcb->pid == *pid;
 }
 
 /*
  * Returns true if the pcb pointed to by pcb has sleep left 0 or less.
  */
 int
-pcb_is_done_sleeping(pcb_t *pcb)
+pcb_is_done_sleeping(const pcb_t *pcb)
 {
     kdebug_assert(pcb);
 

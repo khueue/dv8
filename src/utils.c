@@ -176,7 +176,12 @@ rand(void)
 int
 rand_between(int min, int max)
 {
-    return (rand() % (max-min+1)) + 1;
+    int r = rand();
+    while (r < min || r > max)
+    {
+        r = rand();
+    }
+    return r;
 }
 
 /*

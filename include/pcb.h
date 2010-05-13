@@ -61,15 +61,15 @@ void
 pcb_init(pcb_t *pcb);
 
 int
-pcb_has_pid(void *ppcb, void *ppid);
+pcb_has_pid(const void *ppcb, const void *ppid);
 
 int
-pcb_cmp_priority(void *pcb1, void *pcb2);
+pcb_cmp_priority(const void *pcb1, const void *pcb2);
 
 int
-pcb_cmp_sleepleft(void *pcb1, void *pcb2);
+pcb_cmp_sleepleft(const void *pcb1, const void *pcb2);
 
 int
-pcb_is_done_sleeping(pcb_t *pcb);
+pcb_is_done_sleeping(const pcb_t *pcb);
 
 #endif
