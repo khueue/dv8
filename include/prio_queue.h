@@ -20,7 +20,7 @@ struct prio_queue
     list_node_t *foot;
     list_node_t *current;
     int (*cmp_fun)(const void *data1, const void *data2);
-    int (*match_fun)(const void *data, const void *id);
+    int (*is_match)(const void *data, const void *id);
     size_t length;
 };
 
@@ -34,7 +34,7 @@ void
 prio_init_queue(
     prio_queue_t *q,
     int (*cmp_fun)(const void *data1, const void *data2),
-    int (*match_fun)(const void *data, const void *id));
+    int (*is_match)(const void *data, const void *id));
 
 int
 prio_is_empty(const prio_queue_t *q);

@@ -15,11 +15,11 @@ void
 prio_init_queue(
     prio_queue_t *q,
     int (*cmp_fun)(const void *data1, const void *data2),
-    int (*match_fun)(const void *data, const void *id))
+    int (*is_match)(const void *data, const void *id))
 {
     ZERO_STRUCT(q);
     q->cmp_fun = cmp_fun;
-    q->match_fun = match_fun;
+    q->is_match = is_match;
 }
 
 /*
@@ -28,6 +28,8 @@ prio_init_queue(
 int
 prio_is_empty(const prio_queue_t *q)
 {
+    kdebug_assert(q);
+
     return q->length == 0;
 }
 
@@ -140,7 +142,7 @@ prio_remove(prio_queue_t *q, const void *id)
     kdebug_assert(q != NULL);
 
     /* While when still in queue or requested node is found */
-    while (node && !q->match_fun(node->data, id))
+    while (node && !q->is_match(node->data, id))
     {
         node = node->prev;
     }
@@ -192,7 +194,7 @@ prio_find(const prio_queue_t *q, const void *id)
     kdebug_assert(q);
 
     node = q->foot;
-    while (node && !q->match_fun(node->data, id))
+    while (node && !q->is_match(node->data, id))
     {
         node = node->prev;
     }
