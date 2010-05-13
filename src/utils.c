@@ -142,14 +142,43 @@ atoi(const char * str)
  * See string.h documentation
  */
 char *
-strchr(char *str, int character)
+strchr(char *str, int c)
 {
-    while (*str && *str != character)
+    while (*str && *str != c)
     {
         ++str;
     }
-    return (*str == character) ? str : NULL;
+    return (*str == c) ? str : NULL;
 }
+
+#define RAND_MAX 32767
+static unsigned long g_next = 1;
+
+void
+srand(unsigned long seed)
+{
+    g_next = seed;
+}
+
+/*
+ * Returns a pseudo-random number in [0, RAND_MAX).
+ */
+int
+rand(void)
+{
+    g_next = g_next*1103515245 + 12345;
+    return (unsigned int)(g_next / 65536) % (RAND_MAX + 1);
+}
+
+/*
+ * Returns a pseudo-random number in [min, max].
+ */
+int
+rand_between(int min, int max)
+{
+    return (rand() % (max-min+1)) + 1;
+}
+
 /*
  * ---------------------------------------------------------------------------
  * Main for module testing.
@@ -282,12 +311,28 @@ main(void)
         printf("\n");
     }
 
-    /* Test strchar */
+    /* Test strchar. */
     {
         char str[] = "0123456789";
-        printf("%s\n",strchr(str,'5'));
-        printf("%s\n",strchr(str,'1'));
+        printf("%s\n", strchr(str,'5'));
+        printf("%s\n", strchr(str,'1'));
+        printf("\n");
     }
+
+    /* Test rand. */
+    {
+        size_t i = 0;
+        for (i = 0; i < 5; ++i)
+        {
+            printf("rand() = %d\n", rand());
+        }
+        for (i = 0; i < 10; ++i)
+        {
+            printf("rand_between(1, 3) = %d\n", rand_between(1, 3));
+        }
+        printf("\n");
+    }
+
     return 0;
 }
 

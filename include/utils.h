@@ -73,10 +73,19 @@ memset(void *dst, int value, size_t num_bytes);
 void *
 memcpy(void *dst, const void *src, size_t num_bytes);
 
-int 
+int
 atoi(const char * str);
 
-char * 
+char *
 strchr(char *str, int character);
+
+void
+srand(unsigned long seed);
+
+int
+rand(void);
+
+int
+rand_between(int min, int max);
 
 #endif
