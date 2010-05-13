@@ -2,6 +2,44 @@
 #include "msg.h"
 
 /*
+ * Determines the type of the message.
+ */
+typedef enum
+{
+    MSG_TYPE_UNKNOWN,
+    MSG_TYPE_ARGUMENT,
+    MSG_TYPE_CONSOLE_INPUT
+} msg_type_t;
+
+/*
+ * Determines the type of data the message contains.
+ */
+typedef enum
+{
+    MSG_DATA_TYPE_UNKNOWN,
+    MSG_DATA_TYPE_INTEGER,
+    MSG_DATA_TYPE_STRING
+} msg_data_type_t;
+
+struct _msg
+{
+    msg_type_t type;
+    msg_data_type_t data_type;
+    union
+    {
+        int32_t integer;
+        uint8_t string[STR_BUF_SIZE];
+    } data;
+
+    uint32_t sender_pid;
+    uint32_t receiver_pid;
+    uint32_t priority;
+
+    /* Internal freelist pointer. */
+    msg_t *next_free;
+};
+
+/*
  * ---------------------------------------------------------------------------
  * Globals.
  * ---------------------------------------------------------------------------

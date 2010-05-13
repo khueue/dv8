@@ -106,9 +106,9 @@ shell(void)
         /* Print the command prompt */
         kdebug_print("$> ");
         msg = read_from_console();
-        if (msg->data_type == MSG_DATA_TYPE_STRING)
+        if (msg_data_is_string(msg))
         {
-            strcpy(g_line, msg->data.string);
+            strcpy(g_line, msg_data_get_string(msg));
         }
 
         run(g_line);
