@@ -14,11 +14,11 @@
 void
 prio_init_queue(
     prio_queue_t *q,
-    int (*cmp_fun)(const void *data1, const void *data2),
+    int (*compare)(const void *data1, const void *data2),
     int (*is_match)(const void *data, const void *id))
 {
     ZERO_STRUCT(q);
-    q->cmp_fun = cmp_fun;
+    q->compare = compare;
     q->is_match = is_match;
 }
 
@@ -69,7 +69,7 @@ prio_enqueue(prio_queue_t *q, void *data)
     {
         list_node_t *tmp_node = q->foot;
         /* find insert point */
-        while (tmp_node && (q->cmp_fun(tmp_node->data, new_node->data) < 0))
+        while (tmp_node && (q->compare(tmp_node->data, new_node->data) < 0))
         {
             tmp_node = tmp_node->prev;
         }

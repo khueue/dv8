@@ -10,18 +10,18 @@
  */
 
 /*
- * Priority queue struct where cmp_fun is the compare function.
- * find_fun is the find function
+ * Priority queue struct where compare is the compare function.
+ * XXXXXXXX
  */
-typedef struct prio_queue prio_queue_t;
-struct prio_queue
+typedef struct _prio_queue prio_queue_t;
+struct _prio_queue
 {
     list_node_t *head;
     list_node_t *foot;
     list_node_t *current;
-    int (*cmp_fun)(const void *data1, const void *data2);
-    int (*is_match)(const void *data, const void *id);
     size_t length;
+    int (*compare)(const void *data1, const void *data2);
+    int (*is_match)(const void *data, const void *id);
 };
 
 /*
@@ -33,7 +33,7 @@ struct prio_queue
 void
 prio_init_queue(
     prio_queue_t *q,
-    int (*cmp_fun)(const void *data1, const void *data2),
+    int (*compare)(const void *data1, const void *data2),
     int (*is_match)(const void *data, const void *id));
 
 int
