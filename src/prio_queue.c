@@ -34,6 +34,17 @@ prio_is_empty(const prio_queue_t *q)
 }
 
 /*
+ * Returns the length of the queue.
+ */
+size_t
+prio_length(const prio_queue_t *q)
+{
+    kdebug_assert(q);
+
+    return q->length;
+}
+
+/*
  * Returns, but does not remove, the first item (highest priority) in the
  * queue. Returns NULL if the queue is empty.
  */
@@ -205,12 +216,16 @@ prio_find(const prio_queue_t *q, const void *id)
 void
 prio_iterator_reset(prio_queue_t *q)
 {
+    kdebug_assert(q);
+
     q->current = q->head;
 }
 
 int
 prio_iterator_has_next(prio_queue_t *q)
 {
+    kdebug_assert(q);
+
     return q->current != NULL;
 }
 
@@ -218,10 +233,10 @@ void *
 prio_iterator_next(prio_queue_t *q)
 {
     void *data = NULL;
-    
+
     kdebug_assert(q);
     kdebug_assert(q->current);
-    
+
     data = q->current->data;
     q->current = q->current->next;
     return data;

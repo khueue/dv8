@@ -39,6 +39,9 @@ prio_init_queue(
 int
 prio_is_empty(const prio_queue_t *q);
 
+size_t
+prio_length(const prio_queue_t *q);
+
 void
 prio_enqueue(prio_queue_t *q, void *data);
 
