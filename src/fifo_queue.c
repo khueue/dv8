@@ -1,5 +1,6 @@
 #include "utils.h"
 #include "fifo_queue.h"
+#include "list.h"
 #include "list_node.h"
 
 /*
@@ -7,6 +8,7 @@
  * Functions.
  * ---------------------------------------------------------------------------
  */
+ 
 /*
  * Init the queue.
  */

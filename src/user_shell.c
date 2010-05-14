@@ -126,8 +126,8 @@ shell(void)
         kdebug_print("deviate> ");
         msg = read_from_console();
         strcpy(g_line, msg_data_get_string(msg));
+        msg = msg_free(msg);
 
-        kdebug_println("ZZZZZZZ SHELLSDKJFKJSDFKJDSFKJ");
         run(g_line);
     }
 }
