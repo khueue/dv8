@@ -109,7 +109,7 @@ prio_enqueue(prio_queue_t *q, void *data)
         }
     }
     q->length++;
- }
+}
 
 /*
  * Returns the first data of the queue.
