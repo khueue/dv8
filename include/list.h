@@ -11,6 +11,15 @@
  */
 
 typedef struct _list list_t;
+struct _list
+{
+    list_node_t *head;
+    list_node_t *foot;
+    list_node_t *current;
+    size_t length;
+    int (*compare)(const void *data1, const void *data2);
+    int (*is_match)(const void *data, const void *id);
+};
 
 /*
  * ---------------------------------------------------------------------------
@@ -41,5 +50,10 @@ void * list_iter_next(list_t *list);
 
 size_t list_length(const list_t *list);
 int    list_is_empty(const list_t *list);
+
+#ifdef UNITTEST
+void   print_list_node(const list_node_t *node);
+void   print_list(const list_t *list);
+#endif
 
 #endif

@@ -174,9 +174,17 @@ read_from_console(void)
 {
     pcb_t *pcb = sch_get_currently_running_process();
 
+    kdebug_println("ZZZZZZ read from, after get current ");
+
     tty_manager_add_input_listener(pcb);
+    kdebug_println("ZZZZZZ read from, after add input list ");
+
     block_self();
+    kdebug_println("ZZZZZZ read from, after block self ");
+
     tty_manager_remove_input_listener(pcb);
+
+    kdebug_println("ZZZZZZ read fro ");
 
     return fifo_dequeue(&pcb->inbox_q);
 }
@@ -337,7 +345,8 @@ kinit(void)
     set_status_reg();
 
     init_program_list();
-
+    tty_manager_init();
+    
     setup_scheduler();
 
     /* XXXXXXXX run scheduler? start shell? */

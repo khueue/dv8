@@ -11,6 +11,9 @@
  */
 
 void
+tty_manager_init(void);
+
+void
 tty_manager_add_input_listener(pcb_t *pcb);
 
 void

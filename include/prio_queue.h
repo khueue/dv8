@@ -1,6 +1,7 @@
 #ifndef PRIO_QUEUE_H
 #define PRIO_QUEUE_H
 
+#include "list.h"
 #include "list_node.h"
 
 /*
@@ -9,20 +10,7 @@
  * ---------------------------------------------------------------------------
  */
 
-/*
- * Priority queue struct where compare is the compare function.
- * XXXXXXXX
- */
-typedef struct _prio_queue prio_queue_t;
-struct _prio_queue
-{
-    list_node_t *head;
-    list_node_t *foot;
-    list_node_t *current;
-    size_t length;
-    int (*compare)(const void *data1, const void *data2);
-    int (*is_match)(const void *data, const void *id);
-};
+typedef list_t prio_queue_t;
 
 /*
  * ---------------------------------------------------------------------------
@@ -50,9 +38,6 @@ prio_dequeue(prio_queue_t *q);
 
 void *
 prio_remove(prio_queue_t *q, const void *id);
-
-void *
-prio_peek(const prio_queue_t *q);
 
 void *
 prio_find(const prio_queue_t *q, const void *id);

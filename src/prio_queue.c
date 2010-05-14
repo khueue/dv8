@@ -1,5 +1,6 @@
 #include "utils.h"
 #include "prio_queue.h"
+#include "list.h"
 #include "list_node.h"
 
 /*
@@ -17,9 +18,7 @@ prio_init_queue(
     int (*compare)(const void *data1, const void *data2),
     int (*is_match)(const void *data, const void *id))
 {
-    ZERO_STRUCT(q);
-    q->compare = compare;
-    q->is_match = is_match;
+    list_init(q, compare, is_match);
 }
 
 /*
@@ -28,9 +27,7 @@ prio_init_queue(
 int
 prio_is_empty(const prio_queue_t *q)
 {
-    kdebug_assert(q);
-
-    return q->length == 0;
+    return list_is_empty(q);
 }
 
 /*
@@ -39,21 +36,7 @@ prio_is_empty(const prio_queue_t *q)
 size_t
 prio_length(const prio_queue_t *q)
 {
-    kdebug_assert(q);
-
-    return q->length;
-}
-
-/*
- * Returns, but does not remove, the first item (highest priority) in the
- * queue. Returns NULL if the queue is empty.
- */
-void *
-prio_peek(const prio_queue_t *q)
-{
-    kdebug_assert(q);
-
-    return (prio_is_empty(q)) ? NULL : q->head->data;
+    return list_length(q);
 }
 
 /*
@@ -62,53 +45,7 @@ prio_peek(const prio_queue_t *q)
 void
 prio_enqueue(prio_queue_t *q, void *data)
 {
-    list_node_t *new_node = list_node_alloc();
-
-    kdebug_assert(q);
-    kdebug_assert(data);
-    kdebug_assert(new_node);
-
-    new_node->data = data;
-
-    /* empty queue */
-    if (!q->foot)
-    {
-        q->head = new_node;
-        q->foot = new_node;
-    }
-    else
-    {
-        list_node_t *tmp_node = q->foot;
-        /* find insert point */
-        while (tmp_node && (q->compare(tmp_node->data, new_node->data) < 0))
-        {
-            tmp_node = tmp_node->prev;
-        }
-
-        /* first */
-        if (!tmp_node)
-        {
-            q->head->prev = new_node;
-            new_node->next = q->head;
-            q->head = new_node;
-        }
-        /* last */
-        else if (!tmp_node->next)
-        {
-            tmp_node->next = new_node;
-            new_node->prev = tmp_node;
-            q->foot = new_node;
-        }
-        else
-        {
-            new_node->next = tmp_node->next;
-            new_node->prev = tmp_node;
-
-            tmp_node->next = new_node;
-            new_node->next->prev = new_node;
-        }
-    }
-    q->length++;
+    list_insert_ordered(q, data);
 }
 
 /*
@@ -117,28 +54,7 @@ prio_enqueue(prio_queue_t *q, void *data)
 void *
 prio_dequeue(prio_queue_t *q)
 {
-    list_node_t *node = q->head;
-    void *data = node->data;
-
-    kdebug_assert(q);
-    kdebug_assert(q->length > 0);
-
-    q->head = node->next;
-    node = list_node_free(node);
-
-    q->length--;
-
-    if (!q->length)
-    {
-        q->foot = NULL;
-        q->head = NULL;
-    }
-    if (q->head)
-    {
-        q->head->prev = NULL;
-    }
-
-    return data;
+    return list_remove_head(q);
 }
 
 /*
@@ -147,50 +63,7 @@ prio_dequeue(prio_queue_t *q)
 void *
 prio_remove(prio_queue_t *q, const void *id)
 {
-    list_node_t *node = q->foot;
-    void *data = NULL;
-
-    kdebug_assert(q != NULL);
-
-    /* While when still in queue or requested node is found */
-    while (node && !q->is_match(node->data, id))
-    {
-        node = node->prev;
-    }
-
-    if (node)
-    {
-        if (node->prev)
-        {
-            node->prev->next = node->next;
-        }
-        else
-        {
-            q->head = node->next;
-        }
-
-        if (node->next)
-        {
-            node->next->prev = node->prev;
-        }
-        else
-        {
-            q->foot = node->prev;
-        }
-
-        data = node->data;
-        node = list_node_free(node);
-
-        q->length--;
-
-        if (!q->length)
-        {
-            q->foot = NULL;
-            q->head = NULL;
-        }
-    }
-
-    return data;
+    return list_remove(q, id);
 }
 
 /*
@@ -200,46 +73,25 @@ prio_remove(prio_queue_t *q, const void *id)
 void *
 prio_find(const prio_queue_t *q, const void *id)
 {
-    list_node_t *node = NULL;
-
-    kdebug_assert(q);
-
-    node = q->foot;
-    while (node && !q->is_match(node->data, id))
-    {
-        node = node->prev;
-    }
-
-    return (node) ? node->data : NULL;
+    return list_find(q, id);
 }
 
 void
 prio_iterator_reset(prio_queue_t *q)
 {
-    kdebug_assert(q);
-
-    q->current = q->head;
+    list_iter_reset(q);
 }
 
 int
 prio_iterator_has_next(prio_queue_t *q)
 {
-    kdebug_assert(q);
-
-    return q->current != NULL;
+    return list_iter_has_next(q);
 }
 
 void *
 prio_iterator_next(prio_queue_t *q)
 {
-    void *data = NULL;
-
-    kdebug_assert(q);
-    kdebug_assert(q->current);
-
-    data = q->current->data;
-    q->current = q->current->next;
-    return data;
+    return list_iter_next(q);
 }
 
 /*

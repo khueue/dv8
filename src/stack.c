@@ -1,5 +1,6 @@
 #include "utils.h"
 #include "stack.h"
+#include "list.h"
 #include "list_node.h"
 
 /*
@@ -12,10 +13,12 @@
  * XXXXXXXXInit the queue.
  */
 void
-stack_init(stack_t *stack, int (*is_match)(void *data, void *id))
+stack_init(
+    stack_t *stack,
+    int (*compare)(const void *data1, const void *data2),
+    int (*is_match)(const void *data, const void *id))
 {
-    ZERO_STRUCT(stack);
-    stack->is_match = is_match;
+    list_init(stack, compare, is_match);
 }
 
 /*
@@ -24,17 +27,7 @@ stack_init(stack_t *stack, int (*is_match)(void *data, void *id))
 void
 stack_push(stack_t *stack, void *data)
 {
-    list_node_t *new_node = list_node_alloc();
-
-    if (!new_node)
-    {
-        /* XXXXXXX no more list nodes! */
-    }
-
-    new_node->data = data;
-    new_node->next = stack->head;
-    stack->head = new_node;
-    stack->length++;
+    list_insert_head(stack, data);
 }
 
 /*
@@ -43,23 +36,7 @@ stack_push(stack_t *stack, void *data)
 void *
 stack_pop(stack_t *stack)
 {
-    list_node_t *node = NULL;
-    void *data = NULL;
-
-    kdebug_assert(stack);
-
-    if (stack->length == 0)
-    {
-        /* XXXXXXX ojojojoj */
-    }
-
-    node = stack->head;
-    data = node->data;
-
-    stack->head = node->next;
-    node = list_node_free(node);
-    stack->length--;
-    return data;
+    return list_remove_head(stack);
 }
 
 /*
@@ -68,10 +45,7 @@ stack_pop(stack_t *stack)
 void *
 stack_remove(stack_t *stack, void *id)
 {
-    /* XXXXXXXXXX should implement remove instead!!! */
-    (void)id;
-    stack_pop(stack);
-    return NULL;
+    return list_remove(stack, id);
 }
 
 /*
@@ -80,14 +54,25 @@ stack_remove(stack_t *stack, void *id)
 void *
 stack_peek(const stack_t *stack)
 {
-    kdebug_assert(stack);
+    return list_find_head(stack);
+}
 
-    if (stack->length == 0)
-    {
-        /* XXXXXXX ojojojoj */
-    }
+/*
+ * Returns true if the queue is empty, false otherwise.
+ */
+int
+stack_is_empty(const stack_t *stack)
+{
+    return list_is_empty(stack);
+}
 
-    return stack->head->data;
+/*
+ * Returns the length of the queue.
+ */
+size_t
+stack_length(const stack_t *stack)
+{
+    return list_length(stack);
 }
 
 /*
@@ -98,7 +83,7 @@ stack_peek(const stack_t *stack)
 
 /*
     gcc -DUNITTEST -DSTACK_MAIN src/stack.c \
-    src/utils.c src/list_node.c \
+    src/utils.c src/list_node.c src/list.c src/pcb.c \
     -Iinclude -W -Wall -Werror -Wshadow -Wpointer-arith \
     -Wcast-qual -Wstrict-prototypes -Wmissing-prototypes -ansi -pedantic
  */
@@ -107,67 +92,73 @@ stack_peek(const stack_t *stack)
 #include <stdlib.h>
 #include <stdio.h>
 
-static void
-stack_testprint(stack_t *stack)
-{
-    list_node_t *tmp_node = stack->head;
-    while (tmp_node)
-    {
-        printf("%f, ", *(double *)tmp_node->data);
-        tmp_node = tmp_node->next;
-    }
-    printf("\n");
-}
+#include "pcb.h"
 
 int
 main(void)
 {
-    double d1 = 10.0;
-    double d2 = 20.0;
-    double d3 = 30.0;
+    int d1 = 10;
+    int d2 = 20;
+    int d3 = 30;
 
     stack_t stack;
 
-    stack_init(&stack, pcb_has_pid);
+    stack_init(&stack, pcb_cmp_priority, pcb_has_pid);
 
+    printf("push: \"%d\"\n",d1);
     stack_push(&stack, &d1);
-    printf("push: \"%f\"\n",d1);
-    stack_testprint(&stack);
+    print_list(&stack);
 
+    printf("push: \"%d\"\n",d2);
     stack_push(&stack, &d2);
-    printf("push: \"%f\"\n",d2);
-    stack_testprint(&stack);
+    print_list(&stack);
 
+    printf("push: \"%d\"\n",d3);
     stack_push(&stack, &d3);
-    printf("push: \"%f\"\n",d3);
-    stack_testprint(&stack);
+    print_list(&stack);
 
-    printf("pop: \"%f\"\n", *(double *)stack_pop(&stack));
-    stack_testprint(&stack);
-    printf("pop: \"%f\"\n", *(double *)stack_pop(&stack));
-    stack_testprint(&stack);
+    printf("pop: \"%d\"\n", *(int *)stack_pop(&stack));
+    print_list(&stack);
 
+    printf("pop: \"%d\"\n", *(int *)stack_pop(&stack));
+    print_list(&stack);
+
+    printf("push: \"%d\"\n",d3);
     stack_push(&stack, &d3);
-    printf("push: \"%f\"\n",d3);
-    stack_testprint(&stack);
+    print_list(&stack);
 
-    printf("pop: \"%f\"\n", *(double *)stack_pop(&stack));
-    stack_testprint(&stack);
+    printf("pop: \"%d\"\n", *(int *)stack_pop(&stack));
+    print_list(&stack);
 
-    printf("pop: \"%f\"\n", *(double *)stack_pop(&stack));
-    stack_testprint(&stack);
+    printf("pop: \"%d\"\n", *(int *)stack_pop(&stack));
+    print_list(&stack);
 
+    printf("push: \"%d\"\n",d1);
     stack_push(&stack, &d1);
-    printf("push: \"%f\"\n",d1);
-    stack_testprint(&stack);
+    print_list(&stack);
 
+    printf("push: \"%d\"\n",d2);
     stack_push(&stack, &d2);
-    printf("push: \"%f\"\n",d2);
-    stack_testprint(&stack);
+    print_list(&stack);
 
+    printf("push: \"%d\"\n",d3);
     stack_push(&stack, &d3);
-    printf("push: \"%f\"\n",d3);
-    stack_testprint(&stack);
+    print_list(&stack);
+
+    printf("peek: \"%d\"\n", *(int *)stack_peek(&stack));
+    print_list(&stack);
+
+    printf("remove 20:\n");
+    stack_remove(&stack, &d2);
+    print_list(&stack);
+
+    printf("pop:\n");
+    stack_pop(&stack);
+    print_list(&stack);
+
+    printf("pop:\n");
+    stack_pop(&stack);
+    print_list(&stack);
 
     return 0;
 }

@@ -84,6 +84,12 @@ bfifo_get(bounded_fifo_t *bfifo)
     return c;
 }
 
+void
+tty_manager_init(void)
+{
+    stack_init(&g_input_stack, pcb_cmp_priority, pcb_has_pid);
+}
+
 /*
  * XXXXX
  */
@@ -99,7 +105,7 @@ tty_manager_add_input_listener(pcb_t *pcb)
 void
 tty_manager_remove_input_listener(pcb_t *pcb)
 {
-    stack_remove(&g_input_stack, pcb);
+    stack_remove(&g_input_stack, &pcb->pid);
 }
 
 /*
@@ -145,6 +151,10 @@ tty_manager_dispatch_message(const char str[])
 
         msg = tty_manager_create_message(str);
         process = stack_peek(&g_input_stack);
+        if (!process)
+        {
+            kdebug_println("KJSDBFKDSBFKJSD");
+        }
         msg_set_receiver_pid(msg, process->pid);
         ksend_message(msg);
         /*fifo_enqueue(&process->inbox_q, msg);

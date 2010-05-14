@@ -127,6 +127,7 @@ shell(void)
         msg = read_from_console();
         strcpy(g_line, msg_data_get_string(msg));
 
+        kdebug_println("ZZZZZZZ SHELLSDKJFKJSDFKJDSFKJ");
         run(g_line);
     }
 }

@@ -4,22 +4,6 @@
 
 /*
  * ---------------------------------------------------------------------------
- * Types.
- * ---------------------------------------------------------------------------
- */
-
-struct _list
-{
-    list_node_t *head;
-    list_node_t *foot;
-    list_node_t *current;
-    size_t length;
-    int (*compare)(const void *data1, const void *data2);
-    int (*is_match)(const void *data, const void *id);
-};
-
-/*
- * ---------------------------------------------------------------------------
  * Functions.
  * ---------------------------------------------------------------------------
  */
@@ -62,8 +46,9 @@ list_insert_head(list_t *list, void *data)
         list->head->prev = node;
         node->next = list->head;
         list->head = node;
-        ++list->length;
     }
+    
+    ++list->length;
 
     return 1;
 }
@@ -94,8 +79,9 @@ list_insert_foot(list_t *list, void *data)
         list->foot->next = node;
         node->prev = list->foot;
         list->foot = node;
-        ++list->length;
     }
+    
+    ++list->length;
 
     return 1;
 }
@@ -155,6 +141,7 @@ list_insert_ordered(list_t *list, void *data)
             node->next->prev = node;
         }
     }
+    
     ++list->length;
 
     return 1;
@@ -356,41 +343,13 @@ list_is_empty(const list_t *list)
     return list->length == 0;
 }
 
-/*
- * ---------------------------------------------------------------------------
- * Main for module testing.
- * ---------------------------------------------------------------------------
- */
-
-/*
-    gcc -DUNITTEST -DLIST_MAIN  \
-    src/list.c src/list_node.c src/utils.c  \
-    -Iinclude -W -Wall -Werror -Wshadow -Wpointer-arith \
-    -Wcast-qual -Wstrict-prototypes -Wmissing-prototypes -ansi -pedantic
- */
-#ifdef LIST_MAIN
+#ifdef UNITTEST
 
 #include <stdlib.h>
 #include <stdio.h>
 
-static int
-comparefun(const void *a, const void *b)
-{
-    int x = *(const int *)a;
-    int y = *(const int *)b;
-    return x - y;
-}
-
-static int
-findfun(const void *a, const void *b)
-{
-    int x = *(const int *)a;
-    int y = *(const int *)b;
-    return x == y;
-}
-
-static void
-print_list_node(list_node_t *node)
+void
+print_list_node(const list_node_t *node)
 {
     printf("\n");
 
@@ -429,8 +388,8 @@ print_list_node(list_node_t *node)
     }
 }
 
-static void
-print_list(list_t *list)
+void
+print_list(const list_t *list)
 {
     printf("List:\n");
 
@@ -473,6 +432,41 @@ print_list(list_t *list)
 
     printf("\n");
     printf("========================================================\n\n");
+}
+
+#endif
+
+/*
+ * ---------------------------------------------------------------------------
+ * Main for module testing.
+ * ---------------------------------------------------------------------------
+ */
+
+/*
+    gcc -DUNITTEST -DLIST_MAIN  \
+    src/list.c src/list_node.c src/utils.c  \
+    -Iinclude -W -Wall -Werror -Wshadow -Wpointer-arith \
+    -Wcast-qual -Wstrict-prototypes -Wmissing-prototypes -ansi -pedantic
+ */
+#ifdef LIST_MAIN
+
+#include <stdlib.h>
+#include <stdio.h>
+
+static int
+comparefun(const void *a, const void *b)
+{
+    int x = *(const int *)a;
+    int y = *(const int *)b;
+    return x - y;
+}
+
+static int
+findfun(const void *a, const void *b)
+{
+    int x = *(const int *)a;
+    int y = *(const int *)b;
+    return x == y;
 }
 
 int
