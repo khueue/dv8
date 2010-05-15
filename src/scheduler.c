@@ -127,7 +127,7 @@ sch_run(void)
     {
         process = prio_iter_next(&g_wait);
 
-        process->sleepleft -= 50 * timer_msec;
+        process->sleepleft -= MS_TO_NEXT_TIMER_INTERRUPT * timer_msec;
     }
 
     prio_iter_reset(&g_wait);
@@ -167,8 +167,8 @@ sch_run(void)
     prio_enqueue(&g_run, process);
     restore_process_state(process);
 
-    /* Reload timer for another 100 ms (simulated time) */
-    kload_timer(50 * timer_msec);
+    /* Reload interrupt timer. */
+    kload_timer(MS_TO_NEXT_TIMER_INTERRUPT * timer_msec);
 }
 
 /*

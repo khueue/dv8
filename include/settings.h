@@ -8,6 +8,13 @@
  */
 
 /*
+ * XXXXXX
+ */
+#ifndef MS_TO_NEXT_TIMER_INTERRUPT
+#define MS_TO_NEXT_TIMER_INTERRUPT 50
+#endif
+
+/*
  * Maximum number of PCBs available in the system.
  */
 #ifndef NUM_PCBS

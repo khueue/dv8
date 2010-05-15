@@ -296,8 +296,8 @@ setup_scheduler(void)
 
     sch_schedule(spawn(maltascr, PROCESS_DEFAULT_PRIORITY)); /* remove XXXXX */
 
-    /* Initialise timer to interrupt in 50 ms (simulated time). */
-    kload_timer(50 * timer_msec);
+    /* Initialise timer to interrupt soon. */
+    kload_timer(MS_TO_NEXT_TIMER_INTERRUPT * timer_msec);
 }
 
 /*
