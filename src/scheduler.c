@@ -146,13 +146,12 @@ sch_run(void)
     }
 
     /*
-     * If a process was using the CPU, save it and move it from the run queue
-     * to the ready queue.
+     * If a process was using the CPU, move it from the run queue to the ready
+     * queue.
      */
     process = sch_get_currently_running_process();
     if (process)
     {
-        save_process_state(process);
         prio_dequeue(&g_run);
         process->state = PROCESS_STATE_READY;
         prio_enqueue(&g_ready, process);
@@ -192,13 +191,12 @@ sch_sleep(void)
     pcb_t *process = NULL;
 
     /*
-     * If a process was using the CPU, save it and move it from the run queue
-     * to the wait queue.
+     * If a process was using the CPU, move it from the run queue to the wait
+     * queue.
      */
     process = sch_get_currently_running_process();
     if (process)
     {
-        save_process_state(process);
         prio_dequeue(&g_run);
         process->state = PROCESS_STATE_SLEEPING;
         prio_enqueue(&g_wait, process);

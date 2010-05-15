@@ -22,9 +22,6 @@ struct program
  */
 
 void
-save_process_state(pcb_t *pcb);
-
-void
 restore_process_state(const pcb_t *pcb);
 
 uint32_t

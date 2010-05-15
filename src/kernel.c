@@ -60,16 +60,6 @@ init_program_list(void)
 }
 
 /*
- * Must be called from within an exception. Saves the state of the CPU (the
- * state just before the exception occurred) into the given process.
- */
-void
-save_process_state(pcb_t *pcb)
-{
-    memcpy(&pcb->regs, kget_registers(), sizeof(pcb->regs));
-}
-
-/*
  * Must be called from within an exception. When the exception finishes, the
  * CPU is loaded with the state of the given process.
  */
