@@ -48,7 +48,7 @@ int list_insert_foot(list_t *list, void *data);
 int list_insert_ordered(list_t *list, void *data);
 
 /*
- * Removes and returns an item from the list.
+ * Removes and returns an item from the list. NULL on failure.
  * - head() removes from the front of the list
  * - foot() removes from the back of the list
  * - remove() removes the first item (starting from the back) that matches id,
@@ -59,7 +59,7 @@ void *list_remove_foot(list_t *list);
 void *list_remove(list_t *list, const void *id);
 
 /*
- * Returns, but does not remove, an item from the list.
+ * Returns, but does not remove, an item from the list. NULL on failure.
  * - head() returns the front of the list
  * - foot() returns the back of the list
  * - find() returns the first item (starting from the back) that matches id,
