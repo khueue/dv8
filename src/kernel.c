@@ -143,15 +143,15 @@ kexec(const char program[], uint32_t priority)
     pcb_t *pcb = NULL;
     int i = 0;
 
-    for(i = 0; i < 3; i++)
+    for (i = 0; i < 3; i++)
     {
-        if(strcmp(program, g_program_list[i].name) == 0)
+        if (0 == strcmp(program, g_program_list[i].name))
         {
             pcb = spawn(g_program_list[i].func, priority);
         }
     }
 
-    if(!pcb)
+    if (!pcb)
     {
         return 0;
     }
@@ -165,7 +165,6 @@ kexec(const char program[], uint32_t priority)
 static msg_t *
 dequeue_first_message_by_type(fifo_queue_t *q, msg_type_t msg_type)
 {
-
 }
 #endif
 

@@ -43,12 +43,12 @@ void *
 prio_find(const prio_queue_t *q, const void *id);
 
 void
-prio_iterator_reset(prio_queue_t *q);
+prio_iter_reset(prio_queue_t *q);
 
 int
-prio_iterator_has_next(prio_queue_t *q);
+prio_iter_has_next(prio_queue_t *q);
 
 void *
-prio_iterator_next(prio_queue_t *q);
+prio_iter_next(prio_queue_t *q);
 
 #endif

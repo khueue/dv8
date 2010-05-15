@@ -9,13 +9,13 @@
  */
 
 void
-list_init(
-    list_t *list,
-    int (*compare)(const void *data1, const void *data2),
-    int (*is_match)(const void *data, const void *id))
+list_init(list_t *list, compare_func compare, match_func is_match)
 {
-    ZERO_STRUCT(list);
+    kdebug_assert(list);
+    kdebug_assert(compare);
+    kdebug_assert(is_match);
 
+    ZERO_STRUCT(list);
     list->compare  = compare;
     list->is_match = is_match;
 }
@@ -47,7 +47,7 @@ list_insert_head(list_t *list, void *data)
         node->next = list->head;
         list->head = node;
     }
-    
+
     ++list->length;
 
     return 1;
@@ -80,7 +80,7 @@ list_insert_foot(list_t *list, void *data)
         node->prev = list->foot;
         list->foot = node;
     }
-    
+
     ++list->length;
 
     return 1;
@@ -92,6 +92,7 @@ list_insert_ordered(list_t *list, void *data)
     list_node_t *node = NULL;
 
     kdebug_assert(list);
+    kdebug_assert(list->compare);
     kdebug_assert(data);
 
     node = list_node_alloc();
@@ -111,37 +112,37 @@ list_insert_ordered(list_t *list, void *data)
     }
     else
     {
-        list_node_t *tmp_node = list->foot;
+        list_node_t *tmp = list->foot;
         /* find insert point */
-        while (tmp_node && (list->compare(tmp_node->data, node->data) < 0))
+        while (tmp && (list->compare(tmp->data, node->data) < 0))
         {
-            tmp_node = tmp_node->prev;
+            tmp = tmp->prev;
         }
 
         /* first */
-        if (!tmp_node)
+        if (!tmp)
         {
             list->head->prev = node;
             node->next = list->head;
             list->head = node;
         }
         /* last */
-        else if (!tmp_node->next)
+        else if (!tmp->next)
         {
-            tmp_node->next = node;
-            node->prev = tmp_node;
+            tmp->next = node;
+            node->prev = tmp;
             list->foot = node;
         }
         else
         {
-            node->next = tmp_node->next;
-            node->prev = tmp_node;
+            node->next = tmp->next;
+            node->prev = tmp;
 
-            tmp_node->next = node;
+            tmp->next = node;
             node->next->prev = node;
         }
     }
-    
+
     ++list->length;
 
     return 1;
@@ -220,6 +221,7 @@ list_remove(list_t *list, const void *id)
     void *data = NULL;
 
     kdebug_assert(list);
+    kdebug_assert(list->is_match);
     kdebug_assert(id);
 
     node = list->foot;
@@ -253,13 +255,14 @@ list_remove(list_t *list, const void *id)
         node = list_node_free(node);
 
         --list->length;
-
+#if 0
         /* XZZZZZZZZZZZZZZZZZZZZ XXXXXXXXXX */
         if (list_is_empty(list))
         {
             list->foot = NULL;
             list->head = NULL;
         }
+#endif
     }
 
     return data;
@@ -287,6 +290,7 @@ list_find(const list_t *list, const void *id)
     list_node_t *node = NULL;
 
     kdebug_assert(list);
+    kdebug_assert(list->is_match);
     kdebug_assert(id);
 
     node = list->foot;
@@ -345,11 +349,10 @@ list_is_empty(const list_t *list)
 
 #ifdef UNITTEST
 
-#include <stdlib.h>
 #include <stdio.h>
 
 void
-print_list_node(const list_node_t *node)
+dbg_print_list_node(const list_node_t *node)
 {
     printf("\n");
 
@@ -389,7 +392,7 @@ print_list_node(const list_node_t *node)
 }
 
 void
-print_list(const list_t *list)
+dbg_print_list(const list_t *list)
 {
     printf("List:\n");
 
@@ -424,7 +427,7 @@ print_list(const list_t *list)
             list_node_t *tmp = list->head;
             while (tmp)
             {
-                print_list_node(tmp);
+                dbg_print_list_node(tmp);
                 tmp = tmp->next;
             }
         }
@@ -432,6 +435,22 @@ print_list(const list_t *list)
 
     printf("\n");
     printf("========================================================\n\n");
+}
+
+int
+dbg_int_cmp(const void *a, const void *b)
+{
+    int x = *(const int *)a;
+    int y = *(const int *)b;
+    return x - y;
+}
+
+int
+dbg_int_eql(const void *a, const void *b)
+{
+    int x = *(const int *)a;
+    int y = *(const int *)b;
+    return x == y;
 }
 
 #endif
@@ -453,22 +472,6 @@ print_list(const list_t *list)
 #include <stdlib.h>
 #include <stdio.h>
 
-static int
-comparefun(const void *a, const void *b)
-{
-    int x = *(const int *)a;
-    int y = *(const int *)b;
-    return x - y;
-}
-
-static int
-findfun(const void *a, const void *b)
-{
-    int x = *(const int *)a;
-    int y = *(const int *)b;
-    return x == y;
-}
-
 int
 main(void)
 {
@@ -478,68 +481,68 @@ main(void)
 
     list_t q;
 
-    list_init(&q, comparefun, findfun);
+    list_init(&q, dbg_int_cmp, dbg_int_eql);
 
     printf("*** Empty list ***\n");
-    print_list(&q);
+    dbg_print_list(&q);
 
     printf("*** Enqueue 2 ***\n");
     list_insert_ordered(&q, &two);
-    print_list(&q);
+    dbg_print_list(&q);
 
     printf("*** Enqueue 1 ***\n");
     list_insert_ordered(&q, &one);
-    print_list(&q);
+    dbg_print_list(&q);
 
     printf("*** Dequeue (2) ***\n");
     list_remove_head(&q);
-    print_list(&q);
+    dbg_print_list(&q);
 
     printf("*** Dequeue (1) ***\n");
     list_remove_head(&q);
-    print_list(&q);
+    dbg_print_list(&q);
 
     printf("*** Insert 3 remove 3 ***\n");
 
     list_insert_ordered(&q, &three);
-    print_list(&q);
+    dbg_print_list(&q);
 
     list_remove(&q, &three);
-    print_list(&q);
+    dbg_print_list(&q);
 
     printf("*** Insert 3 try remove 2 ***\n");
     list_insert_ordered(&q, &three);
-    print_list(&q);
+    dbg_print_list(&q);
 
     list_remove(&q, &two);
-    print_list(&q);
+    dbg_print_list(&q);
 
     printf("*** Insert 2,3 remove 2 ***\n");
     list_insert_ordered(&q, &two);
-    print_list(&q);
+    dbg_print_list(&q);
 
     list_remove(&q, &two);
-    print_list(&q);
+    dbg_print_list(&q);
 
     printf("*** Insert 2,3 remove 3 ***\n");
     list_insert_ordered(&q, &two);
-    print_list(&q);
+    dbg_print_list(&q);
 
     list_remove(&q, &three);
-    print_list(&q);
+    dbg_print_list(&q);
 
     printf("*** Insert 1,2,3 remove 2 ***\n");
     list_insert_ordered(&q, &one);
     list_insert_ordered(&q, &three);
-    print_list(&q);
+    dbg_print_list(&q);
 
     list_remove(&q, &two);
-    print_list(&q);
+    dbg_print_list(&q);
 
     printf("*** Insert 1,3 remove 1,3 ***\n");
     list_remove(&q, &one);
     list_remove(&q, &three);
-    print_list(&q);
+    dbg_print_list(&q);
 
     return 0;
 }

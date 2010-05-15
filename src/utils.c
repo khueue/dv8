@@ -154,7 +154,7 @@ strchr(char *str, int c)
 /*
  * Seed used for random number generation.
  */
-static uint32_t g_next_rand = 1;
+static unsigned long g_next_rand = 1;
 
 /*
  * Seed the random number generator.
@@ -166,7 +166,7 @@ srand(uint32_t seed)
 }
 
 /*
- * Returns a pseudo-random number in [0, RAND_MAX).
+ * Returns a pseudo-random number in [0, 32767).
  */
 int
 rand(void)

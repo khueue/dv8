@@ -87,7 +87,7 @@ sch_find_process(uint32_t pid)
     {
         return process;
     }
-    
+
     return NULL;
 }
 
@@ -122,23 +122,23 @@ sch_run(void)
      * Update wait queue and move anything ready to wake up back into ready
      */
 
-    prio_iterator_reset(&g_wait);
-    while (prio_iterator_has_next(&g_wait))
+    prio_iter_reset(&g_wait);
+    while (prio_iter_has_next(&g_wait))
     {
-        process = prio_iterator_next(&g_wait);
+        process = prio_iter_next(&g_wait);
 
         process->sleepleft -= 50 * timer_msec;
     }
 
-    prio_iterator_reset(&g_wait);
-    while (prio_iterator_has_next(&g_wait))
+    prio_iter_reset(&g_wait);
+    while (prio_iter_has_next(&g_wait))
     {
-        process = prio_iterator_next(&g_wait);
+        process = prio_iter_next(&g_wait);
 
         if (pcb_is_done_sleeping(process) && (process->state != PROCESS_STATE_BLOCKED))
         {
             prio_remove(&g_wait, &process->pid);
-            prio_iterator_reset(&g_wait);
+            prio_iter_reset(&g_wait);
 
             process->state = PROCESS_STATE_READY;
             prio_enqueue(&g_ready, process);
@@ -146,6 +146,7 @@ sch_run(void)
     }
 
     /*
+     * If a process was using the CPU, save it and move it from the run queue
      * to the ready queue.
      */
     process = sch_get_currently_running_process();
