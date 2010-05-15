@@ -255,14 +255,6 @@ list_remove(list_t *list, const void *id)
         node = list_node_free(node);
 
         --list->length;
-#if 0
-        /* XZZZZZZZZZZZZZZZZZZZZ XXXXXXXXXX */
-        if (list_is_empty(list))
-        {
-            list->foot = NULL;
-            list->head = NULL;
-        }
-#endif
     }
 
     return data;
@@ -311,7 +303,7 @@ list_iter_reset(list_t *list)
 }
 
 int
-list_iter_has_next(list_t *list)
+list_iter_has_next(const list_t *list)
 {
     kdebug_assert(list);
 
@@ -542,6 +534,11 @@ main(void)
     printf("*** Insert 1,3 remove 1,3 ***\n");
     list_remove(&q, &one);
     list_remove(&q, &three);
+    dbg_print_list(&q);
+
+    printf("*** Insert 1 remove 1 ***\n");
+    list_insert_ordered(&q, &one);
+    list_remove(&q, &one);
     dbg_print_list(&q);
 
     return 0;

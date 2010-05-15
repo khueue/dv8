@@ -13,10 +13,7 @@
  * Init the queue.
  */
 void
-prio_init_queue(
-    prio_queue_t *q,
-    int (*compare)(const void *data1, const void *data2),
-    int (*is_match)(const void *data, const void *id))
+prio_init_queue(prio_queue_t *q, compare_func compare, match_func is_match)
 {
     list_init(q, compare, is_match);
 }
@@ -83,7 +80,7 @@ prio_iter_reset(prio_queue_t *q)
 }
 
 int
-prio_iter_has_next(prio_queue_t *q)
+prio_iter_has_next(const prio_queue_t *q)
 {
     return list_iter_has_next(q);
 }

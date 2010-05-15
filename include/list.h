@@ -45,7 +45,7 @@ void * list_find_foot(const list_t *list);
 void * list_find(const list_t *list, const void *id);
 
 void   list_iter_reset(list_t *list);
-int    list_iter_has_next(list_t *list);
+int    list_iter_has_next(const list_t *list);
 void * list_iter_next(list_t *list);
 
 size_t list_length(const list_t *list);
