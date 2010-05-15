@@ -13,7 +13,7 @@
  * Init the queue.
  */
 void
-prio_init_queue(prio_queue_t *q, compare_func compare, match_func is_match)
+prio_init(prio_queue_t *q, compare_func compare, match_func is_match)
 {
     list_init(q, compare, is_match);
 }

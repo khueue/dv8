@@ -12,8 +12,6 @@ void
 list_init(list_t *list, compare_func compare, match_func is_match)
 {
     kdebug_assert(list);
-    kdebug_assert(compare);
-    kdebug_assert(is_match);
 
     ZERO_STRUCT(list);
     list->compare  = compare;

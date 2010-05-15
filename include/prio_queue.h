@@ -19,7 +19,7 @@ typedef list_t prio_queue_t;
  */
 
 void
-prio_init_queue(prio_queue_t *q, compare_func compare, match_func is_match);
+prio_init(prio_queue_t *q, compare_func compare, match_func is_match);
 
 int
 prio_is_empty(const prio_queue_t *q);

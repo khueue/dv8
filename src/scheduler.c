@@ -48,9 +48,9 @@ g_wait;
 void
 sch_init(void)
 {
-    prio_init_queue(&g_ready, pcb_cmp_priority,  pcb_has_pid);
-    prio_init_queue(&g_run,   pcb_cmp_priority,  pcb_has_pid);
-    prio_init_queue(&g_wait,  pcb_cmp_sleepleft, pcb_has_pid);
+    prio_init(&g_ready, pcb_cmp_priority,  pcb_has_pid);
+    prio_init(&g_run,   pcb_cmp_priority,  pcb_has_pid);
+    prio_init(&g_wait,  pcb_cmp_sleepleft, pcb_has_pid);
 }
 
 /*

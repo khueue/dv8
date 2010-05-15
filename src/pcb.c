@@ -82,6 +82,7 @@ void
 pcb_init(pcb_t *pcb)
 {
     pcb_assign_pid(pcb);
+    fifo_init(&pcb->inbox_q, NULL, NULL); /* message functions here XXXXXXX */
 }
 
 /*

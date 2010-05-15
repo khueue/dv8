@@ -157,8 +157,6 @@ tty_manager_dispatch_message(const char str[])
         }
         msg_set_receiver_pid(msg, process->pid);
         ksend_message(msg);
-        /*fifo_enqueue(&process->inbox_q, msg);
-        kunblock(process->pid);*/
     }
 }
 

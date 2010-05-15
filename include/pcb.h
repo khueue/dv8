@@ -27,8 +27,8 @@ typedef enum
  * Process Control Block. Contains a process' registers and stack, and
  * anything else relevant to the process.
  */
-typedef struct pcb pcb_t;
-struct pcb
+typedef struct _pcb pcb_t;
+struct _pcb
 {
     uint32_t pid;
     uint32_t priority;

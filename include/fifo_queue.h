@@ -1,6 +1,8 @@
 #ifndef FIFO_QUEUE_H
 #define FIFO_QUEUE_H
 
+#include "utils.h"
+#include "list.h"
 #include "list_node.h"
 
 /*
@@ -9,17 +11,7 @@
  * ---------------------------------------------------------------------------
  */
 
-/*
- * First in first out
- */
-struct fifo_queue;
-typedef struct fifo_queue fifo_queue_t;
-struct fifo_queue
-{
-    list_node_t *head;
-    list_node_t *foot;
-    size_t length;
-};
+typedef list_t fifo_queue_t;
 
 /*
  * ---------------------------------------------------------------------------
@@ -28,7 +20,7 @@ struct fifo_queue
  */
 
 void
-fifo_init_queue(fifo_queue_t *q);
+fifo_init(fifo_queue_t *q, compare_func compare, match_func is_match);
 
 void
 fifo_enqueue(fifo_queue_t *q, void *data);
