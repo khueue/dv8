@@ -263,7 +263,7 @@ list_find_head(const list_t *list)
 {
     kdebug_assert(list);
 
-    return (list->length == 0) ? NULL : list->head->data;
+    return list_is_empty(list) ? NULL : list->head->data;
 }
 
 void *
@@ -271,7 +271,7 @@ list_find_foot(const list_t *list)
 {
     kdebug_assert(list);
 
-    return (list->length == 0) ? NULL : list->foot->data;
+    return list_is_empty(list) ? NULL : list->foot->data;
 }
 
 void *
@@ -289,7 +289,7 @@ list_find(const list_t *list, const void *id)
         node = node->prev;
     }
 
-    return (node) ? node->data : NULL;
+    return node ? node->data : NULL;
 }
 
 void
