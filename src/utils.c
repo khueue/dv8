@@ -154,7 +154,8 @@ strchr(char *str, int c)
 /*
  * Seed used for random number generation.
  */
-static unsigned long g_next_rand = 1;
+static unsigned long
+g_next_rand = 1;
 
 /*
  * Seed the random number generator.
