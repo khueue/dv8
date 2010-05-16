@@ -24,7 +24,7 @@ typedef enum
 /*
  * Message used for inter-process communication.
  */
-struct _msg
+struct msg_
 {
     msg_type_t type;
     msg_data_type_t data_type;
@@ -84,9 +84,6 @@ msg_init_freelist(void)
     g_msgs[COUNT_ARRAY(g_msgs)-1].next_free = NULL;
 }
 
-/*
- * XXXXXXXXXReturns a free list node, or NULL if none free.
- */
 msg_t *
 msg_alloc(void)
 {
@@ -112,14 +109,6 @@ msg_alloc(void)
     }
 }
 
-/*
- * XXXXXXXXXXXXReleases a list node back to the system. Always returns NULL, to make it
- * easy and idiomatic to avoid dangling pointers:
- *
- *   msg = msg_alloc();
- *   ... use node ...
- *   msg = msg_free();
- */
 msg_t *
 msg_free(msg_t *msg)
 {
@@ -294,16 +283,26 @@ msg_data_get_integer(const msg_t *msg)
 {
     kdebug_assert(msg);
 
-    return msg_data_is_integer(msg) ? msg->data.integer : 0; /* XXXX 0? */
+    return msg_data_is_integer(msg) ? msg->data.integer : 0;
 }
 
 msg_t *
-create_string_message(char *str, uint32_t receiver_pid)
+create_string_message(const char *str, uint32_t receiver_pid)
 {
-    msg_t *msg = msg_alloc();
-    /* fel... */
+    msg_t *msg = NULL;
+
+    kdebug_assert(str);
+
+    msg = msg_alloc();
+    if (!msg)
+    {
+        /* Error handling? XXX */
+        return NULL;
+    }
+
     msg_data_set_string(msg, str);
     msg_set_receiver_pid(msg, receiver_pid);
+
     return msg;
 }
 
