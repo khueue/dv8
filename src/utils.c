@@ -166,14 +166,16 @@ srand(uint32_t seed)
     g_next_rand = seed;
 }
 
+#define RAND_MAX 32767
+
 /*
- * Returns a pseudo-random number in [0, 32767).
+ * Returns a pseudo-random number in [0, RAND_MAX).
  */
 int
 rand(void)
 {
     g_next_rand = g_next_rand*1103515245 + 12345;
-    return (int)(g_next_rand / 65536) % (32767 + 1);
+    return (int)(g_next_rand / 65536) % (RAND_MAX + 1);
 }
 
 /*
@@ -348,7 +350,7 @@ main(void)
         while (rand() != 0)
         {
         }
-        while (rand() != 32767)
+        while (rand() != RAND_MAX)
         {
         }
         printf("\n");
