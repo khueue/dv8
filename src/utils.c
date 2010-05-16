@@ -345,6 +345,12 @@ main(void)
         {
             printf("rand_between(1, 3) = %d\n", rand_between(1, 3));
         }
+        while (rand() != 0)
+        {
+        }
+        while (rand() != 32767)
+        {
+        }
         printf("\n");
     }
 
