@@ -199,6 +199,7 @@ ksend_message(msg_t *msg)
 uint32_t
 kprint_str(const char str[])
 {
+    /* XXXXXXX replace with our own routine */
     kdebug_print(str);
     return 1;
 }
@@ -219,7 +220,7 @@ getpid(void)
 void
 kkill_self(void)
 {
-    pcb_t* pcb = sch_get_currently_running_process();
+    pcb_t *pcb = sch_get_currently_running_process();
     kkill(pcb->pid);
 }
 
@@ -238,7 +239,7 @@ kkill(uint32_t pid)
 void
 ksleep(int time)
 {
-    pcb_t* pcb = sch_get_currently_running_process();
+    pcb_t *pcb = sch_get_currently_running_process();
     pcb->sleepleft = time * timer_msec;
     sch_sleep();
     sch_run();
@@ -326,6 +327,7 @@ kinit(void)
     set_status_reg();
 
     init_program_list();
+
     tty_manager_init();
 
     setup_scheduler();
