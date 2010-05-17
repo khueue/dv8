@@ -39,10 +39,10 @@ prio_length(const prio_queue_t *q)
 /*
  * Ordered insert in the prio_queue.
  */
-void
+int
 prio_enqueue(prio_queue_t *q, void *data)
 {
-    list_insert_ordered(q, data);
+    return list_insert_ordered(q, data);
 }
 
 /*

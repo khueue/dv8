@@ -96,9 +96,6 @@ tty_manager_init(void)
 void
 tty_manager_add_input_listener(pcb_t *pcb)
 {
-            kdebug_print("added to input stack KJSDBFKDSBFKJSDXXXXXX");
-            kdebug_printint(pcb->pid);
-            kdebug_println("");
     stack_push(&g_input_stack, pcb);
 }
 
@@ -152,8 +149,6 @@ tty_manager_dispatch_message(const char str[])
         msg_t *msg = NULL;
         pcb_t *process = NULL;
 
-            kdebug_print("DISPATCH         CFFFFFFFF");
-            kdebug_println("KJSDBFKDSBFKJSDXXXXXX");
         msg = tty_manager_create_message(str);
         process = stack_peek(&g_input_stack);
         if (!process)

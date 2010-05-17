@@ -79,10 +79,22 @@ split(char cmd[])
 static int
 command(void)
 {
-    if (exec(g_args[0], PROCESS_DEFAULT_PRIORITY))
+    uint32_t pid = exec(g_args[0], PROCESS_DEFAULT_PRIORITY);
+    if (pid)
     {
+        size_t i = 1;
+        msg_t *msg = msg_alloc();
         print_str("Executed ");
         print_str(g_args[0]);
+        msg_type_set_argument(msg);
+        msg_set_receiver_pid(msg, pid);
+        while (g_args[i])
+        {
+            msg_data_set_string(msg, g_args[i]);
+            send_message(msg);
+            ++i;
+        }
+        msg = msg_free(msg);
     }
     else
     {
@@ -121,11 +133,10 @@ shell(void)
     kdebug_println("SHELL: type 'exit' to exit.");
     while (1)
     {
-        msg_t *msg = NULL;
+        msg_t *msg = msg_alloc();
 
         kdebug_print("deviate> ");
-        msg = read_from_console();
-    kdebug_println("mmmmmmmmmmmmmreadfromconsolefinishedmmmmmmmmmSHELL: type 'exit' to exit.");
+        read_message_by_type(msg, MSG_TYPE_CONSOLE_INPUT, 0);
         strcpy(g_line, msg_data_get_string(msg));
         msg = msg_free(msg);
 

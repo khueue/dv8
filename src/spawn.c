@@ -6,6 +6,7 @@
 #include "spawn.h"
 #include "kernel_api.h"
 #include "kernel.h"
+#include "tty_manager.h"
 
 void
 kfunc_to_go_to_when_the_process_ends_normally(void)
@@ -47,6 +48,8 @@ spawn(user_program_pointer program, uint32_t priority)
 
     pcb->regs.ra_reg  =
         (uint32_t)kfunc_to_go_to_when_the_process_ends_normally;
+
+    tty_manager_add_input_listener(pcb);
 
     return pcb;
 }

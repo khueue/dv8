@@ -94,12 +94,14 @@ strcpy(char *dst, const char *src)
  * See stdlib.h documentation.
  */
 int
-atoi(const char * str)
+atoi(const char *str)
 {
     int x = 0;
     int i = 0;
     int j = 1;
     int k = 0;
+
+    kdebug_assert(str);
 
     /* Skip white space */
     while (str[i] == ' ')

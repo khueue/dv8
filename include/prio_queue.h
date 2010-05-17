@@ -27,7 +27,7 @@ prio_is_empty(const prio_queue_t *q);
 size_t
 prio_length(const prio_queue_t *q);
 
-void
+int
 prio_enqueue(prio_queue_t *q, void *data);
 
 void *

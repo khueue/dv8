@@ -1,3 +1,6 @@
+fixa ta bort message queue pcb när den försvinner
+fundera över add/remove input listener-placering
+
 # Todo
 
 __All:__ kinit, scheduler, process, etc.

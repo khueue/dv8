@@ -154,6 +154,37 @@ kexec(const char program[], uint32_t priority)
 uint32_t
 kread_message_by_type(msg_t *msg, msg_type_t type, int max_wait_ms)
 {
+    pcb_t *pcb = sch_get_currently_running_process();
+    msg_t *msg_from_q = NULL;
+
+    msg_from_q = prio_find_from_head(&pcb->inbox_q, &type);
+    if (msg_from_q)
+    {
+        prio_remove_from_head(&pcb->inbox_q, &type);
+        memcpy(msg, msg_from_q, sizeof(*msg_from_q)); /* xxxxxx msg_copy todo */
+        msg_from_q = msg_free(msg_from_q);
+    }
+    else
+    {
+        pcb->waiting_msg = msg;
+        pcb->waiting_type = type;
+        if (max_wait_ms == 0)
+        {
+            kblock_self();
+        }
+        else
+        {
+            ksleep(max_wait_ms);
+        }
+    }
+
+    return 1;
+}
+
+#if 0
+static uint32_t
+krddddddXXXXXXXddddead_message_by_type(msg_t **pp_msg, msg_type_t type, int max_wait_ms)
+{
     msg_t *msg_from_q = NULL;
     pcb_t *pcb = sch_get_currently_running_process();
 
@@ -162,15 +193,8 @@ kread_message_by_type(msg_t *msg, msg_type_t type, int max_wait_ms)
         msg_from_q = prio_find_from_head(&pcb->inbox_q, &type);
         while (!msg_from_q)
         {
-        kdebug_println("111111111 starting block now ...");
             kblock_self();
-        kdebug_println("111111111 finished block now ...");
             msg_from_q = prio_find_from_head(&pcb->inbox_q, &type);
-            if (msg_from_q)
-            {
-
-        kdebug_println("--------- hej vi har meddelande ...");
-            }
         }
     }
     else
@@ -197,10 +221,10 @@ kread_message_by_type(msg_t *msg, msg_type_t type, int max_wait_ms)
     }
     else
     {
-        kdebug_println("555555555 NO MESSAGE!!!!!!!!");
         return 0;
     }
 }
+#endif
 
 msg_t *
 kread_from_console(void)
@@ -232,13 +256,20 @@ ksend_message(msg_t *msg)
         return 0;
     }
 
-    prio_enqueue(&receiver->inbox_q, msg);
-    if (0)
+    if (msg->type == receiver->waiting_type)
     {
-        /* full inbox! XXXXX */
-        return 0;
+        memcpy(receiver->waiting_msg, msg, sizeof(*msg));
+        kunblock(receiver->pid);
     }
-    kunblock(receiver->pid);
+    else
+    {
+        msg_t *new_msg = msg_alloc();
+        memcpy(new_msg, msg, sizeof(*new_msg));
+        if (!prio_enqueue(&receiver->inbox_q, new_msg))
+        {
+            return 0;
+        }
+    }
 
     return 1;
 }
@@ -268,6 +299,7 @@ void
 kkill_self(void)
 {
     pcb_t *pcb = sch_get_currently_running_process();
+    tty_manager_remove_input_listener(pcb);
     kkill(pcb->pid);
 }
 
@@ -309,19 +341,6 @@ kblock(uint32_t pid)
 uint32_t
 kunblock(uint32_t pid)
 {
-    {/* XXXXXXXXXX remove */
-        pcb_t *pcb = sch_get_currently_running_process();
-        if (pcb)
-        {
-            kdebug_print("----- KUNBLOCK, the owner of the unblocker: ");
-            kdebug_printint(pcb->pid);
-            kdebug_println("");
-        }
-        else
-        {
-            kdebug_println("----- KUNBLOCK: typ kernel");
-        }
-    }
     uint32_t r = sch_unblock(pid);
     sch_run();
     return r;
@@ -337,18 +356,6 @@ kblock_self()
     }
     else
     {
-        kdebug_println("");
-        kdebug_println("---");
-        kdebug_print("))))))))))))))))) KBLOCK_SELF: ");
-        kdebug_printint(kgetpid());
-        kdebug_printint(kgetpid());
-        kdebug_printint(kgetpid());
-        kdebug_printint(kgetpid());
-        kdebug_printint(kgetpid());
-        kdebug_printint(kgetpid());
-        kdebug_printint(kgetpid());
-        kdebug_println("");
-        kdebug_println("---");
         kblock(process->pid);
     }
 }

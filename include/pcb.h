@@ -3,6 +3,7 @@
 
 #include "registers.h"
 #include "prio_queue.h"
+#include "msg.h"
 
 /*
  * ---------------------------------------------------------------------------
@@ -34,6 +35,8 @@ struct _pcb
     uint32_t priority;
     int32_t sleepleft;
     prio_queue_t inbox_q;
+    msg_t *waiting_msg;
+    msg_type_t waiting_type;
     process_state_t state;
     registers_t regs;
     uint8_t stack[PROCESS_STACK_SIZE];

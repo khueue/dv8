@@ -8,27 +8,27 @@
 void
 incr(void)
 {
-    int i;
-    msg_t msg;
-    int success = 0;
-
-    kdebug_println("-------------- incr startart");
-    success = read_message_by_type(&msg, MSG_TYPE_ARGUMENT, 0);
-
-    if (success)
+    msg_t *msg = msg_alloc();
+    int n = 0;
+    int i = 0;
+    read_message_by_type(msg, MSG_TYPE_ARGUMENT, 330); /* XXXXX settings.h */
+    if (msg_type_is_invalid(msg))
     {
-        kdebug_println("***** WE GOT THE ARGUMENT *****");
-        kdebug_println(msg.data.string);
+        print_str("XXXXXXXXXXX USAGE incr INVALID");
+        return;
     }
-    else
+    n = atoi(msg_data_get_string(msg));
+    msg = msg_free(msg);
+    if (n <= 0)
     {
-        kdebug_println("***** NO MESSAGE IN 300 MS!!!!! *****");
+        print_str("XXXXXXXXXXX USAGE incr");
+        return;
     }
 
-    for(i = 0; i < 5; i += 1 )
+    for (i = 0; i <= n; ++i)
     {
         kdebug_printint(i);
-        kdebug_println(" - Incr sleeping ...");
+        kdebug_println("");
         sleep(300);
     }
 }

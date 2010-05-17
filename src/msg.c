@@ -70,7 +70,9 @@ msg_alloc(void)
     else
     {
         g_freelist = g_freelist->next_free;
-        return ZERO_STRUCT(msg);
+        ZERO_STRUCT(msg);
+        msg_type_set_invalid(msg);
+        return msg;
     }
 }
 
@@ -82,6 +84,15 @@ msg_free(msg_t *msg)
     msg->next_free = g_freelist;
     g_freelist = msg;
     return NULL;
+}
+
+
+msg_type_t
+msg_get_type(const msg_t *msg)
+{
+    kdebug_assert(msg);
+
+    return msg->type;
 }
 
 int
@@ -120,19 +131,19 @@ msg_type_is(const msg_t *msg, msg_type_t type)
 }
 
 int
-msg_type_is_unknown(const msg_t *msg)
+msg_type_is_invalid(const msg_t *msg)
 {
     kdebug_assert(msg);
 
-    return msg->type == MSG_TYPE_UNKNOWN;
+    return msg->type == MSG_TYPE_INVALID;
 }
 
 void
-msg_type_set_unknown(msg_t *msg)
+msg_type_set_invalid(msg_t *msg)
 {
     kdebug_assert(msg);
 
-    msg->type = MSG_TYPE_UNKNOWN;
+    msg->type = MSG_TYPE_INVALID;
 }
 
 int
@@ -216,19 +227,19 @@ msg_get_receiver_pid(const msg_t *msg)
 }
 
 int
-msg_data_is_unknown(const msg_t *msg)
+msg_data_is_invalid(const msg_t *msg)
 {
     kdebug_assert(msg);
 
-    return msg->data_type == MSG_DATA_TYPE_UNKNOWN;
+    return msg->data_type == MSG_DATA_TYPE_INVALID;
 }
 
 void
-msg_data_set_unknown(msg_t *msg)
+msg_data_set_invalid(msg_t *msg)
 {
     kdebug_assert(msg);
 
-    msg->data_type = MSG_DATA_TYPE_UNKNOWN;
+    msg->data_type = MSG_DATA_TYPE_INVALID;
 }
 
 int

@@ -14,7 +14,7 @@
  */
 typedef enum
 {
-    MSG_TYPE_UNKNOWN,
+    MSG_TYPE_INVALID,
     MSG_TYPE_ARGUMENT,
     MSG_TYPE_CONSOLE_INPUT
 } msg_type_t;
@@ -24,7 +24,7 @@ typedef enum
  */
 typedef enum
 {
-    MSG_DATA_TYPE_UNKNOWN,
+    MSG_DATA_TYPE_INVALID,
     MSG_DATA_TYPE_INTEGER,
     MSG_DATA_TYPE_STRING
 } msg_data_type_t;
@@ -89,12 +89,14 @@ msg_has_type(const void *pmsg, const void *ptype);
  */
 int msg_type_is(const msg_t *msg, msg_type_t type);
 
+msg_type_t msg_get_type(const msg_t *msg);
+
 /*
- * - is() returns true if the message is of an unknown type
- * - set() makes the message be of an unknown type
+ * - is() returns true if the message is of an invalid type
+ * - set() makes the message be of an invalid type
  */
-int  msg_type_is_unknown(const msg_t *msg);
-void msg_type_set_unknown(msg_t *msg);
+int  msg_type_is_invalid(const msg_t *msg);
+void msg_type_set_invalid(msg_t *msg);
 
 /*
  * - is() returns true if the message represents an argument
@@ -132,11 +134,11 @@ void     msg_set_receiver_pid(msg_t *msg, uint32_t receiver_pid);
 uint32_t msg_get_receiver_pid(const msg_t *msg);
 
 /*
- * - is() returns true if the data within the message is unknown
- * - set() makes the data within the message be unknown
+ * - is() returns true if the data within the message is invalid
+ * - set() makes the data within the message be invalid
  */
-int  msg_data_is_unknown(const msg_t *msg);
-void msg_data_set_unknown(msg_t *msg);
+int  msg_data_is_invalid(const msg_t *msg);
+void msg_data_set_invalid(msg_t *msg);
 
 /*
  * - is() returns true if the data within the message is string
