@@ -373,13 +373,11 @@ setup_scheduler(void)
     process = spawn(idle, 0);
     sch_schedule(process);
 
-    process = spawn(shell, PROCESS_DEFAULT_PRIORITY);
-    sch_schedule(process);
-
-    #if 0
     process = spawn(maltascr, PROCESS_DEFAULT_PRIORITY); /* should be high XXXX */
     sch_schedule(process);
-    #endif
+
+    process = spawn(shell, PROCESS_DEFAULT_PRIORITY);
+    sch_schedule(process);
 
     /* Initialise timer to interrupt soon. */
     kload_timer(MS_TO_NEXT_TIMER_INTERRUPT * timer_msec);
