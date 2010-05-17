@@ -28,7 +28,8 @@ msg_alloc(void);
 
 /*
  * Releases a message back to the system. Always returns NULL, to make it easy
- * to avoid dangling pointers.
+ * to avoid dangling pointers by simply using the return value in an
+ * assignment.
  */
 msg_t *
 msg_free(msg_t *msg);

@@ -73,11 +73,8 @@ list_node_alloc(void)
 
 /*
  * Releases a list node back to the system. Always returns NULL, to make it
- * easy and idiomatic to avoid dangling pointers:
- *
- *   node = list_node_alloc();
- *   ... use node ...
- *   node = list_node_free();
+ * easy to avoid dangling pointers by simply using the return value in an
+ * assignment.
  */
 list_node_t *
 list_node_free(list_node_t *node)

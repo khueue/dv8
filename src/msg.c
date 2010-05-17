@@ -167,22 +167,6 @@ msg_type_set_console_input(msg_t *msg)
     msg->type = MSG_TYPE_CONSOLE_INPUT;
 }
 
-int
-msg_data_is_unknown(const msg_t *msg)
-{
-    kdebug_assert(msg);
-
-    return msg->data_type == MSG_DATA_TYPE_UNKNOWN;
-}
-
-void
-msg_data_set_unknown(msg_t *msg)
-{
-    kdebug_assert(msg);
-
-    msg->data_type = MSG_DATA_TYPE_UNKNOWN;
-}
-
 void
 msg_set_priority(msg_t *msg, uint32_t priority)
 {
@@ -229,6 +213,22 @@ msg_get_receiver_pid(const msg_t *msg)
     kdebug_assert(msg);
 
     return msg->receiver_pid;
+}
+
+int
+msg_data_is_unknown(const msg_t *msg)
+{
+    kdebug_assert(msg);
+
+    return msg->data_type == MSG_DATA_TYPE_UNKNOWN;
+}
+
+void
+msg_data_set_unknown(msg_t *msg)
+{
+    kdebug_assert(msg);
+
+    msg->data_type = MSG_DATA_TYPE_UNKNOWN;
 }
 
 int

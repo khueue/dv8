@@ -179,12 +179,8 @@ pcb_alloc(void)
 }
 
 /*
- * Releases a PCB back to the system. Always returns NULL, to make it easy and
- * idiomatic to avoid dangling pointers:
- *
- *   pcb = pcb_alloc();
- *   ... use pcb ...
- *   pcb = pcb_free();
+ * Releases a PCB back to the system. Always returns NULL, to make it easy to
+ * avoid dangling pointers by simply using the return value in an assignment.
  */
 pcb_t *
 pcb_free(pcb_t *pcb)
