@@ -38,6 +38,9 @@ print_str(const char str[]);
 uint32_t
 send_message(msg_t *msg);
 
+msg_t *
+read_from_console(void);
+
 uint32_t
 read_message_by_type(msg_t *msg, msg_type_t type, int max_wait_ms);
 

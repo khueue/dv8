@@ -168,7 +168,7 @@ kread_message_by_type(msg_t *msg, msg_type_t type, int max_wait_ms)
             msg_from_q = prio_find_from_head(&pcb->inbox_q, &type);
             if (msg_from_q)
             {
-                
+
         kdebug_println("--------- hej vi har meddelande ...");
             }
         }
@@ -203,13 +203,16 @@ kread_message_by_type(msg_t *msg, msg_type_t type, int max_wait_ms)
 }
 
 msg_t *
-read_from_console(void)
+kread_from_console(void)
 {
     pcb_t *pcb = sch_get_currently_running_process();
 
     tty_manager_add_input_listener(pcb);
-    block_self();
-    tty_manager_remove_input_listener(pcb);
+    kblock_self();
+    kdebug_println("finished blocking self,,,,,,,,,,,,,");
+    kdebug_printint(kgetpid());
+    kdebug_println("");
+    //tty_manager_remove_input_listener(pcb);
 
     return prio_dequeue(&pcb->inbox_q);
 }
@@ -306,6 +309,19 @@ kblock(uint32_t pid)
 uint32_t
 kunblock(uint32_t pid)
 {
+    {/* XXXXXXXXXX remove */
+        pcb_t *pcb = sch_get_currently_running_process();
+        if (pcb)
+        {
+            kdebug_print("----- KUNBLOCK, the owner of the unblocker: ");
+            kdebug_printint(pcb->pid);
+            kdebug_println("");
+        }
+        else
+        {
+            kdebug_println("----- KUNBLOCK: typ kernel");
+        }
+    }
     uint32_t r = sch_unblock(pid);
     sch_run();
     return r;
@@ -314,8 +330,27 @@ kunblock(uint32_t pid)
 void
 kblock_self()
 {
-    uint32_t pid = sch_get_currently_running_process()->pid;
-    kblock(pid);
+    pcb_t *process = sch_get_currently_running_process();
+    if (!process)
+    {
+        kdebug_println("xxxxxxxxxxxxxxxxxxxx666 interesting");
+    }
+    else
+    {
+        kdebug_println("");
+        kdebug_println("---");
+        kdebug_print("))))))))))))))))) KBLOCK_SELF: ");
+        kdebug_printint(kgetpid());
+        kdebug_printint(kgetpid());
+        kdebug_printint(kgetpid());
+        kdebug_printint(kgetpid());
+        kdebug_printint(kgetpid());
+        kdebug_printint(kgetpid());
+        kdebug_printint(kgetpid());
+        kdebug_println("");
+        kdebug_println("---");
+        kblock(process->pid);
+    }
 }
 
 /*
@@ -324,22 +359,20 @@ kblock_self()
 static void
 setup_scheduler(void)
 {
-    pcb_t *idle_process = NULL;
-    pcb_t *shell_process = NULL;
-   /* pcb_t *fib_process = NULL; */
+    pcb_t *process = NULL;
 
     sch_init();
 
-    idle_process = spawn(idle, 0);
-    sch_schedule(idle_process);
+    process = spawn(idle, 0);
+    sch_schedule(process);
 
-    /* fib_process = spawn(fib, PROCESS_DEFAULT_PRIORITY);
-    sch_schedule(fib_process);*/
+    process = spawn(shell, PROCESS_DEFAULT_PRIORITY);
+    sch_schedule(process);
 
-    shell_process = spawn(shell, PROCESS_DEFAULT_PRIORITY);
-    sch_schedule(shell_process);
-
-    sch_schedule(spawn(maltascr, PROCESS_DEFAULT_PRIORITY)); /* remove XXXXX */
+    #if 0
+    process = spawn(maltascr, PROCESS_DEFAULT_PRIORITY); /* should be high XXXX */
+    sch_schedule(process);
+    #endif
 
     /* Initialise timer to interrupt soon. */
     kload_timer(MS_TO_NEXT_TIMER_INTERRUPT * timer_msec);

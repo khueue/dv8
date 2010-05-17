@@ -151,7 +151,7 @@ sch_run(void)
      */
     process = sch_get_currently_running_process();
     if (process)
-    {
+    {memcpy(&process->regs, kget_registers(), sizeof(process->regs));
         prio_dequeue(&g_run);
         process->state = PROCESS_STATE_READY;
         prio_enqueue(&g_ready, process);

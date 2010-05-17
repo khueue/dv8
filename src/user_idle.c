@@ -10,5 +10,8 @@
 void
 idle(void)
 {
-    do_nothing_forever("Idle process idling ...", 10000000);
+    //do_nothing_forever("Idle process idling ...", 10000000);
+    while (1)
+    {
+    }
 }

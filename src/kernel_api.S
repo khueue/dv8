@@ -16,6 +16,7 @@
     .globl send_message
     .globl print_str
     .globl read_message_by_type
+    .globl read_from_console
 
     # syscall_handler:
     #   Enables argument passing for up
@@ -93,5 +94,10 @@ send_message:
 
 read_message_by_type:
     la v0, kread_message_by_type
+    syscall
+    jr ra
+
+read_from_console:
+    la v0, kread_from_console
     syscall
     jr ra

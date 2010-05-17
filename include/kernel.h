@@ -55,7 +55,7 @@ uint32_t
 kread_message_by_type(msg_t *msg, msg_type_t type, int max_wait_ms);
 
 msg_t *
-read_from_console(void);
+kread_from_console(void);
 
 uint32_t
 ksend_message(msg_t *msg);

@@ -125,6 +125,7 @@ shell(void)
 
         kdebug_print("deviate> ");
         msg = read_from_console();
+    kdebug_println("mmmmmmmmmmmmmreadfromconsolefinishedmmmmmmmmmSHELL: type 'exit' to exit.");
         strcpy(g_line, msg_data_get_string(msg));
         msg = msg_free(msg);
 
