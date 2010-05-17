@@ -31,7 +31,8 @@ struct msg_
     union
     {
         int32_t integer;
-        uint8_t string[STR_BUF_SIZE];
+        char    string[STR_BUF_SIZE];
+        uint8_t bytes[STR_BUF_SIZE]; /* XXX currently unused. */
     } data;
 
     uint32_t sender_pid;
@@ -313,7 +314,7 @@ create_string_message(const char *str, uint32_t receiver_pid)
  */
 
 /*
-    XXXXXXXgcc -DUNITTEST -DPCB_MAIN src/pcb.c \
+    gcc -DUNITTEST -DMSG_MAIN src/msg.c \
     src/utils.c \
     -Iinclude -W -Wall -Werror -Wshadow -Wpointer-arith \
     -Wcast-qual -Wstrict-prototypes -Wmissing-prototypes -ansi -pedantic
