@@ -8,6 +8,28 @@
  */
 
 /*
+ * XXXX ojojoj Message used for inter-process communication.
+ */
+struct msg_
+{
+    msg_type_t type;
+    msg_data_type_t data_type;
+    union
+    {
+        int32_t integer;
+        char    string[STR_BUF_SIZE];
+        uint8_t bytes[STR_BUF_SIZE]; /* XXX currently unused. */
+    } data;
+
+    uint32_t sender_pid;
+    uint32_t receiver_pid;
+    uint32_t priority;
+
+    /* Internal freelist pointer. */
+    msg_t *next_free;
+};
+
+/*
  * ---------------------------------------------------------------------------
  * Globals.
  * ---------------------------------------------------------------------------
@@ -86,6 +108,14 @@ msg_free(msg_t *msg)
     return NULL;
 }
 
+/*
+ * XXXXXX
+ */
+void
+msg_copy(msg_t *dst, const msg_t *src)
+{
+    memcpy(dst, src, sizeof(*dst));
+}
 
 msg_type_t
 msg_get_type(const msg_t *msg)

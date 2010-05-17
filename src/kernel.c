@@ -161,7 +161,8 @@ kread_message_by_type(msg_t *msg, msg_type_t type, int max_wait_ms)
     if (msg_from_q)
     {
         prio_remove_from_head(&pcb->inbox_q, &type);
-        memcpy(msg, msg_from_q, sizeof(*msg_from_q)); /* xxxxxx msg_copy todo */
+        //memcpy(msg, msg_from_q, sizeof(*msg_from_q)); /* xxxxxx msg_copy todo */
+        msg_copy(msg, msg_from_q);
         msg_from_q = msg_free(msg_from_q);
     }
     else
@@ -256,15 +257,17 @@ ksend_message(msg_t *msg)
         return 0;
     }
 
-    if (msg->type == receiver->waiting_type)
+    if (msg_type_is(msg, receiver->waiting_type))
     {
-        memcpy(receiver->waiting_msg, msg, sizeof(*msg));
+        //memcpy(receiver->waiting_msg, msg, sizeof(*msg));
+        msg_copy(receiver->waiting_msg, msg);
         kunblock(receiver->pid);
     }
     else
     {
         msg_t *new_msg = msg_alloc();
-        memcpy(new_msg, msg, sizeof(*new_msg));
+        //memcpy(new_msg, msg, sizeof(*new_msg));
+        msg_copy(new_msg, msg);
         if (!prio_enqueue(&receiver->inbox_q, new_msg))
         {
             return 0;

@@ -35,28 +35,6 @@ typedef enum
 typedef struct msg_ msg_t;
 
 /*
- * XXXX ojojoj Message used for inter-process communication.
- */
-struct msg_
-{
-    msg_type_t type;
-    msg_data_type_t data_type;
-    union
-    {
-        int32_t integer;
-        char    string[STR_BUF_SIZE];
-        uint8_t bytes[STR_BUF_SIZE]; /* XXX currently unused. */
-    } data;
-
-    uint32_t sender_pid;
-    uint32_t receiver_pid;
-    uint32_t priority;
-
-    /* Internal freelist pointer. */
-    msg_t *next_free;
-};
-
-/*
  * ---------------------------------------------------------------------------
  * Functions.
  * ---------------------------------------------------------------------------
@@ -75,6 +53,9 @@ msg_alloc(void);
  */
 msg_t *
 msg_free(msg_t *msg);
+
+void
+msg_copy(msg_t *dst, const msg_t *src);
 
 /*
  * XXXXXXXXXX

@@ -60,6 +60,12 @@ EXE = $(DIR_BIN)/dv8
 # Default rule, used when simply typing 'make'.
 all: boot
 
+bootfast: buildfast
+	@- echo '--- Starting simulation ...'
+	./$(DIR_SCRIPTS)/run.sh $(SIMICS) $(EXE)
+	@- echo "--- Simulation complete!"
+	@- echo
+
 # Compile everything and run Simics.
 boot: build
 	@- echo '--- Starting simulation ...'
