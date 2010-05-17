@@ -53,10 +53,13 @@ int list_insert_ordered(list_t *list, void *data);
  * - foot() removes from the back of the list
  * - remove() removes the first item (starting from the back) that matches id,
  *     using the list's match_func
+ * XXXXXXXXXXXX
  */
 void *list_remove_head(list_t *list);
 void *list_remove_foot(list_t *list);
 void *list_remove(list_t *list, const void *id);
+void *list_remove_from_head(list_t *list, const void *id);
+void *list_remove_from_foot(list_t *list, const void *id);
 
 /*
  * Returns, but does not remove, an item from the list. NULL on failure.
@@ -64,10 +67,13 @@ void *list_remove(list_t *list, const void *id);
  * - foot() returns the back of the list
  * - find() returns the first item (starting from the back) that matches id,
  *     using the list's match_func
+ * XXXXXXXXXXXX rename to return? or something else?
  */
 void *list_find_head(const list_t *list);
 void *list_find_foot(const list_t *list);
 void *list_find(const list_t *list, const void *id);
+void *list_find_from_head(const list_t *list, const void *id);
+void *list_find_from_foot(const list_t *list, const void *id);
 
 /*
  * Iterates over the list, starting at the front.

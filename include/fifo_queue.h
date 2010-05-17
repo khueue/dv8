@@ -28,4 +28,7 @@ fifo_enqueue(fifo_queue_t *q, void *data);
 void *
 fifo_dequeue(fifo_queue_t *q);
 
+void *
+fifo_find(fifo_queue_t *q, const void *id);
+
 #endif

@@ -284,7 +284,7 @@ sch_unblock(uint32_t pid)
     process = prio_remove(&g_wait, &pid);
     if (process)
     {
-        process->sleepleft = 0;
+        /*process->sleepleft = 0; xxxxxxx */
         process->state = PROCESS_STATE_READY;
         prio_enqueue(&g_ready, process);
 

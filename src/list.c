@@ -215,6 +215,58 @@ list_remove_foot(list_t *list)
 void *
 list_remove(list_t *list, const void *id)
 {
+    return list_remove_from_foot(list, id);
+}
+
+void *
+list_remove_from_head(list_t *list, const void *id)
+{
+    list_node_t *node = NULL;
+    void *data = NULL;
+
+    kdebug_assert(list);
+    kdebug_assert(list->is_match);
+    kdebug_assert(id);
+
+    node = list->head;
+
+    while (node && !list->is_match(node->data, id))
+    {
+        node = node->next;
+    }
+
+    if (node)
+    {
+        if (node->prev)
+        {
+            node->prev->next = node->next;
+        }
+        else
+        {
+            list->head = node->next;
+        }
+
+        if (node->next)
+        {
+            node->next->prev = node->prev;
+        }
+        else
+        {
+            list->foot = node->prev;
+        }
+
+        data = node->data;
+        node = list_node_free(node);
+
+        --list->length;
+    }
+
+    return data;
+}
+
+void *
+list_remove_from_foot(list_t *list, const void *id)
+{
     list_node_t *node = NULL;
     void *data = NULL;
 
@@ -276,6 +328,34 @@ list_find_foot(const list_t *list)
 
 void *
 list_find(const list_t *list, const void *id)
+{
+    kdebug_assert(list);
+    kdebug_assert(list->is_match);
+    kdebug_assert(id);
+
+    return list_find_from_foot(list, id);
+}
+
+void *
+list_find_from_head(const list_t *list, const void *id)
+{
+    list_node_t *node = NULL;
+
+    kdebug_assert(list);
+    kdebug_assert(list->is_match);
+    kdebug_assert(id);
+
+    node = list->head;
+    while (node && !list->is_match(node->data, id))
+    {
+        node = node->next;
+    }
+
+    return node ? node->data : NULL;
+}
+
+void *
+list_find_from_foot(const list_t *list, const void *id)
 {
     list_node_t *node = NULL;
 

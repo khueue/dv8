@@ -15,6 +15,7 @@
     .globl kill
     .globl send_message
     .globl print_str
+    .globl read_message_by_type
 
     # syscall_handler:
     #   Enables argument passing for up
@@ -87,5 +88,10 @@ print_str:
 
 send_message:
     la v0, ksend_message
+    syscall
+    jr ra
+
+read_message_by_type:
+    la v0, kread_message_by_type
     syscall
     jr ra

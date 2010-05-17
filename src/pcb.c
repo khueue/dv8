@@ -1,5 +1,6 @@
 #include "utils.h"
 #include "pcb.h"
+#include "msg.h"
 
 /*
  * ---------------------------------------------------------------------------
@@ -82,7 +83,7 @@ void
 pcb_init(pcb_t *pcb)
 {
     pcb_assign_pid(pcb);
-    fifo_init(&pcb->inbox_q, NULL, NULL); /* message functions here XXXXXXX */
+    prio_init(&pcb->inbox_q, msg_cmp_priority, msg_has_type);
 }
 
 /*

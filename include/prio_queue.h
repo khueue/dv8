@@ -37,7 +37,19 @@ void *
 prio_remove(prio_queue_t *q, const void *id);
 
 void *
+prio_remove_from_head(prio_queue_t *q, const void *id);
+
+void *
+prio_remove_from_foot(prio_queue_t *q, const void *id);
+
+void *
 prio_find(const prio_queue_t *q, const void *id);
+
+void *
+prio_find_from_head(const prio_queue_t *q, const void *id);
+
+void *
+prio_find_from_foot(const prio_queue_t *q, const void *id);
 
 void
 prio_iter_reset(prio_queue_t *q);

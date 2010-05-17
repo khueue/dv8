@@ -31,10 +31,21 @@ fib(void)
 {
     /* Spawn an increment, just for fun. */
     {
+        msg_t *msg = NULL;
         uint32_t pid = exec("incr", PROCESS_DEFAULT_PRIORITY);
         kdebug_print("pid = ");
         kdebug_printint(pid);
         kdebug_println("");
+        msg = create_string_message("nu kommer aRG", pid);
+        msg_type_set_argument(msg);
+        if (send_message(msg))
+        {
+            kdebug_println("send message JAPP");
+        }
+        else
+        {
+            kdebug_println("send message NEEEEEEEJ");
+        }
     }
 
     while (1)

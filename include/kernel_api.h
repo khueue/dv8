@@ -39,6 +39,9 @@ uint32_t
 send_message(msg_t *msg);
 
 uint32_t
+read_message_by_type(msg_t *msg, msg_type_t type, int max_wait_ms);
+
+uint32_t
 block(uint32_t pid);
 
 uint32_t

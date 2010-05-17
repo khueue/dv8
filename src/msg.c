@@ -2,46 +2,10 @@
 #include "msg.h"
 
 /*
- * Determines the type of the message.
+ * ---------------------------------------------------------------------------
+ * Types.
+ * ---------------------------------------------------------------------------
  */
-typedef enum
-{
-    MSG_TYPE_UNKNOWN,
-    MSG_TYPE_ARGUMENT,
-    MSG_TYPE_CONSOLE_INPUT
-} msg_type_t;
-
-/*
- * Determines the type of data the message contains.
- */
-typedef enum
-{
-    MSG_DATA_TYPE_UNKNOWN,
-    MSG_DATA_TYPE_INTEGER,
-    MSG_DATA_TYPE_STRING
-} msg_data_type_t;
-
-/*
- * Message used for inter-process communication.
- */
-struct msg_
-{
-    msg_type_t type;
-    msg_data_type_t data_type;
-    union
-    {
-        int32_t integer;
-        char    string[STR_BUF_SIZE];
-        uint8_t bytes[STR_BUF_SIZE]; /* XXX currently unused. */
-    } data;
-
-    uint32_t sender_pid;
-    uint32_t receiver_pid;
-    uint32_t priority;
-
-    /* Internal freelist pointer. */
-    msg_t *next_free;
-};
 
 /*
  * ---------------------------------------------------------------------------
@@ -118,6 +82,41 @@ msg_free(msg_t *msg)
     msg->next_free = g_freelist;
     g_freelist = msg;
     return NULL;
+}
+
+int
+msg_cmp_priority(const void *pmsg1, const void *pmsg2)
+{
+    const msg_t *msg1 = (const msg_t *)pmsg1;
+    const msg_t *msg2 = (const msg_t *)pmsg2;
+
+    kdebug_assert(msg1);
+    kdebug_assert(msg2);
+
+    return msg1->priority - msg2->priority;
+}
+
+int
+msg_has_type(const void *pmsg, const void *ptype)
+{
+    const msg_t *msg = NULL;
+    const msg_type_t *type = NULL;
+
+    kdebug_assert(pmsg);
+    kdebug_assert(ptype);
+
+    msg  = (const msg_t *)pmsg;
+    type = (const msg_type_t *)ptype;
+
+    return msg_type_is(msg, *type);
+}
+
+int
+msg_type_is(const msg_t *msg, msg_type_t type)
+{
+    kdebug_assert(msg);
+
+    return msg->type == type;
 }
 
 int

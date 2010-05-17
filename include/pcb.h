@@ -2,7 +2,7 @@
 #define PCB_FREELIST_H
 
 #include "registers.h"
-#include "fifo_queue.h"
+#include "prio_queue.h"
 
 /*
  * ---------------------------------------------------------------------------
@@ -33,7 +33,7 @@ struct _pcb
     uint32_t pid;
     uint32_t priority;
     int32_t sleepleft;
-    fifo_queue_t inbox_q;
+    prio_queue_t inbox_q;
     process_state_t state;
     registers_t regs;
     uint8_t stack[PROCESS_STACK_SIZE];

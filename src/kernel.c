@@ -151,12 +151,56 @@ kexec(const char program[], uint32_t priority)
     return pcb->pid;
 }
 
-#if 0
-static msg_t *
-dequeue_first_message_by_type(fifo_queue_t *q, msg_type_t msg_type)
+uint32_t
+kread_message_by_type(msg_t *msg, msg_type_t type, int max_wait_ms)
 {
+    msg_t *msg_from_q = NULL;
+    pcb_t *pcb = sch_get_currently_running_process();
+
+    if (max_wait_ms == 0)
+    {
+        msg_from_q = prio_find_from_head(&pcb->inbox_q, &type);
+        while (!msg_from_q)
+        {
+        kdebug_println("111111111 starting block now ...");
+            kblock_self();
+        kdebug_println("111111111 finished block now ...");
+            msg_from_q = prio_find_from_head(&pcb->inbox_q, &type);
+            if (msg_from_q)
+            {
+                
+        kdebug_println("--------- hej vi har meddelande ...");
+            }
+        }
+    }
+    else
+    {
+        int sleepleft = max_wait_ms;
+        msg_from_q = prio_find_from_head(&pcb->inbox_q, &type);
+        while (!msg_from_q)
+        {
+            if (pcb_is_done_sleeping(pcb))
+            {
+                break;
+            }
+            ksleep(sleepleft);
+            sleepleft = pcb->sleepleft;
+            msg_from_q = prio_find_from_head(&pcb->inbox_q, &type);
+        }
+    }
+
+    if (msg_from_q)
+    {
+        prio_remove_from_head(&pcb->inbox_q, &type);
+        memcpy(msg, msg_from_q, sizeof(*msg));
+        return 1;
+    }
+    else
+    {
+        kdebug_println("555555555 NO MESSAGE!!!!!!!!");
+        return 0;
+    }
 }
-#endif
 
 msg_t *
 read_from_console(void)
@@ -167,7 +211,7 @@ read_from_console(void)
     block_self();
     tty_manager_remove_input_listener(pcb);
 
-    return fifo_dequeue(&pcb->inbox_q);
+    return prio_dequeue(&pcb->inbox_q);
 }
 
 /*
@@ -185,7 +229,7 @@ ksend_message(msg_t *msg)
         return 0;
     }
 
-    fifo_enqueue(&receiver->inbox_q, msg);
+    prio_enqueue(&receiver->inbox_q, msg);
     if (0)
     {
         /* full inbox! XXXXX */

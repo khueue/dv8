@@ -63,6 +63,18 @@ prio_remove(prio_queue_t *q, const void *id)
     return list_remove(q, id);
 }
 
+void *
+prio_remove_from_head(prio_queue_t *q, const void *id)
+{
+    return list_remove_from_head(q, id);
+}
+
+void *
+prio_remove_from_foot(prio_queue_t *q, const void *id)
+{
+    return list_remove_from_foot(q, id);
+}
+
 /*
  * Returns, but does not remove, the first item from the end of the queue that
  * matches the given id.
@@ -71,6 +83,18 @@ void *
 prio_find(const prio_queue_t *q, const void *id)
 {
     return list_find(q, id);
+}
+
+void *
+prio_find_from_head(const prio_queue_t *q, const void *id)
+{
+    return list_find_from_head(q, id);
+}
+
+void *
+prio_find_from_foot(const prio_queue_t *q, const void *id)
+{
+    return list_find_from_foot(q, id);
 }
 
 void

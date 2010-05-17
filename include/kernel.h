@@ -51,6 +51,9 @@ kexception(void);
 void
 ksleep(int time);
 
+uint32_t
+kread_message_by_type(msg_t *msg, msg_type_t type, int max_wait_ms);
+
 msg_t *
 read_from_console(void);
 

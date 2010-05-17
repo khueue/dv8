@@ -26,3 +26,9 @@ fifo_dequeue(fifo_queue_t *q)
 {
     return list_remove_head(q);
 }
+
+void *
+fifo_find(fifo_queue_t *q, const void *id)
+{
+    return list_find(q, id);
+}
