@@ -46,7 +46,7 @@ g_excn_regs;
  */
 
 static program_t
-g_program_list[5];
+g_program_list[6];
 
 static void
 init_program_list(void)
@@ -65,6 +65,9 @@ init_program_list(void)
 
     strcpy(g_program_list[4].name, "ringnode");
     g_program_list[4].func = ringnode;
+
+    strcpy(g_program_list[5].name, "malta");
+    g_program_list[5].func = maltascr;
 }
 
 /*
@@ -110,7 +113,7 @@ kexec(const char program[], uint32_t priority)
     pcb_t *pcb = NULL;
     int i = 0;
 
-    for (i = 0; i < 5; i++)
+    for (i = 0; i < 6; i++)
     {
         if (0 == strcmp(program, g_program_list[i].name))
         {
