@@ -21,6 +21,7 @@
 #include "user_ring.h"
 #include "user_ringnode.h"
 #include "user_scrollermsg.h"
+#include "user_philo.h"
 
 /*
  * ---------------------------------------------------------------------------
@@ -47,7 +48,7 @@ g_excn_regs;
  */
 
 static program_t
-g_program_list[6];
+g_program_list[8];
 
 static void
 init_program_list(void)
@@ -69,6 +70,12 @@ init_program_list(void)
 
     strcpy(g_program_list[5].name, "scrollermsg");
     g_program_list[5].func = scrollermsg;
+    
+    strcpy(g_program_list[6].name, "dp");
+    g_program_list[6].func = dphilo_init;
+    
+    strcpy(g_program_list[7].name, "philo");
+    g_program_list[7].func = philosopher;
 }
 
 /*
@@ -114,7 +121,7 @@ kexec(const char program[], uint32_t priority)
     pcb_t *pcb = NULL;
     int i = 0;
 
-    for (i = 0; i < 6; i++)
+    for (i = 0; i < 8; i++)
     {
         if (0 == strcmp(program, g_program_list[i].name))
         {
@@ -401,8 +408,8 @@ setup_scheduler(void)
     process = spawn(idle, 0);
     sch_schedule(process);
 
-    process = spawn(maltascr, PROCESS_DEFAULT_PRIORITY + 30);
-    sch_schedule(process);
+    /*process = spawn(maltascr, PROCESS_DEFAULT_PRIORITY + 30);
+    sch_schedule(process); */
 
     process = spawn(shell, PROCESS_DEFAULT_PRIORITY);
     sch_schedule(process);
