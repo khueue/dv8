@@ -139,7 +139,6 @@ kread_message_by_type(msg_t *msg, msg_type_t type, int max_wait_ms)
     msg_t *msg_from_q = NULL;
 
     msg_zero(msg);
-    msg_type_set_invalid(msg);
 
     msg_from_q = prio_find_from_head(&pcb->inbox_q, &type);
     if (msg_from_q)
@@ -165,50 +164,37 @@ kread_message_by_type(msg_t *msg, msg_type_t type, int max_wait_ms)
     return 1;
 }
 
-#if 0
-static uint32_t
-krddddddXXXXXXXddddead_message_by_type(msg_t **pp_msg, msg_type_t type, int max_wait_ms)
+uint32_t
+kread_next_message(msg_t *msg, int max_wait_ms)
 {
-    msg_t *msg_from_q = NULL;
     pcb_t *pcb = sch_get_currently_running_process();
+    msg_t *msg_from_q = NULL;
 
-    if (max_wait_ms == 0)
-    {
-        msg_from_q = prio_find_from_head(&pcb->inbox_q, &type);
-        while (!msg_from_q)
-        {
-            kblock_self();
-            msg_from_q = prio_find_from_head(&pcb->inbox_q, &type);
-        }
-    }
-    else
-    {
-        int sleepleft = max_wait_ms;
-        msg_from_q = prio_find_from_head(&pcb->inbox_q, &type);
-        while (!msg_from_q)
-        {
-            if (pcb_is_done_sleeping(pcb))
-            {
-                break;
-            }
-            ksleep(sleepleft);
-            sleepleft = pcb->sleepleft;
-            msg_from_q = prio_find_from_head(&pcb->inbox_q, &type);
-        }
-    }
+    msg_zero(msg);
 
+    msg_from_q = prio_find_head(&pcb->inbox_q);
     if (msg_from_q)
     {
-        prio_remove_from_head(&pcb->inbox_q, &type);
-        memcpy(msg, msg_from_q, sizeof(*msg));
-        return 1;
+        prio_remove_head(&pcb->inbox_q);
+        msg_copy(msg, msg_from_q);
+        msg_from_q = msg_free(msg_from_q);
     }
     else
     {
-        return 0;
+        pcb->waiting_msg = msg;
+        pcb->waiting_type = MSG_TYPE_INVALID;
+        if (max_wait_ms == 0)
+        {
+            kblock_self();
+        }
+        else
+        {
+            ksleep(max_wait_ms);
+        }
     }
+
+    return 1;
 }
-#endif
 
 #if 0
 msg_t *
