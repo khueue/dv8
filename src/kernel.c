@@ -334,27 +334,34 @@ uint32_t
 kkill(uint32_t pid)
 {
     pcb_t *pcb = NULL;
+
     pcb = sch_unschedule(pid);
+    if (!pcb)
+    {
+        /* No process found with given pid! */
+        return 0;
+    }
+
     if (pcb->state != PROCESS_STATE_ENDED)
     {
         pcb->state = PROCESS_STATE_TERMINATED;
     }
-    
+
     msg_t *msg = msg_alloc();
-    
+
     if (pcb->supervisor_pid)
     {
         msg_set_receiver_pid(msg, pcb->supervisor_pid);
-        
+
         msg_set_type(msg, MSG_TYPE_SUPERVISOR_NOTICE_ID);
         msg_data_set_integer(msg, pcb->pid);
         ksend_message(msg);
-        
+
         msg_set_type(msg, MSG_TYPE_SUPERVISOR_NOTICE_STATE);
         msg_data_set_integer(msg, pcb->state);
         ksend_message(msg);
     }
-        
+
     msg = msg_free(msg);
     pcb = pcb_free(pcb);
     sch_run();
