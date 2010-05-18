@@ -1,7 +1,6 @@
 #include "utils.h"
 #include "kernel_api.h"
 #include "kernel.h"
-#include "scheduler.h"
 #include "msg.h"
 #include "user_philo.h"
 
@@ -28,12 +27,12 @@ get_arg(msg_t *msg_get, int time)
         return 0;
     }
 
-    print_int(getpid());
+    /* print_int(getpid());
     print_str(" <- ");
     print_int(r);
     print_str(" - ");
     print_int(msg_get_sender_pid(msg_get));
-    print_strln("");
+    print_strln(""); */
 
     return r;
 }
@@ -41,12 +40,12 @@ get_arg(msg_t *msg_get, int time)
 static void
 set_arg(msg_t *msg_set, int pid, int val)
 {
-    print_int(getpid());
+   /* print_int(getpid());
     print_str(" - ");
     print_int(val);
     print_str(" -> ");
     print_int(pid);
-    print_strln("");
+    print_strln(""); */
 
     msg_type_set_argument(msg_set);
     msg_set_receiver_pid(msg_set, pid);
@@ -60,7 +59,7 @@ philosopher(void)
     int table_pid = 0;
     int id = 0;
     int i;
-    int duration = 300;
+    int duration = 1000;
     int status;
 
     msg_t *msg_set = msg_alloc();
@@ -72,7 +71,7 @@ philosopher(void)
     /* Get table pid */
     table_pid = get_arg(msg_get,300);
 
-    for(i = 0; i < 5; i++)
+    for (i = 0; i < 5; i++)
     {
         print_int(id);
         print_strln(" thinks.");
@@ -80,19 +79,17 @@ philosopher(void)
 
         print_int(id);
         print_strln(" is hungry.");
-        //get_chopsticks(id);
 
-        if (id%2 == 0) {
+        if (id%2 == 0)
+        {
             print_int(id);
             print_strln(" tries to get right chopstick.");
-            //pthread_mutex_lock(&chopsticks[(i+1)  % nb_philo]); //first, right
-            set_arg(msg_set, table_pid, id * 10 + CMD_RIGHT_CHOPSTICK);
+            set_arg(msg_set, table_pid, id * 10 + CMD_RIGHT_CHOPSTICK); //first, right
             status = get_arg(msg_get,0);
 
             print_int(id);
             print_strln(" tries to get left chopstick.");
-            //pthread_mutex_lock(&chopsticks[i]); //then, left
-            set_arg(msg_set, table_pid, id * 10 + CMD_LEFT_CHOPSTICK);
+            set_arg(msg_set, table_pid, id * 10 + CMD_LEFT_CHOPSTICK); //then, left
             status = get_arg(msg_get,0);
         }
         else
@@ -100,14 +97,12 @@ philosopher(void)
 
             print_int(id);
             print_strln(" tries to get left chopstick.");
-            //pthread_mutex_lock(&chopsticks[(i+1)  % nb_philo]); //first, left
-            set_arg(msg_set, table_pid, id * 10 + CMD_LEFT_CHOPSTICK);
+            set_arg(msg_set, table_pid, id * 10 + CMD_LEFT_CHOPSTICK); //first, left
             status = get_arg(msg_get, 0);
 
             print_int(id);
             print_strln(" tries to get right chopstick.");
-            //pthread_mutex_lock(&chopsticks[i]); //then, right
-            set_arg(msg_set, table_pid, id * 10 + CMD_RIGHT_CHOPSTICK);
+            set_arg(msg_set, table_pid, id * 10 + CMD_RIGHT_CHOPSTICK); //then, right
             status = get_arg(msg_get,0);
         }
 
@@ -117,16 +112,15 @@ philosopher(void)
 
         print_int(id);
         print_strln(" puts the chopsticks back");
-        //put_chopsticks_back(id); //simply puts the chopsticks back on the table
-
         set_arg(msg_set, table_pid, id * 10 + CMD_PUT_BACK_CHOPSTICKS);
     }
 
     print_int(id);
     print_strln(" left table.");
-    //put_chopsticks_back(id); //simply puts the chopsticks back on the table
-
     set_arg(msg_set, table_pid, id * 10 + CMD_LEAVE_TABLE);
+
+    msg_set = msg_free(msg_set);
+    msg_get = msg_free(msg_get);
 }
 
 void
@@ -150,17 +144,17 @@ dphilo_init(void)
     msg_type_set_argument(msg_set);
 
     //creates the chopsticks
-    for(i = 0; i < nb_philo; i++)
+    for (i = 0; i < nb_philo; i++)
     {
         chopsticks[i] = 1;
         waiting_for_chopstick[i] = 0;
     }
 
     //init the philosophers
-    for(i = 0; i < nb_philo; i++)
+    for (i = 0; i < nb_philo; i++)
     {
         philosophers_pid[i] = exec("philo", PROCESS_DEFAULT_PRIORITY);
-        if(!philosophers_pid[i])
+        if (!philosophers_pid[i])
         {
             print_strln("A philosopher did not show up at the dinner...");
         }
@@ -175,10 +169,9 @@ dphilo_init(void)
             ++philosophers_active;
         }
     }
-    
-    sch_print();
+
     //Wait for messages
-    while(1)
+    while (1)
     {
         /* arg / 10 = index
            arg % 10 = command */
@@ -186,18 +179,13 @@ dphilo_init(void)
         int command;
         int arg;
 
-        print_strln("*** NEW MSG?");
         arg = get_arg(msg_get, 0); /* NO TIME OUT XXXX */
         index = arg/10;
         command = arg%10;
-        
-        print_int(index);
-        print_strln(" index");
-        
 
         if (command == CMD_LEFT_CHOPSTICK) /* Get left chopstick */
         {
-            if(chopsticks[index])
+            if (chopsticks[index])
             {
                 chopsticks[index] = 0;
                 set_arg(msg_set, philosophers_pid[index], 777);
@@ -215,7 +203,7 @@ dphilo_init(void)
         else if (command == CMD_RIGHT_CHOPSTICK) /* Get right chopstick */
         {
             i = (index-1)%nb_philo;
-            if(index == 0)
+            if (index == 0) /* ??? */
                 i = nb_philo-1;
 
             if (chopsticks[i])
@@ -223,7 +211,7 @@ dphilo_init(void)
                 chopsticks[i] = 0;
                 set_arg(msg_set, philosophers_pid[index], 888);
             }
-            else if(waiting_for_chopstick[i] == 0)
+            else if (waiting_for_chopstick[i] == 0)
             {
                 waiting_for_chopstick[i] = philosophers_pid[index];
             }
@@ -235,7 +223,7 @@ dphilo_init(void)
         else if (command == CMD_PUT_BACK_CHOPSTICKS) /* Put chopsticks back */
         {
             i = (index-1)%nb_philo;
-            if(index == 0)
+            if (index == 0) /* ??? */
                 i = nb_philo-1;
 
             if (waiting_for_chopstick[i])
@@ -249,7 +237,7 @@ dphilo_init(void)
                 chopsticks[i] = 1;
             }
 
-            if(waiting_for_chopstick[index])
+            if (waiting_for_chopstick[index])
             {
                 int pid = waiting_for_chopstick[index];
                 waiting_for_chopstick[index] = 0;
@@ -262,7 +250,7 @@ dphilo_init(void)
         }
         else if (command == CMD_LEAVE_TABLE)
         {
-            if(!(--philosophers_active))
+            if (!(--philosophers_active))
             {
                 break;
             }

@@ -24,6 +24,8 @@
 #include "user_philo.h"
 #include "user_supervisor_demo.h"
 
+#include "debug.h"
+
 /*
  * ---------------------------------------------------------------------------
  * Globals.
@@ -71,15 +73,15 @@ init_program_list(void)
 
     strcpy(g_program_list[5].name, "scrollermsg");
     g_program_list[5].func = scrollermsg;
-    
+
     strcpy(g_program_list[6].name, "dp");
     g_program_list[6].func = dphilo_init;
-    
+
     strcpy(g_program_list[7].name, "philo");
     g_program_list[7].func = philosopher;
 
     strcpy(g_program_list[8].name, "supervisor_demo");
-    g_program_list[8].func = supervisor_demo;    
+    g_program_list[8].func = supervisor_demo;
 
 }
 
@@ -125,7 +127,6 @@ kexec(const char program[], uint32_t priority)
 {
     pcb_t *pcb = NULL;
     int i = 0;
-
 
     for (i = 0; i < 9; i++)
     {
@@ -246,6 +247,7 @@ ksend_message(msg_t *msg)
     {
         msg_copy(receiver->waiting_msg, msg);
         msg_set_sender_pid(receiver->waiting_msg, sender_pid);
+        receiver->waiting_type = MSG_TYPE_INVALID;             /* fix */
         kunblock(receiver->pid);
     }
     else
