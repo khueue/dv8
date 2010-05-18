@@ -174,7 +174,7 @@ __FIXED__ A user level program that prints out the Fibonacci number serie: 1, 1,
 The system should have a command shell that can do at least the following:
 
 * __FIXED__ Start processes. For example, it shall be possible to start another interpreter.
-* Change priority of processes.
+* __FIXED__ Change priority of processes.
 * Obtain information about present processes.
 * __FIXED__ Terminate processes.
 * __FIXED__ Ouput to the Malta LCD display
