@@ -90,7 +90,6 @@ pcb_init(pcb_t *pcb)
 {
     pcb_assign_pid(pcb);
     pcb_assign_supervisor(pcb, 0);
-    pcb->ended_self = 0;
     prio_init(&pcb->inbox_q, msg_cmp_priority, msg_has_type);
 }
 

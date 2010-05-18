@@ -341,11 +341,11 @@ kkill(uint32_t pid)
     {
         msg_set_receiver_pid(msg, pcb->supervisor_pid);
         
-        msg_type_set(msg, MSG_TYPE_SUPERVISOR_NOTICE_ID);
+        msg_set_type(msg, MSG_TYPE_SUPERVISOR_NOTICE_ID);
         msg_data_set_integer(msg, pcb->pid);
         ksend_message(msg);
         
-        msg_type_set(msg, MSG_TYPE_SUPERVISOR_NOTICE_STATE);
+        msg_set_type(msg, MSG_TYPE_SUPERVISOR_NOTICE_STATE);
         msg_data_set_integer(msg, pcb->state);
         ksend_message(msg);
     }

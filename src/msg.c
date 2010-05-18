@@ -194,7 +194,7 @@ int
 msg_type_is_argument(const msg_t *msg)
 {
     kdebug_assert(msg);
-m
+    
     return msg->type == MSG_TYPE_ARGUMENT;
 }
 
