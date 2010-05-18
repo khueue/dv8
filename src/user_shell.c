@@ -85,7 +85,7 @@ command(void)
         size_t i = 1;
         msg_t *msg = msg_alloc();
         print_str("Executed ");
-        print_str(g_args[0]);
+        print_strln(g_args[0]);
         msg_type_set_argument(msg);
         msg_set_receiver_pid(msg, pid);
         while (g_args[i])
@@ -99,7 +99,7 @@ command(void)
     else
     {
         print_str("Unknown command ");
-        print_str(g_args[0]);
+        print_strln(g_args[0]);
     }
 
     return 1;
@@ -130,12 +130,12 @@ run(char cmd[])
 void
 shell(void)
 {
-    kdebug_println("SHELL: type 'exit' to exit.");
+    print_strln("SHELL: type 'exit' to exit.");
     while (1)
     {
         msg_t *msg = msg_alloc();
 
-        kdebug_print("deviate> ");
+        print_str("deviate> ");
         read_message_by_type(msg, MSG_TYPE_CONSOLE_INPUT, 0);
         strcpy(g_line, msg_data_get_string(msg));
         msg = msg_free(msg);
