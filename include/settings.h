@@ -11,7 +11,7 @@
  * XXXXXX
  */
 #ifndef MS_TO_NEXT_TIMER_INTERRUPT
-#define MS_TO_NEXT_TIMER_INTERRUPT 50
+#define MS_TO_NEXT_TIMER_INTERRUPT 20
 #endif
 
 /*
@@ -82,7 +82,7 @@
 #endif
 
 #ifndef MALTA_SLEEP_TIME
-#define MALTA_SLEEP_TIME 500
+#define MALTA_SLEEP_TIME 100
 #endif
 
 #ifndef DEFAULT_MALTA_TEXT
