@@ -200,10 +200,19 @@ pcb_alloc(void)
 pcb_t *
 pcb_free(pcb_t *pcb)
 {
+    msg_t *msg = NULL;
+
     kdebug_assert(pcb);
+
+    while ((msg = prio_find_head(&pcb->inbox_q)))
+    {
+        msg_free(msg);
+        prio_remove_head(&pcb->inbox_q);
+    }
 
     pcb->next_free = g_freelist;
     g_freelist = pcb;
+
     return NULL;
 }
 
