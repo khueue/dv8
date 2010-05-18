@@ -14,7 +14,10 @@
     .globl block_self
     .globl kill
     .globl send_message
+    .globl print_char
     .globl print_str
+    .globl print_strln
+    .globl print_int
     .globl read_message_by_type
     .globl read_from_console
 
@@ -82,8 +85,23 @@ block_self:
     syscall
     jr ra
 
+print_char:
+    la v0, kprint_char
+    syscall
+    jr ra
+
 print_str:
     la v0, kprint_str
+    syscall
+    jr ra
+
+print_strln:
+    la v0, kprint_strln
+    syscall
+    jr ra
+
+print_int:
+    la v0, kprint_int
     syscall
     jr ra
 
@@ -97,7 +115,9 @@ read_message_by_type:
     syscall
     jr ra
 
+#if 0
 read_from_console:
     la v0, kread_from_console
     syscall
     jr ra
+#endif

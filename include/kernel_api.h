@@ -32,8 +32,17 @@ sleep(int time);
 uint32_t
 change_priority(uint32_t pid, uint32_t priority);
 
-uint32_t
+void
+print_char(char c);
+
+void
 print_str(const char str[]);
+
+void
+print_strln(const char str[]);
+
+void
+print_int(int x);
 
 uint32_t
 send_message(msg_t *msg);

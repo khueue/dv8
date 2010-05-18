@@ -33,8 +33,17 @@ kgetpid(void);
 uint32_t
 getpid(void);
 
-uint32_t
+void
+kprint_char(char c);
+
+void
 kprint_str(const char str[]);
+
+void
+kprint_strln(const char str[]);
+
+void
+kprint_int(int x);
 
 void
 kkill_self(void);
@@ -54,8 +63,10 @@ ksleep(int time);
 uint32_t
 kread_message_by_type(msg_t *msg, msg_type_t type, int max_wait_ms);
 
+#if 0
 msg_t *
 kread_from_console(void);
+#endif
 
 uint32_t
 ksend_message(msg_t *msg);

@@ -69,37 +69,6 @@ restore_process_state(const pcb_t *pcb)
     kset_registers(&pcb->regs);
 }
 
-#if 0
-static void
-block_until_tty_ready(void)
-{
-    while (!tty->lsr.field.thre)
-    {
-        /* Block forever. */
-    }
-}
-
-/* example - function that prints a string to the terminal window  */
-static void
-printstr(const char str[])
-{
-    size_t i = 0;
-    while (str[i])
-    {
-        block_until_tty_ready();
-        tty->thr = str[i];
-
-        if (str[i]=='\n')
-        {
-            block_until_tty_ready();
-            tty->thr = '\r';
-        }
-
-        ++i;
-    }
-}
-#endif
-
 /*
  * Configures the CPU to enable interrupts etc.
  */
@@ -161,7 +130,6 @@ kread_message_by_type(msg_t *msg, msg_type_t type, int max_wait_ms)
     if (msg_from_q)
     {
         prio_remove_from_head(&pcb->inbox_q, &type);
-        //memcpy(msg, msg_from_q, sizeof(*msg_from_q)); /* xxxxxx msg_copy todo */
         msg_copy(msg, msg_from_q);
         msg_from_q = msg_free(msg_from_q);
     }
@@ -227,6 +195,7 @@ krddddddXXXXXXXddddead_message_by_type(msg_t **pp_msg, msg_type_t type, int max_
 }
 #endif
 
+#if 0
 msg_t *
 kread_from_console(void)
 {
@@ -241,6 +210,7 @@ kread_from_console(void)
 
     return prio_dequeue(&pcb->inbox_q);
 }
+#endif
 
 /*
  * XXXXXXXXXX
@@ -249,6 +219,7 @@ uint32_t
 ksend_message(msg_t *msg)
 {
     pcb_t *receiver = NULL;
+    uint32_t sender_pid = kgetpid();
 
     receiver = sch_find_process(msg_get_receiver_pid(msg));
     if (!receiver)
@@ -259,15 +230,15 @@ ksend_message(msg_t *msg)
 
     if (msg_type_is(msg, receiver->waiting_type))
     {
-        //memcpy(receiver->waiting_msg, msg, sizeof(*msg));
         msg_copy(receiver->waiting_msg, msg);
+        msg_set_sender_pid(receiver->waiting_msg, sender_pid);
         kunblock(receiver->pid);
     }
     else
     {
         msg_t *new_msg = msg_alloc();
-        //memcpy(new_msg, msg, sizeof(*new_msg));
         msg_copy(new_msg, msg);
+        msg_set_sender_pid(new_msg, sender_pid);
         if (!prio_enqueue(&receiver->inbox_q, new_msg))
         {
             return 0;
@@ -277,12 +248,58 @@ ksend_message(msg_t *msg)
     return 1;
 }
 
-uint32_t
+static void
+poll_until_tty_ready(void)
+{
+    while (!tty->lsr.field.thre)
+    {
+        /* Wait for the device to become ready. */
+    }
+}
+
+void
+kprint_char(char c)
+{
+    poll_until_tty_ready();
+    tty->thr = c;
+}
+
+void
 kprint_str(const char str[])
 {
-    /* XXXXXXX replace with our own routine */
-    kdebug_print(str);
-    return 1;
+    size_t i = 0;
+    while (str[i])
+    {
+        kprint_char(str[i]);
+
+        if (str[i] == '\n')
+        {
+            kprint_char('\r');
+        }
+
+        ++i;
+    }
+}
+
+void
+kprint_strln(const char str[])
+{
+    kprint_str(str);
+    kprint_str("\n");
+}
+
+void
+kprint_int(int x)
+{
+    if (x < 10)
+    {
+        kprint_char('0' + x);
+    }
+    else
+    {
+        kprint_int(x / 10);
+        kprint_char('0' + (x % 10));
+    }
 }
 
 uint32_t
