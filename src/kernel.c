@@ -371,14 +371,8 @@ void
 kblock_self()
 {
     pcb_t *process = sch_get_currently_running_process();
-    if (!process)
-    {
-        kdebug_println("xxxxxxxxxxxxxxxxxxxx666 interesting");
-    }
-    else
-    {
-        kblock(process->pid);
-    }
+    kdebug_assert(process);
+    kblock(process->pid);
 }
 
 /*
