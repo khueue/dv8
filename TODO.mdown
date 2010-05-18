@@ -176,7 +176,7 @@ The system should have a command shell that can do at least the following:
 * __FIXED__ Start processes. For example, it shall be possible to start another interpreter.
 * Change priority of processes.
 * Obtain information about present processes.
-* Terminate processes.
+* __FIXED__ Terminate processes.
 * __FIXED__ Ouput to the Malta LCD display
 * __FIXED__ It should be possible to have more than one shell running simultaneously.
 * __FIXED__ The command shell should not be special-treated by the operating system in any way.
