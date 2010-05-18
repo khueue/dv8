@@ -92,9 +92,7 @@ msg_alloc(void)
     else
     {
         g_freelist = g_freelist->next_free;
-        ZERO_STRUCT(msg);
-        msg_type_set_invalid(msg);
-        return msg;
+        return msg_zero(msg);
     }
 }
 
@@ -115,6 +113,14 @@ void
 msg_copy(msg_t *dst, const msg_t *src)
 {
     memcpy(dst, src, sizeof(*dst));
+}
+
+msg_t *
+msg_zero(msg_t *msg)
+{
+    ZERO_STRUCT(msg);
+    msg_type_set_invalid(msg);
+    return msg;
 }
 
 msg_type_t

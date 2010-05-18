@@ -57,6 +57,9 @@ msg_free(msg_t *msg);
 void
 msg_copy(msg_t *dst, const msg_t *src);
 
+msg_t *
+msg_zero(msg_t *msg);
+
 /*
  * XXXXXXXXXX
  */
