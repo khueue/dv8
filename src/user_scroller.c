@@ -26,14 +26,12 @@ maltascr(void)
 
     while (1)
     {
-        /* Kolla inbox efter meddelanden, ladda isf in meddelande i tomalta[] */
         read_message_by_type(msg, MSG_TYPE_ARGUMENT, MALTA_SLEEP_TIME);
-        
         if (msg_type_is_argument(msg))
         {
-            strcpy(tomalta, msg_data_get_string(msg));
+            strcpy(ZERO_ARRAY(tomalta), msg_data_get_string(msg));
         }
-        
+
         /* Sen kör vi! */
         if (tomalta[0] != 0)
         {

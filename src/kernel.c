@@ -20,6 +20,7 @@
 #include "user_shell.h"
 #include "user_ring.h"
 #include "user_ringnode.h"
+#include "user_scrollermsg.h"
 
 /*
  * ---------------------------------------------------------------------------
@@ -66,8 +67,8 @@ init_program_list(void)
     strcpy(g_program_list[4].name, "ringnode");
     g_program_list[4].func = ringnode;
 
-    strcpy(g_program_list[5].name, "malta");
-    g_program_list[5].func = maltascr;
+    strcpy(g_program_list[5].name, "scrollermsg");
+    g_program_list[5].func = scrollermsg;
 }
 
 /*
