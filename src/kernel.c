@@ -138,6 +138,9 @@ kread_message_by_type(msg_t *msg, msg_type_t type, int max_wait_ms)
     pcb_t *pcb = sch_get_currently_running_process();
     msg_t *msg_from_q = NULL;
 
+    msg_zero(msg);
+    msg_type_set_invalid(msg);
+
     msg_from_q = prio_find_from_head(&pcb->inbox_q, &type);
     if (msg_from_q)
     {

@@ -21,7 +21,7 @@ ring(void)
     int n = 0;
     int i = 0;
     int pids[10];
-    char the_msg[] = "Ho ho";
+    char the_msg[256];
     
     /* Get argument 1 */
     read_message_by_type(msg, MSG_TYPE_ARGUMENT, 300);
@@ -39,6 +39,28 @@ ring(void)
         msg = msg_free(msg);
         return;
     }
+    
+    /* Get argument 2 */
+    read_message_by_type(msg, MSG_TYPE_ARGUMENT, 200);
+    if (msg_type_is_invalid(msg))
+    {
+        print_strln("FAIL");
+        msg = msg_free(msg);
+        return;
+    }
+
+    if (msg_data_is_string(msg))
+    {
+        strcpy(the_msg, msg_data_get_string(msg));
+    }
+    else
+    {
+        kdebug_println("No string!");
+        print_str("XXXXXXXXXXX USAGE RING");
+        msg = msg_free(msg);
+        return;
+    }
+    
     
     msg_type_set_argument(msg);
     
