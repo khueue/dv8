@@ -17,7 +17,6 @@ maltascr(void)
     int strpos = 0;
     int init = 0;
     int done;
-    kdebug_println("start of maltascr");
 
     uint8_t tomalta[MESSAGE_MAX_LENGTH];
     strcpy(tomalta, DEFAULT_MALTA_TEXT);

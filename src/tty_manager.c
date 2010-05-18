@@ -151,10 +151,7 @@ tty_manager_dispatch_message(const char str[])
 
         msg = tty_manager_create_message(str);
         process = stack_peek(&g_input_stack);
-        if (!process)
-        {
-            kdebug_println("KJSDBFKDSBFKJSDXXXXXX");
-        }
+        kdebug_assert(process);
         msg_set_receiver_pid(msg, process->pid);
         ksend_message(msg);
     }

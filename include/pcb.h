@@ -41,6 +41,7 @@ struct _pcb
     registers_t regs;
     uint8_t stack[PROCESS_STACK_SIZE];
     uint32_t supervisor_pid;
+    uint8_t ended_self;
 
     /* Internal freelist pointer. */
     pcb_t *next_free;

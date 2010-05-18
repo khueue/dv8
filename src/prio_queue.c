@@ -64,6 +64,12 @@ prio_remove(prio_queue_t *q, const void *id)
 }
 
 void *
+prio_remove_head(prio_queue_t *q)
+{
+    return list_remove_head(q);
+}
+
+void *
 prio_remove_from_head(prio_queue_t *q, const void *id)
 {
     return list_remove_from_head(q, id);
@@ -83,6 +89,12 @@ void *
 prio_find(const prio_queue_t *q, const void *id)
 {
     return list_find(q, id);
+}
+
+void *
+prio_find_head(const prio_queue_t *q)
+{
+    return list_find_head(q);
 }
 
 void *
