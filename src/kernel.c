@@ -18,6 +18,8 @@
 #include "user_idle.h"
 #include "user_scroller.h"
 #include "user_shell.h"
+#include "user_ring.h"
+#include "user_ringnode.h"
 
 /*
  * ---------------------------------------------------------------------------
@@ -44,7 +46,7 @@ g_excn_regs;
  */
 
 static program_t
-g_program_list[3];
+g_program_list[5];
 
 static void
 init_program_list(void)
@@ -57,6 +59,12 @@ init_program_list(void)
 
     strcpy(g_program_list[2].name, "shell");
     g_program_list[2].func = shell;
+
+    strcpy(g_program_list[3].name, "ring");
+    g_program_list[3].func = ring;
+
+    strcpy(g_program_list[4].name, "ringnode");
+    g_program_list[4].func = ringnode;
 }
 
 /*
@@ -102,7 +110,7 @@ kexec(const char program[], uint32_t priority)
     pcb_t *pcb = NULL;
     int i = 0;
 
-    for (i = 0; i < 3; i++)
+    for (i = 0; i < 5; i++)
     {
         if (0 == strcmp(program, g_program_list[i].name))
         {

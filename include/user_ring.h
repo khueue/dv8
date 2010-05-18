@@ -8,6 +8,6 @@
  */
 
 void
-ring(int number_of_nodes);
+ring(void);
 
 #endif

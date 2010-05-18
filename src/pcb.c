@@ -193,6 +193,49 @@ pcb_free(pcb_t *pcb)
     return NULL;
 }
 
+void
+pcb_print(const pcb_t *process)
+{
+    kdebug_printint(process->pid);
+    kdebug_print("\t");
+
+    kdebug_printint(process->priority);
+    kdebug_print("\t");
+
+    if(process->state == PROCESS_STATE_RUNNING)
+    {
+        kdebug_print("PROCESS_STATE_RUNNING");
+    }
+    else if (process->state == PROCESS_STATE_READY)
+    {
+        kdebug_print("PROCESS_STATE_READY");
+    }
+    else if (process->state == PROCESS_STATE_SLEEPING)
+    {
+        kdebug_print("PROCESS_STATE_SLEEPING");
+    }
+    else if (process->state == PROCESS_STATE_BLOCKED)
+    {
+        kdebug_print("PROCESS_STATE_BLOCKED");
+    }
+    else if (process->state == PROCESS_STATE_NEW)
+    {
+        kdebug_print("PROCESS_STATE_NEW");
+    }
+    else if (process->state == PROCESS_STATE_TERMINATED)
+    {
+        kdebug_print("PROCESS_STATE_TERMINATED");
+    }
+    else
+    {
+        kdebug_print("***** PROCESS_STATE_?????");
+    }
+
+    kdebug_print("\t");
+
+    kdebug_printint(process->sleepleft);
+    kdebug_println("");
+}
 /*
  * ---------------------------------------------------------------------------
  * Main for module testing.

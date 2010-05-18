@@ -322,3 +322,31 @@ sch_unschedule(uint32_t pid)
 
     return NULL;
 }
+
+void
+sch_print()
+{
+    pcb_t *process = NULL;
+
+    prio_iter_reset(&g_wait);
+    while (prio_iter_has_next(&g_wait))
+    {
+        process = prio_iter_next(&g_wait);
+        pcb_print(process);
+    }
+
+    prio_iter_reset(&g_ready);
+    while (prio_iter_has_next(&g_ready))
+    {
+        process = prio_iter_next(&g_ready);
+        pcb_print(process);
+    }
+
+    prio_iter_reset(&g_run);
+    while (prio_iter_has_next(&g_run))
+    {
+        process = prio_iter_next(&g_run);
+        pcb_print(process);
+    }
+
+}
