@@ -338,9 +338,9 @@ kkill(uint32_t pid)
     {
         msg_data_set_integer(msg, pcb->pid);
         msg_set_receiver_pid(msg, pcb->supervisor_pid);
-        send_message(msg);
+        ksend_message(msg);
         msg_data_set_integer(msg, pcb->ended_self);
-        send_message(msg);
+        ksend_message(msg);
     }
         
     msg = msg_free(msg);
