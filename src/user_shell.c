@@ -121,7 +121,11 @@ do_kill(void)
         }
         else
         {
-            kill(pid);
+            if(!kill(pid))
+            {
+                print_strln("Failed to kill process");
+                return 0;
+            }
             return 1;
         }
     }
@@ -145,7 +149,12 @@ do_priority_change(void)
         }
         else
         {
-            return change_priority(pid, new_priority);
+            if (!change_priority(pid, new_priority))
+            {
+                print_strln("Failed to change priority.");
+                return 0;
+            }
+            return 1;
         }
     }
     else
