@@ -78,7 +78,7 @@ Scheduling should be highest-priority first, with preemption. In particular:
 
 * A process should be able to obtain information about another process.
 * The information should include:
-  - __FIXED__ Process priority
+  - Process priority
   - Process name, if such is used
   - Name of the program running in the process
   - Current scheduling state of the process
@@ -110,17 +110,17 @@ The system has to provide some kind of input and output facility to do interesti
 
 ###IO3: Text Output
 
-* It should be possible for processes to send text to a console.
-* It should be possible to send coherent messages, i.e. a process should be able to send a text message that is printed uninterrupted on a text console.
+* __FIXED__ It should be possible for processes to send text to a console.
+* __FIXED__ It should be possible to send coherent messages, i.e. a process should be able to send a text message that is printed uninterrupted on a text console.
 
 ###IO4: Text Input
 
-* It should be possible for a process to request the user to input text.
-* Text input should be returned as a string to the requesting process.
+* __FIXED__ It should be possible for a process to request the user to input text.
+* __FIXED__ Text input should be returned as a string to the requesting process.
 
 ###IO5: Malta LCD Output
 
-* __XXX__ It should be possible for a process to output text to the Malta LCD display
+* __FIXED__ It should be possible for a process to output text to the Malta LCD display
 
 ##System Application Programming Interface (API)
 
@@ -165,33 +165,33 @@ Whenever the operating system cannot complete an operation, it should return an 
 The system would be no fun without a set of programs to run on it. For demonstration purposes, you should implement a set of simple user programs.
 ###UP1: Increment
 
-A user level program that prints out an increasing number sequence 1, 2, 3, ...., N to the console. Each number should be printed on a separate line.
+__FIXED__ A user level program that prints out an increasing number sequence 1, 2, 3, ...., N to the console. Each number should be printed on a separate line.
 ###UP2: Fibonacci
 
-A user level program that prints out the Fibonacci number serie: 1, 1, 2, 3, 5, 8, 11, ....... Max-Fib-Number. Each number should be printed on a separate line.
+__FIXED__ A user level program that prints out the Fibonacci number serie: 1, 1, 2, 3, 5, 8, 11, ....... Max-Fib-Number. Each number should be printed on a separate line.
 ###UP3: Command Shell
 
 The system should have a command shell that can do at least the following:
 
-* Start processes. For example, it shall be possible to start another interpreter.
+* __FIXED__ Start processes. For example, it shall be possible to start another interpreter.
 * Change priority of processes.
 * Obtain information about present processes.
 * Terminate processes.
-* Ouput to the Malta LCD display
-* It should be possible to have more than one shell running simultaneously.
-* The command shell should not be special-treated by the operating system in any way.
-* The command shell has to handle "backspace" functionality when entering commands.
-* The command shell should not use CPU time when waiting for input.
+* __FIXED__ Ouput to the Malta LCD display
+* __FIXED__ It should be possible to have more than one shell running simultaneously.
+* __FIXED__ The command shell should not be special-treated by the operating system in any way.
+* __FIXED__ The command shell has to handle "backspace" functionality when entering commands.
+* __FIXED__ The command shell should not use CPU time when waiting for input.
 
 ###UP4: Text Scroller
 
 There should be a scroller background process that scrolls text on the Malta board LCD display.
 
-* The text can be varied or fixed, depending on the level of ambition.
-* The process should provide for smooth scrolling even on a highly loaded system.
-* The scroller should be a regular user process with high priority.
-* The scroller should sleep between updates to the display.
-* The scroller should start when the operating system starts.
+* __FIXED__ The text can be varied or fixed, depending on the level of ambition.
+* __FIXED__ The process should provide for smooth scrolling even on a highly loaded system.
+* __FIXED__ The scroller should be a regular user process with high priority.
+* __FIXED__ The scroller should sleep between updates to the display.
+* __FIXED__ The scroller should start when the operating system starts.
 
 #Requirement Set B
 
@@ -201,40 +201,40 @@ These requirments are mandatory only for KandDV students.
 Processes in the operating system should communicate using asynchronous message passing.
 ###MP1: Messages
 
-* Messages are unicast, going from one process to precisely one other process.
-* The messages should be able to contain some user data.
-* Messages should be tagged with sender and receiver process identities.
-* Messages should have a type or priority field for filtering by the receiver.
-* It should be possible to pass process identities using messages.
+* __FIXED__ Messages are unicast, going from one process to precisely one other process.
+* __FIXED__ The messages should be able to contain some user data.
+* __FIXED__ Messages should be tagged with sender and receiver process identities.
+* __FIXED__ Messages should have a type or priority field for filtering by the receiver.
+* __FIXED__ It should be possible to pass process identities using messages.
 
 ###MP2: Message Queues
 
-* Each process should have a single message queue for incoming messages.
-* The message queue can have a fixed upper bound on the number of messages stored.
+* __FIXED__ Each process should have a single message queue for incoming messages.
+* __FIXED__ The message queue can have a fixed upper bound on the number of messages stored.
 
 ###MP3: Sending Messages
 
-* Processes should be able to send messages to other processes.
-* The send should not depend on the state of the other process.
+* __FIXED__ Processes should be able to send messages to other processes.
+* __FIXED__ The send should not depend on the state of the other process.
 * The send operation should report an error if the message queue of the receiving process is full.
-* The send operation should never block the sending process.
+* __FIXED__ The send operation should never block the sending process.
 
 ###MP4: Receiving Messages
 
-* Processes should be able to receive messages from their message queue.
+* __FIXED__ Processes should be able to receive messages from their message queue.
 * The receive operation should be able to filter messages based on the type or priority of the message.
-* The user-defined data specified in the message should be readable by the receiver.
-* The receive operation should block the receiving process if the message queue is empty.
-* It should be possible to specify a time-out for a receive operation, after which a process will resume operation even if no message arrives, and report an error.
+* __FIXED__ The user-defined data specified in the message should be readable by the receiver.
+* __FIXED__ The receive operation should block the receiving process if the message queue is empty.
+* __FIXED__ It should be possible to specify a time-out for a receive operation, after which a process will resume operation even if no message arrives, and report an error.
 
 ###UP5: Ring
 
 A user level program that demonstrates process communication.
 
-* A program should start a set of other processes, P1 to Pn.
-* The processes should be set up in a communications ring, where P1 sends messages to P2, etc. on to Pn.
-* The demonstration should send some messages around the ring and show that they visit all processes along the way.
-* The user should only need to start a single process to start the ring demo: the main program should start the other processes involved.
+* __FIXED__ A program should start a set of other processes, P1 to Pn.
+* __FIXED__ The processes should be set up in a communications ring, where P1 sends messages to P2, etc. on to Pn.
+* __FIXED__ The demonstration should send some messages around the ring and show that they visit all processes along the way.
+* __FIXED__ The user should only need to start a single process to start the ring demo: the main program should start the other processes involved.
 * The main ring program should return to the shell when done setting up the ring.
 * Timers for when to send messages should be set in such a way that it is possible to observe the processes involved in the ring from the shell.
 
@@ -256,13 +256,18 @@ restart
 
 ##Process Supervision (2 pts)
 
-So far, process lives on its own. Nobody else cares if a process terminates. In most real real-time operating systems, processes can be linked together in order to provide fault detection and tolerance.
+So far, process lives on its own. Nobody else cares if a process terminates. 
+In most real real-time operating systems, processes can be linked together in 
+order to provide fault detection and tolerance.
 ###PS1: Provide Process Supervision
 
 * Processes can be appointed as supervisors of one or more other processes.
 * When a supervised process terminates, the supervisor is notified.
-* It should be possible to differentiate between controlled and uncontrolled termination, i.e. it should be possible for the supervisor to see if a subordinate process has crashed or if it terminated in good order.
-* To provoke crashes, the semantics of the send operation is changed so that a process terminates if the receiving process has a full message queue.
+* It should be possible to differentiate between controlled and uncontrolled
+  termination, i.e. it should be possible for the supervisor to see if a 
+  subordinate process has crashed or if it terminated in good order.
+* To provoke crashes, the semantics of the send operation is changed so that a
+  process terminates if the receiving process has a full message queue.
 
 ###UP7: Process Supervision
 
