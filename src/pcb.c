@@ -76,6 +76,12 @@ pcb_assign_pid(pcb_t *pcb)
     pcb->pid = (mem_offset / sizeof(*pcb)) + 1;
 }
 
+void
+pcb_assign_supervisor(pcb_t *pcb, int supervisor_pid)
+{
+    pcb->supervisor_pid = supervisor_pid;
+}
+
 /*
  * XXXXXXX
  */
@@ -83,6 +89,7 @@ void
 pcb_init(pcb_t *pcb)
 {
     pcb_assign_pid(pcb);
+    pcb_assign_supervisor(pcb, 0);
     prio_init(&pcb->inbox_q, msg_cmp_priority, msg_has_type);
 }
 
@@ -139,6 +146,12 @@ pcb_has_pid(const void *ppcb, const void *ppid)
     pid = (const uint32_t *)ppid;
 
     return pcb->pid == *pid;
+}
+
+int
+pcb_has_supervisor(pcb_t *pcb)
+{
+    return pcb->supervisor_pid;
 }
 
 /*
