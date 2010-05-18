@@ -1,0 +1,111 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<unistd.h>
+
+#include <pthread.h>
+#include <semaphore.h>
+
+pthread_mutex_t* chopsticks;
+int nb_philo, duration, cycles;
+pthread_t* philosophers;
+
+void get_chopsticks(int i){
+	//this function locks the chopsticks the philosopher i will use
+	if(i%2 == 0){ // to avoid deadlocks, an even philosopher doesn't take the chopsticks in the same order as an odd philosopher
+		pthread_mutex_lock(&chopsticks[(i+1)  % nb_philo]); //first, right
+		pthread_mutex_lock(&chopsticks[i]); //then, left
+	}else{
+		pthread_mutex_lock(&chopsticks[i]); // first, left
+		pthread_mutex_lock(&chopsticks[(i+1) % nb_philo]); //then, right
+	}
+}
+
+void put_chopsticks_back(int i){
+	//this function simply unlocks the mutex on the chopsticks the philosopher i was having
+	pthread_mutex_unlock(&chopsticks[i]);
+	pthread_mutex_unlock(&chopsticks[(i+1) % nb_philo]);
+}
+
+void* philosopher(void* v_id){
+	int id = *((int*)v_id);
+	int i;
+	for(i=0;i<cycles;i++){
+		printf("philosopher %d thinks.\n",id);
+		sleep(duration); //this philosopher is not sleeping in spite of the appearances, he is thinking.
+		printf("philosopher %d is hungry and tries to get the chopsticks.\n",id);
+		get_chopsticks(id); //the philosopher will be blocked here until he manages to get both of his chopsticks.
+		printf("philosopher %d eats.\n",id);
+		sleep(duration);
+		printf("philosopher %d puts the chopsticks back.\n",id);
+		put_chopsticks_back(id); //simply puts the chopsticks back on the table
+	}
+	return (void*)NULL;
+}
+
+int main(int argc, char** argv){
+	if(argc != 4){
+		printf("Usage : ./philo number_of_philosopher duration_of_thinking_eating number_of_cycles");
+		exit(EXIT_SUCCESS);
+	}
+
+	int* id;
+	int i;
+	nb_philo = atoi(argv[1]); //the number of philosophers
+	duration = atoi(argv[2]); //the duration of thinking/eating
+	cycles = atoi(argv[3]); //the number of cycle a philosopher has to go through before leaving the table
+
+	//creates the chopsticks
+	chopsticks = (pthread_mutex_t*)malloc(nb_philo*sizeof(pthread_mutex_t));
+	if(chopsticks == NULL){
+		perror("Could not allocate the chopsticks");
+		exit(EXIT_FAILURE);
+	}
+
+	//allocates the philosophers
+	philosophers = (pthread_t*)malloc(nb_philo*sizeof(pthread_t));
+	if(philosophers == NULL){
+		perror("Could not allocate the philosophers");
+		exit(EXIT_FAILURE);
+	}
+
+	//allocates the philosophers' id
+	id = (int*)malloc(nb_philo*sizeof(int));
+	if(id == NULL){
+		perror("Could not allocate the philosophers' id");
+		exit(EXIT_FAILURE);
+	}
+
+	/* Initializes the mutexes */
+	for(i=0;i<nb_philo;i++){
+		if(pthread_mutex_init(&(chopsticks[i]),NULL) == -1){
+			perror("Init failed");
+			exit(EXIT_FAILURE);
+		}
+	}
+
+	/* Creates the philosophers */
+	for(i=0; i<nb_philo; i++){
+		id[i] = i;
+		if(pthread_create(&(philosophers[i]),NULL,philosopher,(void*)(&id[i]))!= 0){
+			perror("A philosopher did not show up at the dinner...");
+			exit(EXIT_FAILURE);
+		}
+	}
+	/* Waiting for the threads to finish */
+	for(i=0;i<nb_philo;i++){
+		pthread_join(philosophers[i],NULL);
+	}
+	/* Destroys the mutexes */
+	for(i=0;i<nb_philo;i++){
+		if(pthread_mutex_destroy(&(chopsticks[i])) == -1){
+			perror("Destroy failed");
+			exit(EXIT_FAILURE);
+		}
+	}
+
+	/* Free allocated memory */
+	free(chopsticks);
+	free(id);
+	free(philosophers);
+	return EXIT_SUCCESS;
+}

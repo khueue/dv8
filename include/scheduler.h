@@ -37,4 +37,6 @@ sch_block(uint32_t pid);
 uint32_t
 sch_unblock(uint32_t pid);
 
+void
+    sch_print(void);
 #endif

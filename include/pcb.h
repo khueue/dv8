@@ -75,4 +75,7 @@ pcb_cmp_sleepleft(const void *pcb1, const void *pcb2);
 int
 pcb_is_done_sleeping(const pcb_t *pcb);
 
+void
+    pcb_print(const pcb_t *process);
+
 #endif
