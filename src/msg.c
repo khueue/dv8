@@ -166,6 +166,14 @@ msg_type_is(const msg_t *msg, msg_type_t type)
     return msg->type == type;
 }
 
+void
+msg_set_type(msg_t *msg, msg_type_t type)
+{
+    kdebug_assert(msg);
+    
+    msg->type = type;
+}
+
 int
 msg_type_is_invalid(const msg_t *msg)
 {
@@ -186,7 +194,7 @@ int
 msg_type_is_argument(const msg_t *msg)
 {
     kdebug_assert(msg);
-
+m
     return msg->type == MSG_TYPE_ARGUMENT;
 }
 

@@ -320,7 +320,7 @@ void
 kkill_self(void)
 {
     pcb_t *pcb = sch_get_currently_running_process();
-    pcb->ended_self = 1;
+    pcb->state = PROCESS_STATE_ENDED;
     tty_manager_remove_input_listener(pcb);
     kkill(pcb->pid);
 }
@@ -330,16 +330,23 @@ kkill(uint32_t pid)
 {
     pcb_t *pcb = NULL;
     pcb = sch_unschedule(pid);
-    pcb->state = PROCESS_STATE_TERMINATED;
+    if (pcb->state != PROCESS_STATE_ENDED)
+    {
+        pcb->state = PROCESS_STATE_TERMINATED;
+    }
     
     msg_t *msg = msg_alloc();
     
     if (pcb->supervisor_pid)
     {
-        msg_data_set_integer(msg, pcb->pid);
         msg_set_receiver_pid(msg, pcb->supervisor_pid);
+        
+        msg_type_set(msg, MSG_TYPE_SUPERVISOR_NOTICE_ID);
+        msg_data_set_integer(msg, pcb->pid);
         ksend_message(msg);
-        msg_data_set_integer(msg, pcb->ended_self);
+        
+        msg_type_set(msg, MSG_TYPE_SUPERVISOR_NOTICE_STATE);
+        msg_data_set_integer(msg, pcb->state);
         ksend_message(msg);
     }
         

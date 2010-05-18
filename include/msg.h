@@ -17,6 +17,8 @@ typedef enum
     MSG_TYPE_INVALID,
     MSG_TYPE_ARGUMENT,
     MSG_TYPE_CONSOLE_INPUT
+    MSG_TYPE_SUPERVISOR_NOTICE_STATE
+    MSG_TYPE_SUPERVISOR_NOTICE_ID
 } msg_type_t;
 
 /*
@@ -74,6 +76,11 @@ msg_has_type(const void *pmsg, const void *ptype);
 int msg_type_is(const msg_t *msg, msg_type_t type);
 
 msg_type_t msg_get_type(const msg_t *msg);
+
+/*
+ * - set() makes the message be of a type
+ */
+void msg_set_type(msg_t *msg, msg_type_t type);
 
 /*
  * - is() returns true if the message is of an invalid type
