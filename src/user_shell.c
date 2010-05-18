@@ -135,13 +135,6 @@ shell(void)
     {
         msg_t *msg = msg_alloc();
 
-        {
-            print_char('x');
-            print_str("oavslutad rad");
-            print_strln("avslutad rad");
-            print_int(666);
-        }
-
         kdebug_print("deviate> ");
         read_message_by_type(msg, MSG_TYPE_CONSOLE_INPUT, 0);
         strcpy(g_line, msg_data_get_string(msg));
