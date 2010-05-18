@@ -40,6 +40,7 @@ struct _pcb
     process_state_t state;
     registers_t regs;
     uint8_t stack[PROCESS_STACK_SIZE];
+    uint32_t supervisor_pid;
 
     /* Internal freelist pointer. */
     pcb_t *next_free;
@@ -61,10 +62,16 @@ void
 pcb_assign_pid(pcb_t *pcb);
 
 void
+pcb_assign_supervisor(pcb_t *pcb, int supervisor_pid);
+
+void
 pcb_init(pcb_t *pcb);
 
 int
 pcb_has_pid(const void *ppcb, const void *ppid);
+
+int
+pcb_has_supervisor(pcb_t *pcb);
 
 int
 pcb_cmp_priority(const void *pcb1, const void *pcb2);
