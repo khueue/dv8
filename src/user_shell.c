@@ -108,6 +108,62 @@ command(void)
 /*
  * XXXXX
  */
+
+static int
+do_kill(void)
+{
+    if(g_args[1])
+    {
+        uint32_t pid = atoi(g_args[1]);
+        if(pid == 0)
+        {
+            print_strln("USAGE KILL!!!");
+        }
+        else
+        {
+            if(!kill(pid))
+            {
+                print_strln("Failed to kill process");
+                return 0;
+            }
+            return 1;
+        }
+    }
+    else
+    {
+        print_strln("USAGE KILL!!!");
+    }
+    return 0;
+}
+
+static int
+do_priority_change(void)
+{
+    if(g_args[1] && g_args[2])
+    {
+        uint32_t pid = atoi(g_args[1]);
+        uint32_t new_priority = atoi(g_args[2]);
+        if(pid == 0)
+        {
+            print_strln("USAGE KILL!!!");
+        }
+        else
+        {
+            if (!change_priority(pid, new_priority))
+            {
+                print_strln("Failed to change priority.");
+                return 0;
+            }
+            return 1;
+        }
+    }
+    else
+    {
+        print_strln("USAGE KILL!!!");
+    }
+    return 0;
+}
+
 static int
 run(char cmd[])
 {
@@ -118,7 +174,18 @@ run(char cmd[])
         {
             kill_self();
         }
-        return command();
+        else if (0 == strcmp(g_args[0], "kill"))
+        {
+            return do_kill();
+        }
+        else if (0 == strcmp(g_args[0], "priority"))
+        {
+            return do_priority_change();
+        }
+        else
+        {
+            return command();
+        }
     }
 
     return 0;
@@ -127,6 +194,7 @@ run(char cmd[])
 /*
  * XXXXX
  */
+
 void
 shell(void)
 {

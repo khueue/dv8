@@ -22,6 +22,7 @@
 #include "user_ringnode.h"
 #include "user_scrollermsg.h"
 #include "user_philo.h"
+#include "user_supervisor_demo.h"
 
 /*
  * ---------------------------------------------------------------------------
@@ -48,7 +49,7 @@ g_excn_regs;
  */
 
 static program_t
-g_program_list[8];
+g_program_list[9];
 
 static void
 init_program_list(void)
@@ -76,6 +77,10 @@ init_program_list(void)
     
     strcpy(g_program_list[7].name, "philo");
     g_program_list[7].func = philosopher;
+
+    strcpy(g_program_list[8].name, "supervisor_demo");
+    g_program_list[8].func = supervisor_demo;    
+
 }
 
 /*
@@ -121,7 +126,8 @@ kexec(const char program[], uint32_t priority)
     pcb_t *pcb = NULL;
     int i = 0;
 
-    for (i = 0; i < 8; i++)
+
+    for (i = 0; i < 9; i++)
     {
         if (0 == strcmp(program, g_program_list[i].name))
         {
@@ -327,7 +333,7 @@ void
 kkill_self(void)
 {
     pcb_t *pcb = sch_get_currently_running_process();
-    pcb->ended_self = 1;
+    pcb->state = PROCESS_STATE_ENDED;
     tty_manager_remove_input_listener(pcb);
     kkill(pcb->pid);
 }
@@ -336,20 +342,34 @@ uint32_t
 kkill(uint32_t pid)
 {
     pcb_t *pcb = NULL;
+
     pcb = sch_unschedule(pid);
-    pcb->state = PROCESS_STATE_TERMINATED;
-    
+    if (!pcb)
+    {
+        /* No process found with given pid! */
+        return 0;
+    }
+
+    if (pcb->state != PROCESS_STATE_ENDED)
+    {
+        pcb->state = PROCESS_STATE_TERMINATED;
+    }
+
     msg_t *msg = msg_alloc();
-    
+
     if (pcb->supervisor_pid)
     {
-        msg_data_set_integer(msg, pcb->pid);
         msg_set_receiver_pid(msg, pcb->supervisor_pid);
+
+        msg_set_type(msg, MSG_TYPE_SUPERVISOR_NOTICE_ID);
+        msg_data_set_integer(msg, pcb->pid);
         ksend_message(msg);
-        msg_data_set_integer(msg, pcb->ended_self);
+
+        msg_set_type(msg, MSG_TYPE_SUPERVISOR_NOTICE_STATE);
+        msg_data_set_integer(msg, pcb->state);
         ksend_message(msg);
     }
-        
+
     msg = msg_free(msg);
     pcb = pcb_free(pcb);
     sch_run();
