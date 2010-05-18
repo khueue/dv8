@@ -73,10 +73,11 @@ msg_has_type(const void *pmsg, const void *ptype);
 /*
  * XXXXXXX
  */
-int msg_type_is(const msg_t *msg, msg_type_t type);
+int 
+msg_type_is(const msg_t *msg, msg_type_t type);
 
-msg_type_t msg_get_type(const msg_t *msg);
-
+msg_type_t 
+msg_get_type(const msg_t *msg);
 /*
  * - set() makes the message be of a type
  */

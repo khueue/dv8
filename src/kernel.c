@@ -21,6 +21,7 @@
 #include "user_ring.h"
 #include "user_ringnode.h"
 #include "user_scrollermsg.h"
+#include "user_supervisor_demo.h"
 
 /*
  * ---------------------------------------------------------------------------
@@ -47,7 +48,7 @@ g_excn_regs;
  */
 
 static program_t
-g_program_list[6];
+g_program_list[7];
 
 static void
 init_program_list(void)
@@ -69,6 +70,10 @@ init_program_list(void)
 
     strcpy(g_program_list[5].name, "scrollermsg");
     g_program_list[5].func = scrollermsg;
+    
+    strcpy(g_program_list[6].name, "supervisor_demo");
+    g_program_list[6].func = supervisor_demo;
+    
 }
 
 /*
@@ -114,7 +119,7 @@ kexec(const char program[], uint32_t priority)
     pcb_t *pcb = NULL;
     int i = 0;
 
-    for (i = 0; i < 6; i++)
+    for (i = 0; i < 7; i++)
     {
         if (0 == strcmp(program, g_program_list[i].name))
         {
