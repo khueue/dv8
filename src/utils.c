@@ -198,9 +198,6 @@ rand_between(int min, int max)
     return r;
 }
 
-
-int printf ( const char * format, ... );
-
 /*
  * ---------------------------------------------------------------------------
  * Main for module testing.
