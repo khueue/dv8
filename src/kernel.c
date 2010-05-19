@@ -23,6 +23,7 @@
 #include "user_scrollermsg.h"
 #include "user_philo.h"
 #include "user_supervisor_demo.h"
+#include "user_spammer.h"
 
 #include "debug.h"
 
@@ -51,7 +52,7 @@ g_excn_regs;
  */
 
 static program_t
-g_program_list[9];
+g_program_list[10];
 
 static void
 init_program_list(void)
@@ -82,6 +83,9 @@ init_program_list(void)
 
     strcpy(g_program_list[8].name, "supervisor_demo");
     g_program_list[8].func = supervisor_demo;
+    
+    strcpy(g_program_list[9].name, "spammer");
+    g_program_list[9].func = spammer;
 
 }
 
