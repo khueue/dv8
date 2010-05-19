@@ -26,6 +26,24 @@ g_freelist;
  */
 
 /*
+ * Returns the number of free list nodes in the system.
+ */
+size_t
+list_node_num_free(void)
+{
+    const list_node_t *node = g_freelist;
+    size_t num = 0;
+
+    while (node)
+    {
+        ++num;
+        node = node->next_free;
+    }
+
+    return num;
+}
+
+/*
  * Initializes the freelist like a normal linked list.
  */
 static void

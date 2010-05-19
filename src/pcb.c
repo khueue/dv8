@@ -29,6 +29,24 @@ g_freelist;
  */
 
 /*
+ * Returns the number of free PCBs in the system.
+ */
+size_t
+pcb_num_free(void)
+{
+    const pcb_t *pcb = g_freelist;
+    size_t num = 0;
+
+    while (pcb)
+    {
+        ++num;
+        pcb = pcb->next_free;
+    }
+
+    return num;
+}
+
+/*
  * Initializes the freelist like a normal linked list.
  */
 static void
@@ -220,11 +238,10 @@ pcb_free(pcb_t *pcb)
 void
 pcb_print(const pcb_t *process)
 {
-    
+
     kprint_str(process->program);
     kprint_str("\t");
-    
-    
+
     kprint_int(process->pid);
     kprint_str("\t");
 
@@ -268,6 +285,20 @@ pcb_print(const pcb_t *process)
     kprint_int(process->state == PROCESS_STATE_SLEEPING ? process->sleepleft/67000 : 0);
     kprint_strln("");
 }
+    
+int
+pcb_inbox_full(pcb_t *pcb)
+{
+    if (pcb->inbox_limit != 0)
+    {
+        return (pcb->inbox_limit <= pcb->inbox_q.length);
+    }
+    else
+    {
+        return 0;
+    }
+}
+
 /*
  * ---------------------------------------------------------------------------
  * Main for module testing.

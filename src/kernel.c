@@ -255,6 +255,13 @@ ksend_message(msg_t *msg)
         /* No such active process! */
         return 0;
     }
+    
+    if (pcb_inbox_full(receiver))
+    {
+        msg = msg_free(msg);
+        kkill(sender_pid);
+        return 0;
+    }
 
     if (receiver->waiting_msg != NULL && msg_type_is(msg, receiver->waiting_type))
     {
@@ -453,6 +460,14 @@ ksupervise(uint32_t pid)
     int supervisor = kgetpid();
     pcb_assign_supervisor(process, supervisor);
 
+}
+
+void
+kset_inbox_limit(uint32_t limit)
+{
+    pcb_t *process = sch_get_currently_running_process();
+    kdebug_assert(process);
+    process->inbox_limit = limit;
 }
 
 /*

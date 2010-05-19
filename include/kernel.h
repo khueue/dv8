@@ -87,4 +87,7 @@ kblock_self(void);
 void
 ksupervise(uint32_t pid);
 
+void
+kset_inbox_limit(uint32_t limit);
+
 #endif
