@@ -29,29 +29,29 @@
 typedef struct program_info_ program_info_t;
 struct program_info_
 {
-    char name[PROGRAM_NAME_LENGTH];
-    user_program_pointer code;
-    int visible_from_shell;
+    char name[PROGRAM_NAME_LENGTH]; /* Name of program. */
+    user_program_pointer code;      /* Code entry point. */
+    int executable_by_shell;        /* Whether shell may start it. */
 };
 
-#define VISIBLE     1
-#define NOT_VISIBLE 0
+#define SHELL     1
+#define NOT_SHELL 0
 
 static program_info_t
 g_programs[] =
 {
-    {  "idle",              idle,              NOT_VISIBLE  },
-    {  "fib",               fib,               VISIBLE      },
-    {  "incr",              incr,              VISIBLE      },
-    {  "shell",             shell,             VISIBLE      },
-    {  "ring",              ring,              VISIBLE      },
-    {  "ringn",             ringnode,          NOT_VISIBLE  },
-    {  "scroll",            scroll,            NOT_VISIBLE  },
-    {  "scrollermsg",       scrollermsg,       VISIBLE      },
-    {  "dp",                dphilo_init,       VISIBLE      },
-    {  "philo",             philosopher,       NOT_VISIBLE  },
-    {  "supervisor_demo",   supervisor_demo,   VISIBLE      },
-    {  "spammer",           spammer,           NOT_VISIBLE  },
+    {  "idle",              idle,              NOT_SHELL  },
+    {  "fib",               fib,               SHELL      },
+    {  "incr",              incr,              SHELL      },
+    {  "shell",             shell,             SHELL      },
+    {  "ring",              ring,              SHELL      },
+    {  "ringn",             ringnode,          NOT_SHELL  },
+    {  "scroll",            scroll,            NOT_SHELL  },
+    {  "scrollermsg",       scrollermsg,       SHELL      },
+    {  "dp",                dphilo_init,       SHELL      },
+    {  "philo",             philosopher,       NOT_SHELL  },
+    {  "supervisor_demo",   supervisor_demo,   SHELL      },
+    {  "spammer",           spammer,           NOT_SHELL  },
 };
 
 /*
