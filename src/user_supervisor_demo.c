@@ -22,7 +22,6 @@ supervisor_demo(void)
     
     uint32_t pid_to_supervise = exec("spammer", PROCESS_DEFAULT_PRIORITY);
     // supervise(pid_to_supervise); // ERROR
-    kdebug_println("No error");
     
     while(1)
     {
