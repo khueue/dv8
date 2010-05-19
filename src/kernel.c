@@ -17,18 +17,6 @@
 
 /*
  * ---------------------------------------------------------------------------
- * Globals.
- * ---------------------------------------------------------------------------
- */
-
-/*
- * Registers used by the exception handler.
- */
-static registers_t
-g_excn_regs;
-
-/*
- * ---------------------------------------------------------------------------
  * Functions.
  * ---------------------------------------------------------------------------
  */
@@ -458,6 +446,9 @@ setup_scheduler(void)
 void
 kinit(void)
 {
+    /* Registers used by the exception handler. */
+    registers_t excn_regs;
+
     /*
      * Set UART word length ('3' meaning 8 bits).
      * Do this early to enable debug printouts (e.g. kdebug_print).
@@ -471,7 +462,7 @@ kinit(void)
     tty->mcr.field.out2 = 1;
 
     /* Setup storage-area for saving registers on exception. */
-    kset_registers(&g_excn_regs);
+    kset_registers(&excn_regs);
 
     /* Setup status register in the CPU. */
     set_status_reg();
