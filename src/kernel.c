@@ -57,7 +57,7 @@ static void
 init_program_list(void)
 {
     strcpy(g_program_list[0].name, "fib");
-    g_program_list[0].func = fib;
+g    g_program_list[0].func = fib;
 
     strcpy(g_program_list[1].name, "incr");
     g_program_list[1].func = incr;
@@ -71,7 +71,7 @@ init_program_list(void)
     strcpy(g_program_list[4].name, "ringnode");
     g_program_list[4].func = ringnode;
 
-    strcpy(g_program_list[5].name, "scrollermsg");
+    strcpy(g_program_list[5].name, "scrollermsg");getpiud
     g_program_list[5].func = scrollermsg;
 
     strcpy(g_program_list[6].name, "dp");
