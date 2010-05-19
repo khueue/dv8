@@ -132,7 +132,7 @@ kexec(const char program[], uint32_t priority)
     pcb_t *pcb = NULL;
     int i = 0;
 
-    for (i = 0; i < 9; i++)
+    for (i = 0; i < 10; i++)
     {
         if (0 == strcmp(program, g_program_list[i].name))
         {
@@ -238,8 +238,9 @@ uint32_t
 ksend_message(msg_t *msg)
 {
     pcb_t *receiver = NULL;
-    uint32_t sender_pid = kgetpid();
 
+    uint32_t sender_pid = kgetpid();
+    
     receiver = sch_find_process(msg_get_receiver_pid(msg));
     if (!receiver)
     {
@@ -357,8 +358,9 @@ uint32_t
 kkill(uint32_t pid)
 {
     pcb_t *pcb = NULL;
-
-    pcb = sch_unschedule(pid);
+    
+    pcb = sch_find_process(pid);
+    
     if (!pcb)
     {
         /* No process found with given pid! */
@@ -369,23 +371,35 @@ kkill(uint32_t pid)
     {
         pcb->state = PROCESS_STATE_TERMINATED;
     }
-
-    msg_t *msg = msg_alloc();
-
+    
+    kdebug_print("Process state: ");
+    kdebug_printint(pcb->state);
+    kdebug_println("");    
+    
     if (pcb->supervisor_pid)
     {
+        msg_t *msg = msg_alloc();
         msg_set_receiver_pid(msg, pcb->supervisor_pid);
-
         msg_set_type(msg, MSG_TYPE_SUPERVISOR_NOTICE_ID);
         msg_data_set_integer(msg, pcb->pid);
         ksend_message(msg);
-
+        
         msg_set_type(msg, MSG_TYPE_SUPERVISOR_NOTICE_STATE);
+        
+        kdebug_print("Process state: ");
+        kdebug_printint(pcb->state);
+        kdebug_println("");
         msg_data_set_integer(msg, pcb->state);
+        
+        kdebug_print("Sending state: ");
+        kdebug_printint(msg_data_get_integer(msg));
+        kdebug_println("");
         ksend_message(msg);
+        msg = msg_free(msg);
     }
 
-    msg = msg_free(msg);
+    pcb = sch_unschedule(pid);
+
     pcb = pcb_free(pcb);
     sch_run();
     return pcb == NULL; /* XXXX */
