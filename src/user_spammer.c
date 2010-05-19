@@ -24,7 +24,7 @@ spammer(void)
     
     int i;
     
-    for (i = 0; i < inbox_limit; i++)
+    for (i = 0; i < 2*inbox_limit; i++)
     {
         send_message(msg);
     }

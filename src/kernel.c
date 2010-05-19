@@ -256,6 +256,12 @@ ksend_message(msg_t *msg)
         /* No such active process! */
         return 0;
     }
+    
+    if (pcb_inbox_full(receiver))
+    {
+        kkill(sender_pid);
+        return 0;
+    }
 
     if (receiver->waiting_msg != NULL && msg_type_is(msg, receiver->waiting_type))
     {
@@ -476,7 +482,7 @@ setup_scheduler(void)
     process = spawn("idle", idle, 0);
     sch_schedule(process);
 
-    process = spawn("maltascr", maltascr, PROCESS_DEFAULT_PRIORITY + 30);
+    process = spawn("scroll", scroll, PROCESS_DEFAULT_PRIORITY + 30);
     sch_schedule(process);
 
     process = spawn(g_program_list[2].name, shell, PROCESS_DEFAULT_PRIORITY);
