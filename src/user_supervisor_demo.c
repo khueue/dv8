@@ -21,8 +21,9 @@ supervisor_demo(void)
     int pcb_state = PROCESS_STATE_NEW;
     uint32_t pid_to_supervise = exec("spammer", PROCESS_DEFAULT_PRIORITY);
     supervise(pid_to_supervise);
+    int unexpected = 1;
     
-    while(1)
+    while(unexpected)
     {
         read_message_by_type(msg, MSG_TYPE_SUPERVISOR_NOTICE_ID, 0);
         pid_of_dead = msg_data_get_integer(msg);
@@ -39,6 +40,7 @@ supervisor_demo(void)
             kdebug_print("Process ");
             kdebug_printint(pid_of_dead);
             kdebug_println(" quit normally.");
+            unexpected = 0;
         }
         else
         {

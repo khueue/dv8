@@ -16,19 +16,15 @@
 void
 spammer(void)
 {
-    /*char spam_string[] = "Enlarge your penis";
-    int inbox_limit = 15;
+    char spam_string[] = "Enlarge your penis";
+    int inbox_limit = 300;
 
     msg_t *msg = create_string_message(spam_string, getpid());
     
-    int i;*/
+    int i;
     
-    kdebug_println("Hejsan");
-    
-    /*for (i = 0; i < inbox_limit; i++)
+    for (i = 0; i < inbox_limit; i++)
     {
-        kdebug_println("Spamming self...");
         send_message(msg);
-        sleep(100);
-    }*/
+    }
 }
