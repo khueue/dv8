@@ -54,6 +54,24 @@ g_freelist;
  */
 
 /*
+ * Returns the number of free messages in the system.
+ */
+size_t
+msg_num_free(void)
+{
+    const msg_t *msg = g_freelist;
+    size_t num = 0;
+
+    while (msg)
+    {
+        ++num;
+        msg = msg->next_free;
+    }
+
+    return num;
+}
+
+/*
  * Initializes the freelist like a normal linked list.
  */
 static void
@@ -170,7 +188,7 @@ void
 msg_set_type(msg_t *msg, msg_type_t type)
 {
     kdebug_assert(msg);
-    
+
     msg->type = type;
 }
 
@@ -194,7 +212,7 @@ int
 msg_type_is_argument(const msg_t *msg)
 {
     kdebug_assert(msg);
-    
+
     return msg->type == MSG_TYPE_ARGUMENT;
 }
 
