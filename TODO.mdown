@@ -50,7 +50,7 @@ Scheduling should be highest-priority first, with preemption. In particular:
 ###PH4: Process Identities
 
 * __FIXED__ Each process should have a unique ID that can be used to address the process and perform operations on it.
-* A process may have a human-readable name.
+* __FIXED__ A process may have a human-readable name.
 
 ###PH5: Process Creation
 
@@ -151,7 +151,7 @@ There are some other requirements that do not fit conveniently under the heading
 It should be possible to execute multiple instances of the same program concurrently. In particular, this means that:
 
 * __FIXED__ A program cannot use "static" variables in C or global variables.
-* Any attempts at using names to identify processes has to allow for the dynamic creation of names.
+* __FIXED__ Any attempts at using names to identify processes has to allow for the dynamic creation of names.
 
 ###O3: Error Handling
 
@@ -175,7 +175,7 @@ The system should have a command shell that can do at least the following:
 
 * __FIXED__ Start processes. For example, it shall be possible to start another interpreter.
 * __FIXED__ Change priority of processes.
-* Obtain information about present processes.
+* __FIXED__ Obtain information about present processes.
 * __FIXED__ Terminate processes.
 * __FIXED__ Ouput to the Malta LCD display
 * __FIXED__ It should be possible to have more than one shell running simultaneously.
@@ -235,8 +235,8 @@ A user level program that demonstrates process communication.
 * __FIXED__ The processes should be set up in a communications ring, where P1 sends messages to P2, etc. on to Pn.
 * __FIXED__ The demonstration should send some messages around the ring and show that they visit all processes along the way.
 * __FIXED__ The user should only need to start a single process to start the ring demo: the main program should start the other processes involved.
-* The main ring program should return to the shell when done setting up the ring.
-* Timers for when to send messages should be set in such a way that it is possible to observe the processes involved in the ring from the shell.
+* __FIXED__ The main ring program should return to the shell when done setting up the ring.
+* __FIXED__ Timers for when to send messages should be set in such a way that it is possible to observe the processes involved in the ring from the shell.
 
 ###UP6: Dining Philosophers
 
@@ -261,9 +261,9 @@ In most real real-time operating systems, processes can be linked together in
 order to provide fault detection and tolerance.
 ###PS1: Provide Process Supervision
 
-* Processes can be appointed as supervisors of one or more other processes.
-* When a supervised process terminates, the supervisor is notified.
-* It should be possible to differentiate between controlled and uncontrolled
+* __FIXED__ Processes can be appointed as supervisors of one or more other processes.
+* __FIXED__ When a supervised process terminates, the supervisor is notified.
+* __FIXED__ It should be possible to differentiate between controlled and uncontrolled
   termination, i.e. it should be possible for the supervisor to see if a 
   subordinate process has crashed or if it terminated in good order.
 * To provoke crashes, the semantics of the send operation is changed so that a
