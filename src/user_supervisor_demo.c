@@ -19,30 +19,40 @@ supervisor_demo(void)
     msg_t *msg = msg_alloc();
     uint32_t pid_of_dead = 0;
     int pcb_state = PROCESS_STATE_NEW;
-    
     uint32_t pid_to_supervise = exec("spammer", PROCESS_DEFAULT_PRIORITY);
-    // supervise(pid_to_supervise); // ERROR
+    supervise(pid_to_supervise);
     
     while(1)
     {
         read_message_by_type(msg, MSG_TYPE_SUPERVISOR_NOTICE_ID, 0);
         pid_of_dead = msg_data_get_integer(msg);
+        kdebug_print("Got notice_id: ");
+        kdebug_printint(pid_of_dead);
+        kdebug_println("");
         read_message_by_type(msg, MSG_TYPE_SUPERVISOR_NOTICE_STATE, 0);
         pcb_state = msg_data_get_integer(msg);
-        if (pcb_state != PROCESS_STATE_NEW)
+        kdebug_print("Got notice_state: ");
+        kdebug_printint(pcb_state);
+        kdebug_print(" (terminated: ");
+        kdebug_printint(PROCESS_STATE_TERMINATED);
+        kdebug_print(", ended: ");
+        kdebug_printint(PROCESS_STATE_ENDED);
+        kdebug_println(")");
+        if (pcb_state == PROCESS_STATE_TERMINATED) {
+            kdebug_print("Process ");
+            kdebug_printint(pid_of_dead);
+            kdebug_println(" quit unexpectedly. Respawning...");
+            pid_to_supervise = exec("spammer", PROCESS_DEFAULT_PRIORITY);
+            supervise(pid_to_supervise);
+        }
+        else if (pcb_state == PROCESS_STATE_ENDED) {
+            kdebug_print("Process ");
+            kdebug_printint(pid_of_dead);
+            kdebug_println(" quit normally.");
+        }
+        else
         {
-            if (pcb_state == PROCESS_STATE_TERMINATED) {
-                kdebug_print("Process ");
-                kdebug_printint(pid_of_dead);
-                kdebug_println(" quit unexpectedly. Respawning...");
-                pid_to_supervise = exec("spammer", PROCESS_DEFAULT_PRIORITY);
-                supervise(pid_to_supervise);
-            }
-            if (pcb_state == PROCESS_STATE_ENDED) {
-                kdebug_print("Process ");
-                kdebug_printint(pid_of_dead);
-                kdebug_println(" quit normally.");
-            }
+            kdebug_print("*Schnabelherstellungsfehler*");
         }
     }
     msg_free(msg);
