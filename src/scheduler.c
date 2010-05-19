@@ -323,23 +323,36 @@ sch_unschedule(uint32_t pid)
     return NULL;
 }
 
+static void
+print_line(void)
+{
+    int i = 0;
+    
+    for ( i = 0; i < 78; i += 1 )
+    {
+        kprint_char('-');
+    }
+    kprint_strln("");
+}
+
 void
 sch_print()
 {
     pcb_t *process = NULL;
-    
-    kdebug_print("Name");
-    kdebug_print("\t");       
-    kdebug_print("Pid");
-    kdebug_print("\t");
-    kdebug_print("Priority");
-    kdebug_print("\t");
-    kdebug_print("Inbox");
-    kdebug_print("\t");
-    kdebug_print("State");
-    kdebug_print("\t");
-    kdebug_println("Sleep in ms");
-    kdebug_println("-------------------------------------------------\n");
+
+    kprint_str("Name");
+    kprint_str("\t");
+    kprint_str("Pid");
+    kprint_str("\t");
+    kprint_str("Priority");
+    kprint_str("\t");
+    kprint_str("Inbox");
+    kprint_str("\t");
+    kprint_str("State");
+    kprint_str("\t");
+    kprint_strln("Sleep in ms");
+
+    print_line();
 
     prio_iter_reset(&g_wait);
     while (prio_iter_has_next(&g_wait))
