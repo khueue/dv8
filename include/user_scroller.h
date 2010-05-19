@@ -10,6 +10,6 @@
  */
 
 void
-maltascr(void);
+scroll(void);
 
 #endif
