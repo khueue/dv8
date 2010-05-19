@@ -183,6 +183,32 @@ kread_message_by_type(msg_t *msg, msg_type_t type, int max_wait_ms)
 }
 
 uint32_t
+kread_from_console(msg_t *msg)
+{
+    pcb_t *pcb = sch_get_currently_running_process();
+    msg_t *msg_from_q = NULL;
+    msg_type_t type = MSG_TYPE_CONSOLE_INPUT;
+
+    msg_zero(msg);
+
+    /* XXXXXX Remove all pending console messages. Is this good? */
+    while ((msg_from_q = prio_find(&pcb->inbox_q, &type)))
+    {
+        msg_free(msg_from_q);
+        prio_remove(&pcb->inbox_q, &type);
+    }
+
+    tty_manager_add_input_listener(pcb);
+
+    /* Guaranteed no console in queue, so just block. */
+    pcb->waiting_msg = msg;
+    pcb->waiting_type = MSG_TYPE_CONSOLE_INPUT;
+    kblock_self();
+
+    return 1;
+}
+
+uint32_t
 kread_next_message(msg_t *msg, int max_wait_ms)
 {
     pcb_t *pcb = sch_get_currently_running_process();
@@ -213,23 +239,6 @@ kread_next_message(msg_t *msg, int max_wait_ms)
 
     return 1;
 }
-
-#if 0
-msg_t *
-kread_from_console(void)
-{
-    pcb_t *pcb = sch_get_currently_running_process();
-
-    tty_manager_add_input_listener(pcb);
-    kblock_self();
-    kdebug_println("finished blocking self,,,,,,,,,,,,,");
-    kdebug_printint(kgetpid());
-    kdebug_println("");
-    //tty_manager_remove_input_listener(pcb);
-
-    return prio_dequeue(&pcb->inbox_q);
-}
-#endif
 
 /*
  * XXXXXXXXXX
@@ -349,7 +358,6 @@ kkill_self(void)
 {
     pcb_t *pcb = sch_get_currently_running_process();
     pcb->state = PROCESS_STATE_ENDED;
-    tty_manager_remove_input_listener(pcb);
     kkill(pcb->pid);
 }
 

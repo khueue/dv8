@@ -215,7 +215,7 @@ shell(void)
         msg_t *msg = msg_alloc();
 
         print_str("deviate> ");
-        read_message_by_type(msg, MSG_TYPE_CONSOLE_INPUT, 0);
+        read_from_console(msg);
         strcpy(g_line, msg_data_get_string(msg));
         msg = msg_free(msg);
 
