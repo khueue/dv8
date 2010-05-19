@@ -20,9 +20,10 @@
     .globl print_int
     .globl read_message_by_type
     .globl read_next_message
+    .globl read_from_console
     .globl top
     .globl supervise
-    
+
     # syscall_handler:
     #   Enables argument passing for up
     #   to four parameters of a system call.
@@ -132,9 +133,7 @@ supervise:
     syscall
     jr ra
 
-#if 0
 read_from_console:
     la v0, kread_from_console
     syscall
     jr ra
-#endif

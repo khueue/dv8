@@ -32,6 +32,7 @@ typedef enum
 typedef struct _pcb pcb_t;
 struct _pcb
 {
+    char program[32];
     uint32_t pid;
     uint32_t priority;
     int32_t sleepleft;

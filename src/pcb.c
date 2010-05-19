@@ -220,51 +220,53 @@ pcb_free(pcb_t *pcb)
 void
 pcb_print(const pcb_t *process)
 {
+    
+    kprint_str(process->program);
+    kprint_str("\t");
+    
+    
+    kprint_int(process->pid);
+    kprint_str("\t");
 
-    kdebug_printint(process->pid);
-    kdebug_print("\t");
+    kprint_int(process->priority);
+    kprint_str("\t\t");
 
-    kdebug_printint(process->priority);
-    kdebug_print("\t\t");
-
-    kdebug_printint(process->inbox_q.length);
-    kdebug_print("\t");
+    kprint_int(process->inbox_q.length);
+    kprint_str("\t");
 
     if(process->state == PROCESS_STATE_RUNNING)
     {
-        kdebug_print("RUN");
+        kprint_str("RUN");
     }
     else if (process->state == PROCESS_STATE_READY)
     {
-        kdebug_print("READY");
+        kprint_str("READY");
     }
     else if (process->state == PROCESS_STATE_SLEEPING)
     {
-        kdebug_print("SLEEP");
+        kprint_str("SLEEP");
     }
     else if (process->state == PROCESS_STATE_BLOCKED)
     {
-        kdebug_print("BLOCKED");
+        kprint_str("BLOCKED");
     }
     else if (process->state == PROCESS_STATE_NEW)
     {
-        kdebug_print("NEW");
+        kprint_str("NEW");
     }
     else if (process->state == PROCESS_STATE_TERMINATED)
     {
-        kdebug_print("TERMINATED");
+        kprint_str("TERMINATED");
     }
     else
     {
-        kdebug_print("***** PROCESS_STATE_?????");
+        kprint_str("***** PROCESS_STATE_?????");
     }
 
-    kdebug_print("\t");
+    kprint_str("\t");
 
-    kprint_int(process->sleepleft);
-    kdebug_println("");
-    kprint_strln("------>>>>>>");
-    kdebug_printint(-666);
+    kprint_int(process->state == PROCESS_STATE_SLEEPING ? process->sleepleft/67000 : 0);
+    kprint_strln("");
 }
 /*
  * ---------------------------------------------------------------------------

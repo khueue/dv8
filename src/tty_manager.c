@@ -152,6 +152,7 @@ tty_manager_dispatch_message(const char str[])
         msg = tty_manager_create_message(str);
         process = stack_peek(&g_input_stack);
         kdebug_assert(process);
+        tty_manager_remove_input_listener(process);
         msg_set_receiver_pid(msg, process->pid);
         ksend_message(msg);
     }

@@ -20,7 +20,7 @@ kfunc_to_go_to_when_the_process_ends_normally(void)
 }
 
 pcb_t *
-spawn(user_program_pointer program, uint32_t priority)
+spawn(const char name[], user_program_pointer program, uint32_t priority)
 {
     pcb_t *pcb = pcb_alloc();
 
@@ -31,6 +31,8 @@ spawn(user_program_pointer program, uint32_t priority)
     }
 
     pcb_init(pcb);
+
+    strcpy(pcb->program, name);
 
     pcb->priority = priority;
     pcb->sleepleft = 0;
@@ -45,8 +47,6 @@ spawn(user_program_pointer program, uint32_t priority)
 
     pcb->regs.ra_reg  =
         (uint32_t)kfunc_to_go_to_when_the_process_ends_normally;
-
-    tty_manager_add_input_listener(pcb);
 
     return pcb;
 }
