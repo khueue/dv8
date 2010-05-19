@@ -37,6 +37,7 @@ struct _pcb
     uint32_t priority;
     int32_t sleepleft;
     prio_queue_t inbox_q;
+    uint32_t inbox_limit;
     msg_t *waiting_msg;
     msg_type_t waiting_type;
     process_state_t state;
@@ -87,7 +88,7 @@ pcb_is_done_sleeping(const pcb_t *pcb);
 void
     pcb_print(const pcb_t *process);
     
-size_t
-pcb_get_inbox_length(pcb_t *pcb);
+int
+pcb_inbox_full(pcb_t *pcb);
 
 #endif

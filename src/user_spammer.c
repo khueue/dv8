@@ -18,6 +18,7 @@ spammer(void)
 {
     char spam_string[] = "Enlarge your penis";
     int inbox_limit = 300;
+    set_inbox_limit(inbox_limit);
 
     msg_t *msg = create_string_message(spam_string, getpid());
     

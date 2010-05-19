@@ -272,7 +272,6 @@ ksend_message(msg_t *msg)
         msg_set_sender_pid(new_msg, sender_pid);
         if (!prio_enqueue(&receiver->inbox_q, new_msg))
         {
-            new_msg = msg_free(new_msg);
             return 0;
         }
     }
@@ -456,6 +455,14 @@ ksupervise(uint32_t pid)
 
 }
 
+void
+kset_inbox_limit(uint32_t limit)
+{
+    pcb_t *process = sch_get_currently_running_process();
+    kdebug_assert(process);
+    process->inbox_limit = limit;
+}
+
 /*
  * Sets up the
  */
@@ -469,7 +476,7 @@ setup_scheduler(void)
     process = spawn("idle", idle, 0);
     sch_schedule(process);
 
-    process = spawn("scroll", scroll, PROCESS_DEFAULT_PRIORITY + 30);
+    process = spawn("maltascr", maltascr, PROCESS_DEFAULT_PRIORITY + 30);
     sch_schedule(process);
 
     process = spawn(g_program_list[2].name, shell, PROCESS_DEFAULT_PRIORITY);
