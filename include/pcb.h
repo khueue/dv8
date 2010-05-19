@@ -89,8 +89,8 @@ int
 pcb_is_done_sleeping(const pcb_t *pcb);
 
 void
-    pcb_print(const pcb_t *process);
-    
+pcb_print(const pcb_t *process);
+
 int
 pcb_inbox_full(pcb_t *pcb);
 
