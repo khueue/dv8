@@ -42,6 +42,9 @@ typedef struct msg_ msg_t;
  * ---------------------------------------------------------------------------
  */
 
+size_t
+msg_num_free(void);
+
 /*
  * Returns a free message, or NULL if none free.
  */

@@ -155,6 +155,7 @@ tty_manager_dispatch_message(const char str[])
         tty_manager_remove_input_listener(process);
         msg_set_receiver_pid(msg, process->pid);
         ksend_message(msg);
+        msg = msg_free(msg);
     }
     else
     {
