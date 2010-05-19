@@ -430,8 +430,8 @@ setup_scheduler(void)
     process = spawn(idle, 0);
     sch_schedule(process);
 
-    /*process = spawn(maltascr, PROCESS_DEFAULT_PRIORITY + 30);
-    sch_schedule(process); */
+    process = spawn(maltascr, PROCESS_DEFAULT_PRIORITY + 30);
+    sch_schedule(process);
 
     process = spawn(shell, PROCESS_DEFAULT_PRIORITY);
     sch_schedule(process);
