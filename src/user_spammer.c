@@ -22,11 +22,13 @@ spammer(void)
     set_inbox_limit(inbox_limit);
 
     msg_t *msg = create_string_message(spam_string, getpid());
-    
+
     int i;
-    
+
     for (i = 0; i < messages_to_send; i++)
     {
         send_message(msg);
     }
+
+    msg = msg_free(msg);
 }
