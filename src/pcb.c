@@ -261,10 +261,8 @@ pcb_print(const pcb_t *process)
 
     kdebug_print("\t");
 
-    kprint_int(process->sleepleft);
-    kdebug_println("");
-    kprint_strln("------>>>>>>");
-    kdebug_printint(-666);
+    kprint_int(process->state == PROCESS_STATE_SLEEPING ? process->sleepleft/67000 : 0);
+    kprint_strln("");
 }
 /*
  * ---------------------------------------------------------------------------

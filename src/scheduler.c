@@ -337,7 +337,7 @@ sch_print()
     kdebug_print("\t");
     kdebug_print("State");
     kdebug_print("\t");
-    kdebug_println("Sleep");
+    kdebug_println("Sleep in ms");
     kdebug_println("-------------------------------------------------\n");
 
     prio_iter_reset(&g_wait);
