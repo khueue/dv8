@@ -11,17 +11,19 @@ incr(void)
     msg_t *msg = msg_alloc();
     int n = 0;
     int i = 0;
+    char usage[] = "Usage: incr [int limit]";
+    
     read_message_by_type(msg, MSG_TYPE_ARGUMENT, 330); /* XXXXX settings.h */
     if (msg_type_is_invalid(msg))
     {
-        print_strln("XXXXXXXXXXX USAGE incr INVALID");
+        print_strln(usage);
         return;
     }
     n = atoi(msg_data_get_string(msg));
     msg = msg_free(msg);
     if (n <= 0)
     {
-        print_strln("XXXXXXXXXXX USAGE incr");
+        print_strln(usage);
         return;
     }
 
