@@ -86,4 +86,7 @@ kunblock(uint32_t pid);
 void
 kblock_self(void);
 
+void
+ksupervise(uint32_t pid);
+
 #endif

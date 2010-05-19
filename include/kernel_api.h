@@ -70,4 +70,7 @@ unblock(uint32_t pid);
 void
 block_self(void);
 
+void
+supervise(uint32_t pid);
+
 #endif
