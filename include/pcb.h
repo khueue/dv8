@@ -85,5 +85,8 @@ pcb_is_done_sleeping(const pcb_t *pcb);
 
 void
     pcb_print(const pcb_t *process);
+    
+size_t
+pcb_get_inbox_length(pcb_t *pcb);
 
 #endif

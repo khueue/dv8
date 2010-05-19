@@ -192,6 +192,12 @@ pcb_alloc(void)
     }
 }
 
+/* XXXXXXX */
+size_t
+pcb_get_inbox_length(pcb_t *pcb)
+{
+    return pcb->inbox_q.length;   
+}
 /*
  * Releases a PCB back to the system. Always returns NULL, to make it easy to
  * avoid dangling pointers by simply using the return value in an assignment.
@@ -217,36 +223,40 @@ pcb_free(pcb_t *pcb)
 
 void
 pcb_print(const pcb_t *process)
-{
+{       
+    
     kdebug_printint(process->pid);
     kdebug_print("\t");
 
     kdebug_printint(process->priority);
+    kdebug_print("\t\t");
+
+    kdebug_printint(process->inbox_q.length);
     kdebug_print("\t");
 
     if(process->state == PROCESS_STATE_RUNNING)
     {
-        kdebug_print("PROCESS_STATE_RUNNING");
+        kdebug_print("RUN");
     }
     else if (process->state == PROCESS_STATE_READY)
     {
-        kdebug_print("PROCESS_STATE_READY");
+        kdebug_print("READY");
     }
     else if (process->state == PROCESS_STATE_SLEEPING)
     {
-        kdebug_print("PROCESS_STATE_SLEEPING");
+        kdebug_print("SLEEP");
     }
     else if (process->state == PROCESS_STATE_BLOCKED)
     {
-        kdebug_print("PROCESS_STATE_BLOCKED");
+        kdebug_print("BLOCKED");
     }
     else if (process->state == PROCESS_STATE_NEW)
     {
-        kdebug_print("PROCESS_STATE_NEW");
+        kdebug_print("NEW");
     }
     else if (process->state == PROCESS_STATE_TERMINATED)
     {
-        kdebug_print("PROCESS_STATE_TERMINATED");
+        kdebug_print("TERMINATED");
     }
     else
     {

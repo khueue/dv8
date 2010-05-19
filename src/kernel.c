@@ -247,11 +247,12 @@ ksend_message(msg_t *msg)
         return 0;
     }
 
-    if (msg_type_is(msg, receiver->waiting_type))
+    if (receiver->waiting_msg != NULL && msg_type_is(msg, receiver->waiting_type))
     {
         msg_copy(receiver->waiting_msg, msg);
         msg_set_sender_pid(receiver->waiting_msg, sender_pid);
-        receiver->waiting_type = MSG_TYPE_INVALID;             /* fix */
+        receiver->waiting_type = MSG_TYPE_INVALID;
+        receiver->waiting_msg = NULL;
         kunblock(receiver->pid);
     }
     else
