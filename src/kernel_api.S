@@ -21,6 +21,7 @@
     .globl read_message_by_type
     .globl read_next_message
     .globl top
+    .globl supervise
     
     # syscall_handler:
     #   Enables argument passing for up
@@ -123,6 +124,11 @@ read_next_message:
 
 top:
     la v0, sch_print
+    syscall
+    jr ra
+
+supervise:
+    la v0, ksupervise
     syscall
     jr ra
 

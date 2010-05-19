@@ -430,6 +430,15 @@ kblock_self()
     kblock(process->pid);
 }
 
+void
+ksupervise(uint32_t pid)
+{
+    pcb_t *process = sch_find_process(pid);
+    int supervisor = kgetpid();
+    pcb_assign_supervisor(process, supervisor);
+
+}
+
 /*
  * Sets up the
  */
