@@ -216,7 +216,7 @@ run(char cmd[])
 void
 shell(void)
 {
-    print_strln("SHELL: type 'exit' to exit.");
+    print_strln("Shell. Type 'exit' to exit.");
     while (1)
     {
         msg_t *msg = msg_alloc();

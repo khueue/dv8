@@ -83,7 +83,7 @@ do_nothing_forever(const char msg[], uint32_t interval)
     uint32_t i = 0;
     for (;;)
     {
-        if ((i++ % interval) == 0)
+        if ((++i % interval) == 0)
         {
             kdebug_println(msg);
         }
