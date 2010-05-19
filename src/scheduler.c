@@ -3,6 +3,7 @@
 #include "pcb.h"
 #include "prio_queue.h"
 #include "asm.h"
+#include "msg.h"
 
 /*
  * ---------------------------------------------------------------------------
@@ -376,4 +377,8 @@ sch_print()
     }
     print_line();
 
+    kprint_str("Num free messages: ");
+    kprint_int(msg_num_free());
+    kprint_strln("");
+    print_line();
 }
