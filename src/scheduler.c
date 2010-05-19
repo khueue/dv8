@@ -350,7 +350,7 @@ sch_print()
     kprint_str("\t");
     kprint_str("State");
     kprint_str("\t");
-    kprint_strln("Sleep in ms");
+    kprint_strln("Sleep(ms)");
 
     print_line();
 
@@ -374,5 +374,6 @@ sch_print()
         process = prio_iter_next(&g_run);
         pcb_print(process);
     }
+    print_line();
 
 }
