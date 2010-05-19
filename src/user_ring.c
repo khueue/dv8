@@ -6,13 +6,94 @@
 #include "msg.h"
 
 #include "user_ring.h"
-#include "user_ringnode.h"
 
 /*
  * ---------------------------------------------------------------------------
  * Functions.
  * ---------------------------------------------------------------------------
  */
+
+static int
+get_arg(msg_t *msg, int timeout)
+{
+    read_message_by_type(msg, MSG_TYPE_ARGUMENT, timeout);
+    if (msg_type_is_invalid(msg))
+    {
+        return 0;
+    }
+    return 1;
+}
+
+void
+ringnode(void)
+{
+    msg_t *msg = msg_alloc();
+    int index;
+    int pid;
+    char the_msg[256];
+    char usage[] = "Error: ringn is executed with 'ring'";
+
+    //Get ringnode index
+    if (!get_arg(msg, 300) || !msg_data_is_integer(msg))
+    {
+        msg = msg_free(msg);
+        print_strln(usage);
+        return;
+    }
+    index = msg_data_get_integer(msg);
+
+    //Get next pid
+    if (!get_arg(msg, 300) || !msg_data_is_integer(msg))
+    {
+        msg = msg_free(msg);
+        print_strln(usage);
+        return;
+    }
+    pid = msg_data_get_integer(msg);
+
+    //Get message
+    if (!get_arg(msg, 0) || !msg_data_is_string(msg))
+    {
+        msg = msg_free(msg);
+        print_strln(usage);
+        return;
+    }
+    strcpy(the_msg, msg_data_get_string(msg));
+
+    print_int(getpid());
+    print_str(" received message ");
+    print_str(the_msg);
+    print_str(" from ");
+    print_int(msg_get_sender_pid(msg));
+    print_strln("");
+
+    sleep(3000);
+
+    //Send message to next
+    msg_set_receiver_pid(msg, pid);
+    msg_data_set_string(msg, the_msg);
+    send_message(msg);
+
+    //If first/last in the ring
+    if (index == 0)
+    {
+        //Wait for the message again
+        if (!get_arg(msg, 0) || !msg_data_is_string(msg))
+        {
+            print_strln("Error: Failed to get final message.");
+        }
+        strcpy(the_msg, msg_data_get_string(msg));
+
+        kdebug_printint(getpid());
+        print_str(" received message ");
+        print_str(the_msg);
+        print_str(" from ");
+        print_int(msg_get_sender_pid(msg));
+        print_strln("\nEND OF RING");
+
+    }
+    msg = msg_free(msg);
+}
 
 void
 ring(void)
@@ -24,14 +105,14 @@ ring(void)
     char the_msg[256];
     char usage[] = "Usage: ring [int nodes] [str message]";
 
-    /* Get argument 1 */
-    read_message_by_type(msg, MSG_TYPE_ARGUMENT, 300);
-    if (msg_type_is_invalid(msg))
+    /* Get argument 1 - the number of nodes */
+    if (!get_arg(msg, 300) || !msg_data_is_string(msg))
     {
-        print_str(usage);
         msg = msg_free(msg);
+        print_strln(usage);
         return;
     }
+
     n = atoi(msg_data_get_string(msg));
 
     if (n <= 0 || n > 10)
@@ -41,29 +122,18 @@ ring(void)
         return;
     }
 
-    /* Get argument 2 */
-    read_message_by_type(msg, MSG_TYPE_ARGUMENT, 200);
-    if (msg_type_is_invalid(msg))
+    /* Get argument 2 - the message*/
+    if (!get_arg(msg, 300) || !msg_data_is_string(msg))
     {
+        msg = msg_free(msg);
         print_strln(usage);
-        msg = msg_free(msg);
         return;
     }
-
-    if (msg_data_is_string(msg))
-    {
-        strcpy(the_msg, msg_data_get_string(msg));
-    }
-    else
-    {
-        print_str(usage);
-        msg = msg_free(msg);
-        return;
-    }
+    strcpy(the_msg, msg_data_get_string(msg));
 
     msg_type_set_argument(msg);
 
-    pids[i] = exec("ringnode", PROCESS_DEFAULT_PRIORITY);
+    pids[i] = exec("ringn", PROCESS_DEFAULT_PRIORITY);
 
     /* send index */
     msg_set_receiver_pid(msg, pids[i]);
@@ -72,7 +142,7 @@ ring(void)
 
     for (i = 1; i < n; i++)
     {
-        pids[i] = exec("ringnode", PROCESS_DEFAULT_PRIORITY);
+        pids[i] = exec("ringn", PROCESS_DEFAULT_PRIORITY);
 
         /* send index */
         msg_set_receiver_pid(msg, pids[i]);

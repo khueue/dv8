@@ -19,7 +19,6 @@
 #include "user_scroller.h"
 #include "user_shell.h"
 #include "user_ring.h"
-#include "user_ringnode.h"
 #include "user_scrollermsg.h"
 #include "user_philo.h"
 #include "user_supervisor_demo.h"
@@ -69,7 +68,7 @@ init_program_list(void)
     strcpy(g_program_list[3].name, "ring");
     g_program_list[3].func = ring;
 
-    strcpy(g_program_list[4].name, "ringnode");
+    strcpy(g_program_list[4].name, "ringn");
     g_program_list[4].func = ringnode;
 
     strcpy(g_program_list[5].name, "scrollermsg");

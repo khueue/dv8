@@ -7,24 +7,12 @@
 static int
 get_arg(msg_t *msg_get, int time)
 {
-    int r;
     read_message_by_type(msg_get, MSG_TYPE_ARGUMENT, time);
-    if (msg_type_is_invalid(msg_get))
-    {
-        print_str("INVALID ARG\n");
-        msg_get = msg_free(msg_get);
-        return 0;
-    }
 
-    if (msg_data_is_integer(msg_get))
+    if (msg_type_is_invalid(msg_get) || !msg_data_is_integer(msg_get))
     {
-        r = msg_data_get_integer(msg_get);
-    }
-    else
-    {
-        print_strln("INVALID ARG - Expected Integer");
-        msg_get = msg_free(msg_get);
-        return 0;
+
+        return -1;
     }
 
     /* print_int(getpid());
@@ -33,8 +21,7 @@ get_arg(msg_t *msg_get, int time)
     print_str(" - ");
     print_int(msg_get_sender_pid(msg_get));
     print_strln(""); */
-
-    return r;
+    return msg_data_get_integer(msg_get);
 }
 
 static void
@@ -62,6 +49,7 @@ philosopher(void)
     int max_duration = 4000;
     int min_duration = 1500;
     int status;
+    char usage[] = "Error: philo is executed with 'dp'";
 
     msg_t *msg_set = msg_alloc();
     msg_t *msg_get = msg_alloc();
@@ -71,6 +59,14 @@ philosopher(void)
 
     /* Get table pid */
     table_pid = get_arg(msg_get,300);
+
+    if (id == -1 || table_pid == -1)
+    {
+        print_strln(usage);
+        msg_set = msg_free(msg_set);
+        msg_get = msg_free(msg_get);
+        return;
+    }
 
     for (i = 0; i < 5; i++)
     {
@@ -264,4 +260,6 @@ dphilo_init(void)
 
     msg_set = msg_free(msg_set);
     msg_get = msg_free(msg_get);
+
+    print_strln("The dinner is over");
 }

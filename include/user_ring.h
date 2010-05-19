@@ -8,6 +8,9 @@
  */
 
 void
+ringnode(void);
+
+void
 ring(void);
 
 #endif
