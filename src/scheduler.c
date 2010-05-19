@@ -328,7 +328,7 @@ static void
 print_line(void)
 {
     int i = 0;
-    
+
     for ( i = 0; i < 78; i += 1 )
     {
         kprint_char('-');
@@ -380,5 +380,14 @@ sch_print()
     kprint_str("Num free messages: ");
     kprint_int(msg_num_free());
     kprint_strln("");
+
+    kprint_str("Num free PCBs: ");
+    kprint_int(pcb_num_free());
+    kprint_strln("");
+
+    kprint_str("Num free list nodes: ");
+    kprint_int(list_node_num_free());
+    kprint_strln("");
+
     print_line();
 }

@@ -31,6 +31,12 @@ struct list_node
  * ---------------------------------------------------------------------------
  */
 
+/*
+ * Returns the number of free list nodes in the system.
+ */
+size_t
+list_node_num_free(void);
+
 list_node_t *
 list_node_alloc(void);
 
