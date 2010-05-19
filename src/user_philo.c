@@ -57,10 +57,10 @@ void
 philosopher(void)
 {
     int table_pid = 0;
-    int id      = 0;
+    int id = 0;
     int i;
-    int max_duration = 1000;
-    int min_duration = 300;
+    int max_duration = 4000;
+    int min_duration = 1500;
     int status;
 
     msg_t *msg_set = msg_alloc();
@@ -72,7 +72,7 @@ philosopher(void)
     /* Get table pid */
     table_pid = get_arg(msg_get,300);
 
-    for (i = 0; i < 10; i++)
+    for (i = 0; i < 5; i++)
     {
         print_int(id);
         print_strln(" thinks.");
@@ -140,7 +140,7 @@ dphilo_init(void)
     msg_t *msg_set = msg_alloc();
     msg_t *msg_get = msg_alloc();
 
-    print_strln("start dp");
+    print_strln("Dining Philosophers");
 
     msg_type_set_argument(msg_set);
 

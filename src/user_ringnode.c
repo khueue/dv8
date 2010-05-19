@@ -21,11 +21,12 @@ ringnode(void)
     int index;
     int pid;
     char the_msg[256];
+    char usage[] = "Error: ringnode is executed with 'ring'";
 
     read_message_by_type(msg, MSG_TYPE_ARGUMENT, 300);
     if (msg_type_is_invalid(msg))
     {
-        print_str("300 ms fail - XXXXXXXXXXX USAGE RINGNODE INVALID\n");
+        print_strln(usage);
         msg = msg_free(msg);
         return;
     }
@@ -36,13 +37,13 @@ ringnode(void)
     }
     else
     {
-        kdebug_println("No integer!");
+        print_strln(usage);
     }
 
     read_message_by_type(msg, MSG_TYPE_ARGUMENT, 300);
     if (msg_type_is_invalid(msg))
     {
-        print_str("300 ms fail - XXXXXXXXXXX USAGE RINGNODE INVALID\n");
+        print_strln(usage);
         msg = msg_free(msg);
         return;
     }
@@ -53,7 +54,7 @@ ringnode(void)
     }
     else
     {
-        kdebug_println("No integer!");
+        print_strln(usage);
     }
 
     read_message_by_type(msg, MSG_TYPE_ARGUMENT, 0);
@@ -73,12 +74,12 @@ ringnode(void)
         kdebug_println("No string!");
     }
 
-    kdebug_printint(getpid());
+    print_int(getpid());
     print_str(" received message ");
     print_str(the_msg);
     print_str(" from ");
-    kdebug_printint(msg_get_sender_pid(msg));
-    kdebug_println("");
+    print_int(msg_get_sender_pid(msg));
+    print_strln("");
 
     sleep(300);
     msg_set_receiver_pid(msg, pid);
@@ -107,8 +108,8 @@ ringnode(void)
         print_str(" received message ");
         print_str(the_msg);
         print_str(" from ");
-        kdebug_printint(msg_get_sender_pid(msg));
-        kdebug_println(" END");
+        print_int(msg_get_sender_pid(msg));
+        print_strln("\nEND OF RING");
 
     }
     msg = msg_free(msg);
