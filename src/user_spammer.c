@@ -17,14 +17,15 @@ void
 spammer(void)
 {
     char spam_string[] = "Enlarge your penis";
-    int inbox_limit = 300;
+    int inbox_limit = 30;
+    int messages_to_send = 20;
     set_inbox_limit(inbox_limit);
 
     msg_t *msg = create_string_message(spam_string, getpid());
     
     int i;
     
-    for (i = 0; i < 2*inbox_limit; i++)
+    for (i = 0; i < messages_to_send; i++)
     {
         send_message(msg);
     }
