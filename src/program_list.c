@@ -12,6 +12,8 @@
 #include "user_supervisor_demo.h"
 #include "user_spammer.h"
 
+#include "kernel_api.h"
+
 /*
  * ---------------------------------------------------------------------------
  * Constants.
@@ -36,10 +38,6 @@
  * ---------------------------------------------------------------------------
  */
 
-/*
- * Information about a user program.
- */
-typedef struct program_info_ program_info_t;
 struct program_info_
 {
     char name[PROGRAM_NAME_LENGTH]; /* Name of program. */
@@ -56,7 +54,7 @@ struct program_info_
 /*
  * Table of all available programs.
  */
-static program_info_t
+static const program_info_t
 g_programs[] =
 {
     {  "idle",              idle,              NOT_SHELL  },
@@ -93,4 +91,24 @@ program_list_get_program_code(const char program_name[])
     }
 
     return NULL;
+}
+
+void
+program_list_print(void)
+{
+    size_t i = 0;
+
+    for (i = 0; i < COUNT_ARRAY(g_programs); ++i)
+    {
+        if (program_list_program_executable_by_shell(&g_programs[i]))
+        {
+            print_strln(g_programs[i].name);
+        }
+    }
+}
+
+int
+program_list_program_executable_by_shell(const program_info_t *program)
+{
+    return program->executable_by_shell == SHELL;
 }

@@ -6,6 +6,8 @@
 #include "user_fib.h"
 #include "user_incr.h"
 
+#include "program_list.h"
+
 /*
  * ---------------------------------------------------------------------------
  * Globals.
@@ -163,13 +165,14 @@ do_priority_change(void)
     }
     return 0;
 }
-/*
-static void
-do_top(void)
+
+static int
+do_ls(void)
 {
-       top();
+    program_list_print();
+    return 1;
 }
-*/
+
 static int
 run(char cmd[])
 {
@@ -187,6 +190,10 @@ run(char cmd[])
         else if (0 == strcmp(g_args[0], "priority"))
         {
             return do_priority_change();
+        }
+        else if (0 == strcmp(g_args[0], "ls"))
+        {
+            return do_ls();
         }
         else if (0 == strcmp(g_args[0], "top"))
         {
