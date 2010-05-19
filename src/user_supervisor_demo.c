@@ -29,7 +29,7 @@ supervisor_demo(void)
         pid_of_dead = msg_data_get_integer(msg);
         read_message_by_type(msg, MSG_TYPE_SUPERVISOR_NOTICE_STATE, 0);
         pcb_state = msg_data_get_integer(msg);
-        if (pid_to_supervise == pid_of_dead && pcb_state != PROCESS_STATE_NEW)
+        if (pcb_state != PROCESS_STATE_NEW)
         {
             if (pcb_state == PROCESS_STATE_TERMINATED) {
                 kdebug_print("Process ");
