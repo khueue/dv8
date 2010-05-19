@@ -10,7 +10,7 @@
  */
 
 pcb_t *
-spawn(user_program_pointer program, uint32_t priority);
+spawn(const char name[], user_program_pointer program, uint32_t priority);
 
 void
 kfunc_to_go_to_when_the_process_ends_normally(void);

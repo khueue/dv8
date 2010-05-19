@@ -136,7 +136,7 @@ kexec(const char program[], uint32_t priority)
     {
         if (0 == strcmp(program, g_program_list[i].name))
         {
-            pcb = spawn(g_program_list[i].func, priority);
+            pcb = spawn(program, g_program_list[i].func, priority);
         }
     }
 
@@ -457,13 +457,13 @@ setup_scheduler(void)
 
     sch_init();
 
-    process = spawn(idle, 0);
+    process = spawn("idle", idle, 0);
     sch_schedule(process);
 
-    process = spawn(maltascr, PROCESS_DEFAULT_PRIORITY + 30);
+    process = spawn("maltascr", maltascr, PROCESS_DEFAULT_PRIORITY + 30);
     sch_schedule(process);
 
-    process = spawn(shell, PROCESS_DEFAULT_PRIORITY);
+    process = spawn(g_program_list[2].name, shell, PROCESS_DEFAULT_PRIORITY);
     sch_schedule(process);
 
     /* Initialise timer to interrupt soon. */
