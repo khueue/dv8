@@ -26,18 +26,8 @@ supervisor_demo(void)
     {
         read_message_by_type(msg, MSG_TYPE_SUPERVISOR_NOTICE_ID, 0);
         pid_of_dead = msg_data_get_integer(msg);
-        kdebug_print("Got notice_id: ");
-        kdebug_printint(pid_of_dead);
-        kdebug_println("");
         read_message_by_type(msg, MSG_TYPE_SUPERVISOR_NOTICE_STATE, 0);
         pcb_state = msg_data_get_integer(msg);
-        kdebug_print("Got notice_state: ");
-        kdebug_printint(pcb_state);
-        kdebug_print(" (terminated: ");
-        kdebug_printint(PROCESS_STATE_TERMINATED);
-        kdebug_print(", ended: ");
-        kdebug_printint(PROCESS_STATE_ENDED);
-        kdebug_println(")");
         if (pcb_state == PROCESS_STATE_TERMINATED) {
             kdebug_print("Process ");
             kdebug_printint(pid_of_dead);
