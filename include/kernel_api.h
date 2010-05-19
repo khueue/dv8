@@ -44,6 +44,9 @@ print_strln(const char str[]);
 void
 print_int(int x);
 
+void
+top(void);
+
 uint32_t
 send_message(msg_t *msg);
 

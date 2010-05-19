@@ -242,7 +242,7 @@ A user level program that demonstrates process communication.
 
 This demonstrates process synchronization (you will need to work out how to synchronize processes given the message passing paradigm). The dining philosophers program is a program solving a problem with resource sharing as follows. A group of philosophers are sitting around a dining table (formed as a circle). Between each pair of philosophers is one fork. Occasionally, one philosopher wants to eat and to do that he needs two forks. This means that two philosophers sitting next to each other can not eat at the same time. You should implement this with the following in mind:
 
-* Each philosopher is a process of its own with a behavior that is similar to the following:
+* __FIXED__ Each philosopher is a process of its own with a behavior that is similar to the following:
 
 think(random())
 get one fork
@@ -251,8 +251,8 @@ eat(random())
 drop forks
 restart
 
-* Like UP3, the entire setup should be started by a single process.
-* Like UP3, the main program should return and make it possible to observe the processes running.
+* __FIXED__ Like UP3, the entire setup should be started by a single process.
+* __FIXED__ Like UP3, the main program should return and make it possible to observe the processes running.
 
 ##Process Supervision (2 pts)
 
