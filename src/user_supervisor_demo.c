@@ -26,7 +26,7 @@ supervisor_demo(void)
     while(1)
     {        
         // CHECK FOR MESSAGES
-        read_message_by_type(msg, MSG_TYPE_SUPERVISOR_NOTICE_ID, 0;
+        read_message_by_type(msg, MSG_TYPE_SUPERVISOR_NOTICE_ID, 0);
         pid_of_dead = msg_data_get_integer(msg);
         read_message_by_type(msg, MSG_TYPE_SUPERVISOR_NOTICE_STATE, 0);
         pcb_state = msg_data_get_integer(msg);

@@ -23,6 +23,7 @@
 #include "user_scrollermsg.h"
 #include "user_philo.h"
 #include "user_supervisor_demo.h"
+#include "user_spammer.h"
 
 #include "debug.h"
 
@@ -51,13 +52,13 @@ g_excn_regs;
  */
 
 static program_t
-g_program_list[9];
+g_program_list[10];
 
 static void
 init_program_list(void)
 {
     strcpy(g_program_list[0].name, "fib");
-g    g_program_list[0].func = fib;
+    g_program_list[0].func = fib;
 
     strcpy(g_program_list[1].name, "incr");
     g_program_list[1].func = incr;
@@ -71,7 +72,7 @@ g    g_program_list[0].func = fib;
     strcpy(g_program_list[4].name, "ringnode");
     g_program_list[4].func = ringnode;
 
-    strcpy(g_program_list[5].name, "scrollermsg");getpiud
+    strcpy(g_program_list[5].name, "scrollermsg");
     g_program_list[5].func = scrollermsg;
 
     strcpy(g_program_list[6].name, "dp");
@@ -82,6 +83,9 @@ g    g_program_list[0].func = fib;
 
     strcpy(g_program_list[8].name, "supervisor_demo");
     g_program_list[8].func = supervisor_demo;
+    
+    strcpy(g_program_list[9].name, "spammer");
+    g_program_list[9].func = spammer;
 
 }
 
