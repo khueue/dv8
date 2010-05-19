@@ -57,9 +57,10 @@ void
 philosopher(void)
 {
     int table_pid = 0;
-    int id = 0;
+    int id      = 0;
     int i;
-    int duration = 1000;
+    int max_duration = 1000;
+    int min_duration = 300;
     int status;
 
     msg_t *msg_set = msg_alloc();
@@ -71,11 +72,11 @@ philosopher(void)
     /* Get table pid */
     table_pid = get_arg(msg_get,300);
 
-    for (i = 0; i < 5; i++)
+    for (i = 0; i < 10; i++)
     {
         print_int(id);
         print_strln(" thinks.");
-        sleep(duration);
+        sleep(rand_between(min_duration, max_duration));
 
         print_int(id);
         print_strln(" is hungry.");
@@ -108,7 +109,7 @@ philosopher(void)
 
         print_int(id);
         print_strln(" eats.");
-        sleep(duration);
+        sleep(rand_between(min_duration, max_duration));
 
         print_int(id);
         print_strln(" puts the chopsticks back");
