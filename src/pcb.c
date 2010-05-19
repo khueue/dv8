@@ -2,6 +2,8 @@
 #include "pcb.h"
 #include "msg.h"
 
+#include "kernel.h" /* xxxxxxxx ojojoj */
+
 /*
  * ---------------------------------------------------------------------------
  * Globals.
@@ -192,12 +194,6 @@ pcb_alloc(void)
     }
 }
 
-/* XXXXXXX */
-size_t
-pcb_get_inbox_length(pcb_t *pcb)
-{
-    return pcb->inbox_q.length;   
-}
 /*
  * Releases a PCB back to the system. Always returns NULL, to make it easy to
  * avoid dangling pointers by simply using the return value in an assignment.
@@ -223,8 +219,8 @@ pcb_free(pcb_t *pcb)
 
 void
 pcb_print(const pcb_t *process)
-{       
-    
+{
+
     kdebug_printint(process->pid);
     kdebug_print("\t");
 
@@ -265,8 +261,10 @@ pcb_print(const pcb_t *process)
 
     kdebug_print("\t");
 
-    kdebug_printint(process->sleepleft);
+    kprint_int(process->sleepleft);
     kdebug_println("");
+    kprint_strln("------>>>>>>");
+    kdebug_printint(-666);
 }
 /*
  * ---------------------------------------------------------------------------

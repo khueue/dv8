@@ -83,7 +83,7 @@ init_program_list(void)
 
     strcpy(g_program_list[8].name, "supervisor_demo");
     g_program_list[8].func = supervisor_demo;
-    
+
     strcpy(g_program_list[9].name, "spammer");
     g_program_list[9].func = spammer;
 
@@ -312,6 +312,14 @@ kprint_strln(const char str[])
 void
 kprint_int(int x)
 {
+    /* Deal with negative numbers. */
+    if (x < 0)
+    {
+        kprint_char('-');
+        x *= -1;
+    }
+
+    /* Recursive print. */
     if (x < 10)
     {
         kprint_char('0' + x);

@@ -34,6 +34,13 @@ void kdebug_printint(int value)
   // Recursive C is not very efficient, but the recursive
   // depth is only logarithmic to the value printed so
   // it should be ok.
+  if (value < 0)
+  {
+      kdebug_putc('-');
+      value *= -1;
+      
+    
+  }
   if (value < 10)
   {
     kdebug_putc('0' + value);
