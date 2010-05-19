@@ -259,6 +259,7 @@ ksend_message(msg_t *msg)
     
     if (pcb_inbox_full(receiver))
     {
+        msg = msg_free(msg);
         kkill(sender_pid);
         return 0;
     }
@@ -278,6 +279,7 @@ ksend_message(msg_t *msg)
         msg_set_sender_pid(new_msg, sender_pid);
         if (!prio_enqueue(&receiver->inbox_q, new_msg))
         {
+            new_msg = msg_free(new_msg);
             return 0;
         }
     }
