@@ -18,14 +18,27 @@
  * ---------------------------------------------------------------------------
  */
 
+/*
+ * Maximum length of a program name.
+ */
 #define PROGRAM_NAME_LENGTH 64
 
 /*
+ * Used as flags for the executable_by_shell attribute in the program info
+ * struct.
+ */
+#define SHELL     1
+#define NOT_SHELL 0
+
+/*
  * ---------------------------------------------------------------------------
- * Globals.
+ * Types.
  * ---------------------------------------------------------------------------
  */
 
+/*
+ * Information about a user program.
+ */
 typedef struct program_info_ program_info_t;
 struct program_info_
 {
@@ -34,9 +47,15 @@ struct program_info_
     int executable_by_shell;        /* Whether shell may start it. */
 };
 
-#define SHELL     1
-#define NOT_SHELL 0
+/*
+ * ---------------------------------------------------------------------------
+ * Globals.
+ * ---------------------------------------------------------------------------
+ */
 
+/*
+ * Table of all available programs.
+ */
 static program_info_t
 g_programs[] =
 {
