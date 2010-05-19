@@ -327,6 +327,18 @@ void
 sch_print()
 {
     pcb_t *process = NULL;
+    
+       
+    kdebug_print("Pid");
+    kdebug_print("\t");
+    kdebug_print("Priority");
+    kdebug_print("\t");
+    kdebug_print("Inbox");
+    kdebug_print("\t");
+    kdebug_print("State");
+    kdebug_print("\t");
+    kdebug_println("Sleep");
+    kdebug_println("-------------------------------------------------\n");
 
     prio_iter_reset(&g_wait);
     while (prio_iter_has_next(&g_wait))
