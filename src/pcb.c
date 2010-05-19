@@ -285,6 +285,20 @@ pcb_print(const pcb_t *process)
     kprint_int(process->state == PROCESS_STATE_SLEEPING ? process->sleepleft/67000 : 0);
     kprint_strln("");
 }
+    
+int
+pcb_inbox_full(pcb_t *pcb)
+{
+    if (pcb->inbox_limit != 0)
+    {
+        return (pcb->inbox_limit <= pcb->inbox_q.length);
+    }
+    else
+    {
+        return 0;
+    }
+}
+
 /*
  * ---------------------------------------------------------------------------
  * Main for module testing.

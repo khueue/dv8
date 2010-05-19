@@ -23,6 +23,7 @@
     .globl read_from_console
     .globl top
     .globl supervise
+    .globl set_inbox_limit
 
     # syscall_handler:
     #   Enables argument passing for up
@@ -130,6 +131,11 @@ top:
 
 supervise:
     la v0, ksupervise
+    syscall
+    jr ra
+
+set_inbox_limit:
+    la v0, kset_inbox_limit
     syscall
     jr ra
 

@@ -71,4 +71,7 @@ block_self(void);
 void
 supervise(uint32_t pid);
 
+void
+set_inbox_limit(uint32_t limit);
+
 #endif
