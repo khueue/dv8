@@ -164,6 +164,12 @@ do_priority_change(void)
     return 0;
 }
 
+static void
+do_top(void)
+{
+       top();
+}
+
 static int
 run(char cmd[])
 {
@@ -181,6 +187,11 @@ run(char cmd[])
         else if (0 == strcmp(g_args[0], "priority"))
         {
             return do_priority_change();
+        }
+        else if (0 == strcmp(g_args[0], "top"))
+        {
+            do_top();
+            return 1;
         }
         else
         {

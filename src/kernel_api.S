@@ -20,7 +20,8 @@
     .globl print_int
     .globl read_message_by_type
     .globl read_next_message
-
+    .globl top
+    
     # syscall_handler:
     #   Enables argument passing for up
     #   to four parameters of a system call.
@@ -117,6 +118,11 @@ read_message_by_type:
 
 read_next_message:
     la v0, kread_next_message
+    syscall
+    jr ra
+
+top:
+    la v0, sch_print
     syscall
     jr ra
 
