@@ -32,7 +32,7 @@ spawn(const char name[], user_program_pointer program, uint32_t priority)
 
     pcb_init(pcb);
 
-    strcmp(pcb->program, name);
+    strcpy(pcb->program, name);
 
     pcb->priority = priority;
     pcb->sleepleft = 0;
