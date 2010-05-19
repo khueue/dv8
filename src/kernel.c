@@ -248,14 +248,14 @@ ksend_message(msg_t *msg)
     pcb_t *receiver = NULL;
 
     uint32_t sender_pid = kgetpid();
-    
+
     receiver = sch_find_process(msg_get_receiver_pid(msg));
     if (!receiver)
     {
         /* No such active process! */
         return 0;
     }
-    
+
     if (pcb_inbox_full(receiver))
     {
         msg = msg_free(msg);
@@ -380,7 +380,7 @@ uint32_t
 kkill(uint32_t pid)
 {
     pcb_t *pcb = NULL;
-    
+
     pcb = sch_unschedule(pid);
 
     if (!pcb)
@@ -393,7 +393,7 @@ kkill(uint32_t pid)
     {
         pcb->state = PROCESS_STATE_TERMINATED;
     }
-    
+
     if (pcb->supervisor_pid)
     {
         msg_t *msg = msg_alloc();
@@ -401,11 +401,11 @@ kkill(uint32_t pid)
         msg_set_type(msg, MSG_TYPE_SUPERVISOR_NOTICE_ID);
         msg_data_set_integer(msg, pcb->pid);
         ksend_message(msg);
-        
+
         msg_set_type(msg, MSG_TYPE_SUPERVISOR_NOTICE_STATE);
         msg_data_set_integer(msg, pcb->state);
         ksend_message(msg);
-        
+
         msg = msg_free(msg);
     }
 

@@ -21,14 +21,14 @@ spammer(void)
     int messages_to_send = 40;
     set_inbox_limit(inbox_limit);
 
-    msg_t *msg = create_string_message(spam_string, getpid());
+    msg_t *msg = NULL;
 
     int i;
 
     for (i = 0; i < messages_to_send; i++)
     {
+        msg = create_string_message(spam_string, getpid());
         send_message(msg);
+        msg = msg_free(msg);
     }
-
-    msg = msg_free(msg);
 }
