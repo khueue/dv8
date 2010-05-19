@@ -11,7 +11,7 @@
  */
 
 void
-maltascr(void)
+scroll(void)
 {
     msg_t *msg = msg_alloc();
     int strpos = 0;

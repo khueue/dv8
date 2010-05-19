@@ -272,6 +272,7 @@ ksend_message(msg_t *msg)
         msg_set_sender_pid(new_msg, sender_pid);
         if (!prio_enqueue(&receiver->inbox_q, new_msg))
         {
+            new_msg = msg_free(new_msg);
             return 0;
         }
     }
@@ -468,7 +469,7 @@ setup_scheduler(void)
     process = spawn("idle", idle, 0);
     sch_schedule(process);
 
-    process = spawn("maltascr", maltascr, PROCESS_DEFAULT_PRIORITY + 30);
+    process = spawn("scroll", scroll, PROCESS_DEFAULT_PRIORITY + 30);
     sch_schedule(process);
 
     process = spawn(g_program_list[2].name, shell, PROCESS_DEFAULT_PRIORITY);
