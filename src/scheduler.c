@@ -328,7 +328,8 @@ sch_print()
 {
     pcb_t *process = NULL;
     
-       
+    kdebug_print("Name");
+    kdebug_print("\t");       
     kdebug_print("Pid");
     kdebug_print("\t");
     kdebug_print("Priority");
