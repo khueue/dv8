@@ -13,18 +13,7 @@
 #include "tty_manager.h"
 #include "msg.h"
 
-#include "user_fib.h"
-#include "user_incr.h"
-#include "user_idle.h"
-#include "user_scroller.h"
-#include "user_shell.h"
-#include "user_ring.h"
-#include "user_scrollermsg.h"
-#include "user_philo.h"
-#include "user_supervisor_demo.h"
-#include "user_spammer.h"
-
-#include "debug.h"
+#include "program_list.h"
 
 /*
  * ---------------------------------------------------------------------------
@@ -40,53 +29,9 @@ g_excn_regs;
 
 /*
  * ---------------------------------------------------------------------------
- * Private functions.
- * ---------------------------------------------------------------------------
- */
-
-/*
- * ---------------------------------------------------------------------------
  * Functions.
  * ---------------------------------------------------------------------------
  */
-
-static program_t
-g_program_list[10];
-
-static void
-init_program_list(void)
-{
-    strcpy(g_program_list[0].name, "fib");
-    g_program_list[0].func = fib;
-
-    strcpy(g_program_list[1].name, "incr");
-    g_program_list[1].func = incr;
-
-    strcpy(g_program_list[2].name, "shell");
-    g_program_list[2].func = shell;
-
-    strcpy(g_program_list[3].name, "ring");
-    g_program_list[3].func = ring;
-
-    strcpy(g_program_list[4].name, "ringn");
-    g_program_list[4].func = ringnode;
-
-    strcpy(g_program_list[5].name, "scrollermsg");
-    g_program_list[5].func = scrollermsg;
-
-    strcpy(g_program_list[6].name, "dp");
-    g_program_list[6].func = dphilo_init;
-
-    strcpy(g_program_list[7].name, "philo");
-    g_program_list[7].func = philosopher;
-
-    strcpy(g_program_list[8].name, "supervisor_demo");
-    g_program_list[8].func = supervisor_demo;
-
-    strcpy(g_program_list[9].name, "spammer");
-    g_program_list[9].func = spammer;
-
-}
 
 /*
  * Must be called from within an exception. When the exception finishes, the
@@ -128,24 +73,25 @@ set_status_reg(void)
 uint32_t
 kexec(const char program[], uint32_t priority)
 {
+    user_program_pointer code = NULL;
     pcb_t *pcb = NULL;
-    int i = 0;
 
-    for (i = 0; i < 10; i++)
+    code = program_list_get_program_code(program);
+    if (!code)
     {
-        if (0 == strcmp(program, g_program_list[i].name))
-        {
-            pcb = spawn(program, g_program_list[i].func, priority);
-        }
-    }
-
-    if (!pcb)
-    {
+        /* xxxxxxxx error invalid program */
         return 0;
     }
 
-    /* Error handling here XXXXXXX */
+    pcb = spawn(program, code, priority);
+    if (!pcb)
+    {
+        /* crappy spawn xxxxxxx */
+        return 0;
+    }
+
     sch_schedule(pcb);
+
     return pcb->pid;
 }
 
@@ -476,20 +422,32 @@ kset_inbox_limit(uint32_t limit)
 static void
 setup_scheduler(void)
 {
-    pcb_t *process = NULL;
+    uint32_t ret = 0;
 
     sch_init();
 
-    process = spawn("idle", idle, 0);
-    sch_schedule(process);
+    ret = kexec("idle", 0);
+    if (!ret)
+    {
+        kdebug_println("Failed to start the idle process!");
+        return;
+    }
 
-    process = spawn("scroll", scroll, PROCESS_DEFAULT_PRIORITY + 30);
-    sch_schedule(process);
+    ret = kexec("scroll", PROCESS_DEFAULT_PRIORITY + 30);
+    if (!ret)
+    {
+        kdebug_println("Failed to start the scroller!");
+        return;
+    }
 
-    process = spawn(g_program_list[2].name, shell, PROCESS_DEFAULT_PRIORITY);
-    sch_schedule(process);
+    ret = kexec("shell", PROCESS_DEFAULT_PRIORITY);
+    if (!ret)
+    {
+        kdebug_println("Failed to start the shell!");
+        return;
+    }
 
-    /* Initialise timer to interrupt soon. */
+    /* Initialize timer to interrupt soon. */
     kload_timer(MS_TO_NEXT_TIMER_INTERRUPT * timer_msec);
 }
 
@@ -517,8 +475,6 @@ kinit(void)
 
     /* Setup status register in the CPU. */
     set_status_reg();
-
-    init_program_list();
 
     tty_manager_init();
 
