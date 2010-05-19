@@ -214,7 +214,7 @@ kread_next_message(msg_t *msg, int max_wait_ms)
     return 1;
 }
 
-#if 01
+#if 0
 msg_t *
 kread_from_console(void)
 {
