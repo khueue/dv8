@@ -274,6 +274,21 @@ getpid(void)
     return do_syscall(kgetpid);
 }
 
+const char *
+kget_process_name(uint32_t pid)
+{
+    pcb_t *pcb = sch_find_process(pid);
+
+    if (pcb)
+    {
+        return pcb->program;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
 void
 kkill_self(void)
 {
