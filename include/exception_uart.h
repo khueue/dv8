@@ -2,6 +2,7 @@
 #define EXCEPTION_UART_H
 
 #include "utils.h"
+#include "mips4kc.h"
 
 /*
  * ---------------------------------------------------------------------------

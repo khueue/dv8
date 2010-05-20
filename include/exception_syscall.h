@@ -2,6 +2,7 @@
 #define EXCEPTION_SYSCALL_H
 
 #include "utils.h"
+#include "malta.h"
 
 /*
  * ---------------------------------------------------------------------------

@@ -81,7 +81,7 @@ kblock(uint32_t pid);
 uint32_t
 kunblock(uint32_t pid);
 
-void
+uint32_t
 kblock_self(void);
 
 void

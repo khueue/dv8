@@ -133,7 +133,7 @@ kread_from_console(msg_t *msg)
 
     tty_manager_add_input_listener(pcb);
 
-    /* Guaranteed no console in queue, so just block. */
+    /* Guaranteed no console input in queue, so just block. */
     pcb->waiting_msg = msg;
     pcb->waiting_type = MSG_TYPE_CONSOLE_INPUT;
     kblock_self();
@@ -379,12 +379,19 @@ kunblock(uint32_t pid)
     return r;
 }
 
-void
-kblock_self()
+uint32_t
+kblock_self(void)
 {
     pcb_t *process = sch_get_currently_running_process();
-    kdebug_assert(process);
-    kblock(process->pid);
+    if (process)
+    {
+        kblock(process->pid);
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
 }
 
 void
@@ -393,7 +400,6 @@ ksupervise(uint32_t pid)
     pcb_t *process = sch_find_process(pid);
     int supervisor = kgetpid();
     pcb_assign_supervisor(process, supervisor);
-
 }
 
 void
@@ -501,19 +507,19 @@ kexception(void)
     {
         if (cause.field.exc == 3)
         {
-            kdebug_println("############ cause exc 3, TLB store ############");
+            kdebug_println("!!! CAUSE EXC 3, TLB STORE !!!");
         }
         else if (cause.field.exc == 4)
         {
-            kdebug_println("############ address error exc load/fetch ############");
+            kdebug_println("!!! ADDRESS ERROR EXC LOAD/FETCH !!!");
         }
         else if (cause.field.exc == 5)
         {
-            kdebug_println("############ address error exc store ############");
+            kdebug_println("!!! ADDRESS ERROR EXC STORE !!!");
         }
         else
         {
-            kdebug_println("############ NU BLEV DET SKIT med something ############");
+            kdebug_println("!!! SOMETHING BAD HAPPENED !!!");
         }
 
         while (1)

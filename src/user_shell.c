@@ -216,16 +216,17 @@ run(char cmd[])
 void
 shell(void)
 {
+    msg_t *msg = msg_alloc();
+    
     print_strln("Shell. Type 'exit' to exit.");
     while (1)
     {
-        msg_t *msg = msg_alloc();
-
         print_str("deviate> ");
         read_from_console(msg);
         strcpy(g_line, msg_data_get_string(msg));
-        msg = msg_free(msg);
 
         run(g_line);
     }
+
+    msg = msg_free(msg);
 }
