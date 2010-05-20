@@ -577,8 +577,6 @@ kexception(void)
             kdebug_println("!!! SOMETHING BAD HAPPENED !!!");
         }
 
-        while (1)
-        {
-        }
+        kkill(kgetpid());
     }
 }

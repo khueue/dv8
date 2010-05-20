@@ -40,7 +40,7 @@ fib(void)
     msg_t *msg = &msg_struct;
     int n = 0;
     int i = 0;
-
+    
     read_message_by_type(msg, MSG_TYPE_ARGUMENT, 330);
     if (msg_type_is_invalid(msg))
     {
@@ -63,7 +63,7 @@ fib(void)
         print_int(fib_recursive(i));
         print_strln("");
         sleep(100);
-    }
+    }    
     print_strln(get_process_name(4));
     print_int(get_process_priority(4));
     print_strln("");
