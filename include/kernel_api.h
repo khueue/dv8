@@ -65,6 +65,9 @@ block(uint32_t pid);
 uint32_t
 unblock(uint32_t pid);
 
+const char *
+get_process_name(uint32_t pid);
+
 void
 block_self(void);
 

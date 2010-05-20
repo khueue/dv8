@@ -74,6 +74,9 @@ kunblock(uint32_t pid);
 uint32_t
 kblock_self(void);
 
+const char *
+kget_process_name(uint32_t pid);
+
 void
 ksupervise(uint32_t pid);
 

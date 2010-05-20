@@ -24,6 +24,7 @@
     .globl top
     .globl supervise
     .globl set_inbox_limit
+    .globl get_process_name
 
     # syscall_handler:
     #   Enables argument passing for up
@@ -126,6 +127,11 @@ read_next_message:
 
 top:
     la v0, sch_print
+    syscall
+    jr ra
+
+get_process_name:
+    la v0, kget_process_name
     syscall
     jr ra
 
