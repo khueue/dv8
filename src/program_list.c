@@ -11,6 +11,7 @@
 #include "user_philo.h"
 #include "user_supervisor_demo.h"
 #include "user_spammer.h"
+#include "user_dv8.h"
 
 #include "kernel_api.h"
 
@@ -71,6 +72,7 @@ g_programs[] =
     {  "dtable",            dtable,            NOT_SHELL  },
     {  "superd",            supervisor_demo,   SHELL      },
     {  "spammer",           spammer,           NOT_SHELL  },
+    {  "dv8",               dv8,               NOT_SHELL  },
 };
 
 /*
