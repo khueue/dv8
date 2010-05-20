@@ -25,6 +25,8 @@
     .globl supervise
     .globl set_inbox_limit
     .globl get_process_name
+    .globl get_process_priority
+    .globl get_process_state
 
     # syscall_handler:
     #   Enables argument passing for up
@@ -132,6 +134,16 @@ top:
 
 get_process_name:
     la v0, kget_process_name
+    syscall
+    jr ra
+    
+get_process_priority:
+    la v0, kget_process_priority
+    syscall
+    jr ra
+    
+get_process_state:
+    la v0, kget_process_state
     syscall
     jr ra
 

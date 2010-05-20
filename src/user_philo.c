@@ -47,7 +47,7 @@ philosopher(void)
     int id = 0;
     int i;
     int max_duration = 4000;
-    int min_duration = 1500;
+    int min_duration = 1000;
     int status;
     char usage[] = "Error: philo is executed with 'dp'";
 
@@ -67,7 +67,9 @@ philosopher(void)
         print_strln(usage);
         return;
     }
-
+    
+    sleep(rand_between(min_duration, max_duration));
+    
     for (i = 0; i < 5; i++)
     {
         print_int(id);

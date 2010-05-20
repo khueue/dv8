@@ -285,6 +285,36 @@ kget_process_name(uint32_t pid)
     }
     else
     {
+        return NULL;
+    }
+}
+
+uint32_t 
+kget_process_priority(uint32_t pid)
+{
+    pcb_t *pcb = sch_find_process(pid);
+
+    if (pcb)
+    {
+        return pcb->priority;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+process_state_t
+kget_process_state(uint32_t pid)
+{
+    pcb_t *pcb = sch_find_process(pid);
+
+    if (pcb)
+    {
+        return pcb->state;
+    }
+    else
+    {
         return 0;
     }
 }
@@ -547,8 +577,6 @@ kexception(void)
             kdebug_println("!!! SOMETHING BAD HAPPENED !!!");
         }
 
-        while (1)
-        {
-        }
+        kkill(kgetpid());
     }
 }

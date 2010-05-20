@@ -77,6 +77,12 @@ kblock_self(void);
 const char *
 kget_process_name(uint32_t pid);
 
+uint32_t 
+kget_process_priority(uint32_t pid);
+
+process_state_t
+kget_process_state(uint32_t pid);
+
 void
 ksupervise(uint32_t pid);
 
