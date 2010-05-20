@@ -94,8 +94,6 @@ command(void)
 
         g_executed = SHELL_SPAWN;
         supervise(pid);
-        print_str("Executed ");
-        print_strln(g_args[0]);
         msg_type_set_argument(msg);
         msg_set_receiver_pid(msg, pid);
         while (g_args[i])
@@ -192,7 +190,11 @@ run(char cmd[])
         g_executed = SHELL_COMMAND;
         if (0 == strcmp(g_args[0], "exit"))
         {
-            kill_self();
+            if (getpid() != 3)
+            {
+                kill_self();
+            }
+            print_strln("Sorry, will not kill last shell.");
         }
         else if (0 == strcmp(g_args[0], "kill"))
         {
@@ -231,7 +233,6 @@ shell(void)
     msg_t msg_struct;
     msg_t *msg = &msg_struct;
 
-    print_strln("Shell. Type 'exit' to exit.");
     while (1)
     {
         print_str("deviate> ");
@@ -245,12 +246,26 @@ shell(void)
 
             if (g_executed == SHELL_SPAWN)
             {
-                /* xxxxxx fix stuff */
+                uint32_t child_pid = 0;
+                process_state_t state;
+
                 read_message_by_type(msg, MSG_TYPE_SUPERVISOR_NOTICE_ID, 0);
                 if (msg_type_is(msg, MSG_TYPE_SUPERVISOR_NOTICE_ID))
                 {
+                    child_pid = msg_data_get_integer(msg);
                 }
                 read_message_by_type(msg, MSG_TYPE_SUPERVISOR_NOTICE_STATE, 0);
+                if (msg_type_is(msg, MSG_TYPE_SUPERVISOR_NOTICE_STATE))
+                {
+                    state = msg_data_get_integer(msg);
+                }
+
+                if (child_pid && (state == PROCESS_STATE_TERMINATED))
+                {
+                    print_str("Process ");
+                    print_int(child_pid);
+                    print_strln(" quit unexpectedly!");
+                }
             }
         }
         else
