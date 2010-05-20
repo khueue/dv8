@@ -8,6 +8,9 @@ void
 sch_init(void);
 
 void
+sch_decrease_sleep(void);
+
+void
 sch_run(void);
 
 void

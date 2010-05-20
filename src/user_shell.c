@@ -5,6 +5,8 @@
 
 #include "program_list.h"
 
+#include "malta.h"
+
 /*
  * ---------------------------------------------------------------------------
  * Globals.
@@ -236,6 +238,10 @@ shell(void)
     while (1)
     {
         print_str("deviate> ");
+
+        print_str("secs: ");
+        print_int(rtc->data.seconds);
+        print_strln("");
 
         g_executed = SHELL_NOTHING;
         read_from_console(msg);

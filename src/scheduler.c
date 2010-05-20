@@ -108,14 +108,8 @@ sch_get_currently_running_process(void)
     }
 }
 
-/*
- * Swaps out the currently running process and swaps in a new one. Must be run
- * within an exception (such as a timer interrupt or a syscall) to properly
- * switch CPU context since the exception handler does the actual register
- * swapping.
- */
 void
-sch_run(void)
+sch_decrease_sleep(void)
 {
     pcb_t *process = NULL;
 
@@ -130,6 +124,18 @@ sch_run(void)
 
         process->sleepleft -= MS_TO_NEXT_TIMER_INTERRUPT * timer_msec;
     }
+}
+
+/*
+ * Swaps out the currently running process and swaps in a new one. Must be run
+ * within an exception (such as a timer interrupt or a syscall) to properly
+ * switch CPU context since the exception handler does the actual register
+ * swapping.
+ */
+void
+sch_run(void)
+{
+    pcb_t *process = NULL;
 
     prio_iter_reset(&g_wait);
     while (prio_iter_has_next(&g_wait))
