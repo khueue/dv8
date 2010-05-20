@@ -118,7 +118,7 @@ philosopher(void)
 }
 
 void
-dphilo_init(void)
+dtable(void)
 {
 
     int i;
@@ -135,8 +135,6 @@ dphilo_init(void)
     msg_t msg_get_struct;
     msg_t *msg_get = &msg_get_struct;
 
-    print_strln("Dining Philosophers");
-
     msg_type_set_argument(msg_set);
 
     //creates the chopsticks
@@ -149,7 +147,7 @@ dphilo_init(void)
     //init the philosophers
     for (i = 0; i < nb_philo; i++)
     {
-        philosophers_pid[i] = exec("philo", PROCESS_DEFAULT_PRIORITY);
+        philosophers_pid[i] = exec("dphilo", PROCESS_DEFAULT_PRIORITY);
         if (!philosophers_pid[i])
         {
             print_strln("A philosopher did not show up at the dinner...");
@@ -165,7 +163,7 @@ dphilo_init(void)
             ++philosophers_active;
         }
     }
-
+    print_strln("The dinner has begun.");
     //Wait for messages
     while (1)
     {
@@ -257,5 +255,16 @@ dphilo_init(void)
         }
     }
 
-    print_strln("The dinner is over");
+    print_strln("The dinner is over.");
+}
+
+void
+dphilo_init()
+{
+    if (!exec("dtable", PROCESS_DEFAULT_PRIORITY))
+    {
+        print_strln("Failed to load Dining Philosophers");
+    }
+    
+    print_strln("Dining Philosophers");
 }

@@ -67,7 +67,8 @@ g_programs[] =
     {  "scroll",            scroll,            NOT_SHELL  },
     {  "scrollermsg",       scrollermsg,       SHELL      },
     {  "dp",                dphilo_init,       SHELL      },
-    {  "philo",             philosopher,       NOT_SHELL  },
+    {  "dphilo",            philosopher,       NOT_SHELL  },
+    {  "dtable",            dtable,            NOT_SHELL  },
     {  "superd",            supervisor_demo,   SHELL      },
     {  "spammer",           spammer,           NOT_SHELL  },
 };

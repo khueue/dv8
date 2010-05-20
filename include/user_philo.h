@@ -12,5 +12,8 @@ void
 philosopher(void);
 
 void
+dtable(void);
+
+void
 dphilo_init(void);
 #endif /* _USER_PHILO_H_ */
