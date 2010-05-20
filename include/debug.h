@@ -20,7 +20,4 @@ void kdebug_assert_at(int assertion, const char* file, int line);
 #define kdebug_assert(a) kdebug_assert_at((int)(a),__FILE__,__LINE__)
 #endif
 
-void
-do_nothing_forever(const char msg[], uint32_t interval);
-
 #endif

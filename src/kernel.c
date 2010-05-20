@@ -31,33 +31,6 @@ restore_process_state(const pcb_t *pcb)
     kset_registers(&pcb->regs);
 }
 
-/*
- * Configures the CPU to enable interrupts etc.
- */
-static void
-set_status_reg(void)
-{
-    status_reg_t and;
-    status_reg_t or;
-
-    /*
-     * Set the status register in the CPU by turning off bits with 'and' and
-     * turning on bits with 'or'.
-     */
-    and.reg = 0xFFFFFFFF; /* All ones: preserve all bits. */
-    and.field.exl = 0;    /* Normal level (not exception). */
-    and.field.erl = 0;    /* Error level. */
-    and.field.um  = 0;    /* Kernel mode. */
-    and.field.bev = 0;    /* Use normal exception vector (not bootstrap). */
-
-    or.reg = 0;               /* All zeroes: preserve all bits. */
-    or.field.ie  = 1;         /* Enable interrupts. */
-    or.field.im  = BIT7|BIT2; /* XXXXXX todo: Enable HW interrupt 0. */
-    or.field.cu0 = 1;         /* Coprocessor 0 usable. */
-
-    kset_sr(and.reg, or.reg);
-}
-
 uint32_t
 kexec(const char program[], uint32_t priority)
 {
@@ -124,7 +97,7 @@ kread_from_console(msg_t *msg)
 
     msg_zero(msg);
 
-    /* XXXXXX Remove all pending console messages. Is this good? */
+    /* Remove any pending console input instead of dealing with it. */
     while ((msg_from_q = prio_find(&pcb->inbox_q, &type)))
     {
         msg_free(msg_from_q);
@@ -443,6 +416,33 @@ setup_scheduler(void)
 
     /* Initialize timer to interrupt soon. */
     kload_timer(MS_TO_NEXT_TIMER_INTERRUPT * timer_msec);
+}
+
+/*
+ * Configures the CPU to enable interrupts etc.
+ */
+static void
+set_status_reg(void)
+{
+    status_reg_t and;
+    status_reg_t or;
+
+    /*
+     * Set the status register in the CPU by turning off bits with 'and' and
+     * turning on bits with 'or'.
+     */
+    and.reg = 0xFFFFFFFF; /* All ones: preserve all bits. */
+    and.field.exl = 0;    /* Normal level (not exception). */
+    and.field.erl = 0;    /* Error level. */
+    and.field.um  = 0;    /* Kernel mode. */
+    and.field.bev = 0;    /* Use normal exception vector (not bootstrap). */
+
+    or.reg = 0;               /* All zeroes: preserve all bits. */
+    or.field.ie  = 1;         /* Enable interrupts. */
+    or.field.im  = BIT7|BIT2; /* XXXXXX todo: Enable HW interrupt 0. */
+    or.field.cu0 = 1;         /* Coprocessor 0 usable. */
+
+    kset_sr(and.reg, or.reg);
 }
 
 /*

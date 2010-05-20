@@ -3,6 +3,7 @@
 #include "malta.h"
 
 #ifndef NDEBUG
+
 void kdebug_putc(char c)
 {
   // BUSY wait for transmitter ready
@@ -72,22 +73,6 @@ void kdebug_assert_at(int assertion, const char* file, int line)
       // Do nothing, its the only safe bet when the kernel has crashed.
     }
   }
-}
-
-/*
- * Blocks and counts. When counted to interval, prints msg and starts over.
- */
-void
-do_nothing_forever(const char msg[], uint32_t interval)
-{
-    uint32_t i = 0;
-    for (;;)
-    {
-        if ((++i % interval) == 0)
-        {
-            kdebug_println(msg);
-        }
-    }
 }
 
 #endif

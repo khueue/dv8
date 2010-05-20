@@ -7,6 +7,23 @@
  */
 
 /*
+ * Blocks and counts. When counted to interval, prints msg and starts over.
+ */
+void
+do_nothing_forever(const char msg[], uint32_t interval)
+{
+    uint32_t i = 0;
+    (void)msg; /* Needed when NDEBUG is defined. */
+    for (;;)
+    {
+        if ((++i % interval) == 0)
+        {
+            kdebug_println(msg);
+        }
+    }
+}
+
+/*
  * See string.h documentation.
  */
 void *
@@ -189,7 +206,7 @@ rand_between(int min, int max)
     int r = rand();
 
     kdebug_assert(min >= 0);
-    kdebug_assert(max >= 0);
+    kdebug_assert(max >= min);
 
     while (r < min || r > max)
     {

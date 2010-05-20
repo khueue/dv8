@@ -58,6 +58,9 @@
  * ---------------------------------------------------------------------------
  */
 
+void
+do_nothing_forever(const char msg[], uint32_t interval);
+
 size_t
 strlen(const char *s);
 
