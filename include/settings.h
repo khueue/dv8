@@ -18,7 +18,7 @@
  * Maximum number of PCBs available in the system.
  */
 #ifndef NUM_PCBS
-#define NUM_PCBS 20
+#define NUM_PCBS 32
 #endif
 
 /*

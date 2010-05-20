@@ -15,7 +15,8 @@
 void
 scrollermsg(void)
 {
-    msg_t *msg = msg_alloc();
+    msg_t msg_struct;
+    msg_t *msg = &msg_struct;
     uint32_t scroller_pid = 0;
     char str[512] = { '\0' };
     char usage[] = "Usage: scrollermsg [str message]";
@@ -24,12 +25,11 @@ scrollermsg(void)
     if (msg_type_is_invalid(msg))
     {
         print_str(usage);
-        msg = msg_free(msg);
         return;
     }
     strcpy(str, msg_data_get_string(msg));
     
-    scroller_pid = 2;
+    scroller_pid = 2; /* xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx */
 
     msg_data_set_string(msg, str);
     msg_set_receiver_pid(msg, scroller_pid);
@@ -37,6 +37,4 @@ scrollermsg(void)
     {
         /* uhhhhhhhhhh XXXXXXX */
     }
-
-    msg = msg_free(msg);
 }

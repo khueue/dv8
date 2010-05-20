@@ -27,7 +27,8 @@ get_arg(msg_t *msg, int timeout)
 void
 ringnode(void)
 {
-    msg_t *msg = msg_alloc();
+    msg_t msg_struct;
+    msg_t *msg = &msg_struct;
     int index;
     int pid;
     char the_msg[256];
@@ -36,7 +37,6 @@ ringnode(void)
     //Get ringnode index
     if (!get_arg(msg, 300) || !msg_data_is_integer(msg))
     {
-        msg = msg_free(msg);
         print_strln(usage);
         return;
     }
@@ -45,7 +45,6 @@ ringnode(void)
     //Get next pid
     if (!get_arg(msg, 300) || !msg_data_is_integer(msg))
     {
-        msg = msg_free(msg);
         print_strln(usage);
         return;
     }
@@ -54,7 +53,6 @@ ringnode(void)
     //Get message
     if (!get_arg(msg, 0) || !msg_data_is_string(msg))
     {
-        msg = msg_free(msg);
         print_strln(usage);
         return;
     }
@@ -92,13 +90,13 @@ ringnode(void)
         print_strln("\nEND OF RING");
 
     }
-    msg = msg_free(msg);
 }
 
 void
 ring(void)
 {
-    msg_t *msg = msg_alloc();
+    msg_t msg_struct;
+    msg_t *msg = &msg_struct;
     int n = 0;
     int i = 0;
     int pids[10];
@@ -108,7 +106,6 @@ ring(void)
     /* Get argument 1 - the number of nodes */
     if (!get_arg(msg, 300) || !msg_data_is_string(msg))
     {
-        msg = msg_free(msg);
         print_strln(usage);
         return;
     }
@@ -118,14 +115,12 @@ ring(void)
     if (n <= 0 || n > 10)
     {
         print_str(usage);
-        msg = msg_free(msg);
         return;
     }
 
     /* Get argument 2 - the message*/
     if (!get_arg(msg, 300) || !msg_data_is_string(msg))
     {
-        msg = msg_free(msg);
         print_strln(usage);
         return;
     }
@@ -165,5 +160,4 @@ ring(void)
     msg_set_receiver_pid(msg, pids[0]);
     msg_data_set_string(msg, the_msg);
     send_message(msg);
-    msg = msg_free(msg);
 }

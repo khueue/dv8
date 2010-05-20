@@ -13,7 +13,8 @@
 void
 scroll(void)
 {
-    msg_t *msg = msg_alloc();
+    msg_t msg_struct;
+    msg_t *msg = &msg_struct;
     int strpos = 0;
     int init = 0;
     int done;

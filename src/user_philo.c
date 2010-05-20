@@ -51,8 +51,10 @@ philosopher(void)
     int status;
     char usage[] = "Error: philo is executed with 'dp'";
 
-    msg_t *msg_set = msg_alloc();
-    msg_t *msg_get = msg_alloc();
+    msg_t msg_set_struct;
+    msg_t *msg_set = &msg_set_struct;
+    msg_t msg_get_struct;
+    msg_t *msg_get = &msg_get_struct;
 
     /* Get table seat */
     id = get_arg(msg_get,300);
@@ -63,8 +65,6 @@ philosopher(void)
     if (id == -1 || table_pid == -1)
     {
         print_strln(usage);
-        msg_set = msg_free(msg_set);
-        msg_get = msg_free(msg_get);
         return;
     }
 
@@ -115,9 +115,6 @@ philosopher(void)
     print_int(id);
     print_strln(" left table.");
     set_arg(msg_set, table_pid, id * 10 + CMD_LEAVE_TABLE);
-
-    msg_set = msg_free(msg_set);
-    msg_get = msg_free(msg_get);
 }
 
 void
@@ -133,8 +130,10 @@ dphilo_init(void)
 
     int philosophers_active = 0;
 
-    msg_t *msg_set = msg_alloc();
-    msg_t *msg_get = msg_alloc();
+    msg_t msg_set_struct;
+    msg_t *msg_set = &msg_set_struct;
+    msg_t msg_get_struct;
+    msg_t *msg_get = &msg_get_struct;
 
     print_strln("Dining Philosophers");
 
@@ -257,9 +256,6 @@ dphilo_init(void)
             print_strln("******************************************** NEVER");
         }
     }
-
-    msg_set = msg_free(msg_set);
-    msg_get = msg_free(msg_get);
 
     print_strln("The dinner is over");
 }

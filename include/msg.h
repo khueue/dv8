@@ -35,6 +35,24 @@ typedef enum
  * Message used for inter-process communication.
  */
 typedef struct msg_ msg_t;
+struct msg_
+{
+    msg_type_t type;
+    msg_data_type_t data_type;
+    union
+    {
+        int32_t integer;
+        char    string[STR_BUF_SIZE];
+        uint8_t bytes[STR_BUF_SIZE]; /* XXX currently unused. */
+    } data;
+
+    uint32_t sender_pid;
+    uint32_t receiver_pid;
+    uint32_t priority;
+
+    /* Internal freelist pointer. */
+    msg_t *next_free;
+};
 
 /*
  * ---------------------------------------------------------------------------
@@ -76,10 +94,10 @@ msg_has_type(const void *pmsg, const void *ptype);
 /*
  * XXXXXXX
  */
-int 
+int
 msg_type_is(const msg_t *msg, msg_type_t type);
 
-msg_type_t 
+msg_type_t
 msg_get_type(const msg_t *msg);
 /*
  * - set() makes the message be of a type

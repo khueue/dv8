@@ -3,34 +3,6 @@
 
 /*
  * ---------------------------------------------------------------------------
- * Types.
- * ---------------------------------------------------------------------------
- */
-
-/*
- * XXXX ojojoj Message used for inter-process communication.
- */
-struct msg_
-{
-    msg_type_t type;
-    msg_data_type_t data_type;
-    union
-    {
-        int32_t integer;
-        char    string[STR_BUF_SIZE];
-        uint8_t bytes[STR_BUF_SIZE]; /* XXX currently unused. */
-    } data;
-
-    uint32_t sender_pid;
-    uint32_t receiver_pid;
-    uint32_t priority;
-
-    /* Internal freelist pointer. */
-    msg_t *next_free;
-};
-
-/*
- * ---------------------------------------------------------------------------
  * Globals.
  * ---------------------------------------------------------------------------
  */
@@ -54,14 +26,40 @@ g_freelist;
  */
 
 /*
+ * Initializes the freelist like a normal linked list.
+ */
+static void
+msg_init_freelist(void)
+{
+    static int is_initialized = 0;
+    if (!is_initialized)
+    {
+        is_initialized = 1;
+        size_t i = 0;
+
+        g_freelist = &g_msgs[0];
+
+        for (i = 0; i < COUNT_ARRAY(g_msgs)-1; ++i)
+        {
+            g_msgs[i].next_free = &g_msgs[i+1];
+        }
+
+        g_msgs[COUNT_ARRAY(g_msgs)-1].next_free = NULL;
+    }
+}
+
+/*
  * Returns the number of free messages in the system.
  */
 size_t
 msg_num_free(void)
 {
-    const msg_t *msg = g_freelist;
+    const msg_t *msg = NULL;
     size_t num = 0;
 
+    msg_init_freelist();
+
+    msg = g_freelist;
     while (msg)
     {
         ++num;
@@ -71,36 +69,12 @@ msg_num_free(void)
     return num;
 }
 
-/*
- * Initializes the freelist like a normal linked list.
- */
-static void
-msg_init_freelist(void)
-{
-    size_t i = 0;
-
-    g_freelist = &g_msgs[0];
-
-    for (i = 0; i < COUNT_ARRAY(g_msgs)-1; ++i)
-    {
-        g_msgs[i].next_free = &g_msgs[i+1];
-    }
-
-    g_msgs[COUNT_ARRAY(g_msgs)-1].next_free = NULL;
-}
-
 msg_t *
 msg_alloc(void)
 {
-    static int is_initialized = 0;
     msg_t *msg = NULL;
 
-    /* Make sure the free list is initialized automatically! */
-    if (!is_initialized)
-    {
-        is_initialized = 1;
-        msg_init_freelist();
-    }
+    msg_init_freelist();
 
     msg = g_freelist;
     if (!msg)

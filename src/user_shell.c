@@ -82,7 +82,8 @@ command(void)
     if (pid)
     {
         size_t i = 1;
-        msg_t *msg = msg_alloc();
+        msg_t msg_struct;
+        msg_t *msg = &msg_struct;
         print_str("Executed ");
         print_strln(g_args[0]);
         msg_type_set_argument(msg);
@@ -93,7 +94,6 @@ command(void)
             send_message(msg);
             ++i;
         }
-        msg = msg_free(msg);
     }
     else
     {
@@ -216,7 +216,8 @@ run(char cmd[])
 void
 shell(void)
 {
-    msg_t *msg = msg_alloc();
+    msg_t msg_struct;
+    msg_t *msg = &msg_struct;
 
     print_strln("Shell. Type 'exit' to exit.");
     while (1)
@@ -233,6 +234,4 @@ shell(void)
             print_strln("Shell: could not read input!");
         }
     }
-
-    msg = msg_free(msg);
 }

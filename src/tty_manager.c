@@ -118,26 +118,6 @@ tty_manager_has_characters(void)
 }
 
 /*
- * XXXXX
- */
-static msg_t *
-tty_manager_create_message(const char str[])
-{
-    msg_t *msg = NULL;
-
-    msg = msg_alloc();
-    if (!msg)
-    {
-        /* Fail! XXXXXX */
-    }
-
-    msg_type_set_console_input(msg);
-    msg_data_set_string(msg, str);
-
-    return msg;
-}
-
-/*
  * XXXXXXXX
  */
 static void
@@ -146,16 +126,18 @@ tty_manager_dispatch_message(const char str[])
     /* Send input message to process if we have any input listeners. */
     if (g_input_stack.length > 0)
     {
-        msg_t *msg = NULL;
+        msg_t msg_struct;
+        msg_t *msg = &msg_struct;
         pcb_t *process = NULL;
 
-        msg = tty_manager_create_message(str);
+        msg_type_set_console_input(msg);
+        msg_data_set_string(msg, str);
+
         process = stack_peek(&g_input_stack);
         kdebug_assert(process);
         tty_manager_remove_input_listener(process);
         msg_set_receiver_pid(msg, process->pid);
         ksend_message(msg);
-        msg = msg_free(msg);
     }
     else
     {

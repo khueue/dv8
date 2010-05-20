@@ -165,7 +165,6 @@ ksend_message(msg_t *msg)
 
     if (pcb_inbox_full(receiver))
     {
-        msg = msg_free(msg);
         kkill(sender_pid);
         return 0;
     }
@@ -303,8 +302,11 @@ kkill(uint32_t pid)
 
     if (pcb->supervisor_pid)
     {
-        msg_t *msg = msg_alloc();
+        msg_t msg_struct;
+        msg_t *msg = &msg_struct;
+
         msg_set_receiver_pid(msg, pcb->supervisor_pid);
+
         msg_set_type(msg, MSG_TYPE_SUPERVISOR_NOTICE_ID);
         msg_data_set_integer(msg, pcb->pid);
         ksend_message(msg);
@@ -312,8 +314,6 @@ kkill(uint32_t pid)
         msg_set_type(msg, MSG_TYPE_SUPERVISOR_NOTICE_STATE);
         msg_data_set_integer(msg, pcb->state);
         ksend_message(msg);
-
-        msg = msg_free(msg);
     }
 
     pcb = pcb_free(pcb);
@@ -504,6 +504,15 @@ kexception(void)
     }
     else
     {
+        pcb_t *process = sch_get_currently_running_process();
+
+        kdebug_println("");
+        kdebug_println("");
+        kdebug_print("Process running before crash: ");
+        kdebug_printint(process->pid);
+        kdebug_println("");
+        kdebug_println("");
+
         if (cause.field.exc == 3)
         {
             kdebug_println("!!! CAUSE EXC 3, TLB STORE !!!");
