@@ -113,9 +113,13 @@ do_kill(void)
     if (g_args[1])
     {
         uint32_t pid = atoi(g_args[1]);
-        if (pid == 0)
+        if (pid == 0 && 0 != strcmp(g_args[1], "0"))
         {
             print_strln("USAGE KILL!!!");
+        }
+        else if (pid == 1 || pid == 2 || pid == 3)
+        {
+            print_strln("Permission denied.");
         }
         else
         {
