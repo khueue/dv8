@@ -195,7 +195,7 @@ run(char cmd[])
         {
             return do_ls();
         }
-        else if (0 == strcmp(g_args[0], "top"))
+        else if (0 == strcmp(g_args[0], "t"))
         {
             top();
             return 1;

@@ -21,16 +21,17 @@ supervisor_demo(void)
     uint32_t pid_of_dead = 0;
     int pcb_state = PROCESS_STATE_NEW;
     uint32_t pid_to_supervise = exec("spammer", PROCESS_DEFAULT_PRIORITY);
-    
+
     if (!pid_to_supervise)
     {
         kdebug_println("xxxxxxxxxx ----------- HOLY SHIT");
+        return;
     }
-    
+
     supervise(pid_to_supervise);
     int unexpected = 1;
-    
-    while(unexpected)
+
+    while (unexpected)
     {
         read_message_by_type(msg, MSG_TYPE_SUPERVISOR_NOTICE_ID, 0);
         if (msg_type_is_invalid(msg))
