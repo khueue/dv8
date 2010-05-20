@@ -26,6 +26,13 @@ fib_recursive(int n)
     }
 }
 
+static void
+print_usage(void)
+{
+    print_strln("");
+    print_strln("Usage: fib [int limit]");
+}
+
 void
 fib(void)
 {
@@ -33,20 +40,18 @@ fib(void)
     msg_t *msg = &msg_struct;
     int n = 0;
     int i = 0;
-    char usage[] = "Usage: fib [int limit]";
-    
-    msg_zero(msg);
+
     read_message_by_type(msg, MSG_TYPE_ARGUMENT, 330);
     if (msg_type_is_invalid(msg))
     {
-        print_strln(usage);
+        print_usage();
         return;
     }
+
     n = atoi(msg_data_get_string(msg));
-    
     if (n <= 0)
     {
-        print_strln(usage);
+        print_usage();
         return;
     }
 

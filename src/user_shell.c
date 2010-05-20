@@ -84,6 +84,8 @@ command(void)
         size_t i = 1;
         msg_t msg_struct;
         msg_t *msg = &msg_struct;
+
+        supervise(pid);
         print_str("Executed ");
         print_strln(g_args[0]);
         msg_type_set_argument(msg);

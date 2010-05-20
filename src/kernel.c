@@ -316,6 +316,8 @@ kkill(uint32_t pid)
         ksend_message(msg);
     }
 
+    tty_manager_remove_input_listener(pcb);
+
     pcb = pcb_free(pcb);
     sch_run();
     return pcb == NULL; /* XXXX */

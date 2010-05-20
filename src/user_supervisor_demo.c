@@ -47,6 +47,7 @@ supervisor_demo(void)
             return;
         }
         pcb_state = msg_data_get_integer(msg);
+        sleep(300);
         if (pcb_state == PROCESS_STATE_TERMINATED) {
             kdebug_print("Process ");
             kdebug_printint(pid_of_dead);
