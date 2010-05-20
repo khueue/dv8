@@ -57,6 +57,7 @@ struct program_info_
 static const program_info_t
 g_programs[] =
 {
+    /* name string          code pointer       shell? */
     {  "idle",              idle,              NOT_SHELL  },
     {  "fib",               fib,               SHELL      },
     {  "incr",              incr,              SHELL      },
