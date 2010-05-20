@@ -39,9 +39,8 @@ void kdebug_printint(int value)
   {
       kdebug_putc('-');
       value *= -1;
-      
-    
   }
+
   if (value < 10)
   {
     kdebug_putc('0' + value);
