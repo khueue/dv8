@@ -63,7 +63,7 @@ Scheduling should be highest-priority first, with preemption. In particular:
 
 * __FIXED__ Processes should be able to terminate themselves.
 * __FIXED__ Processes should be able to terminate other processes.
-* __ASK__ The operating system should be able to terminate processes.
+* __FIXED__ The operating system should be able to terminate processes.
 
 ###PH7: Programs and Processes
 
@@ -222,7 +222,7 @@ Processes in the operating system should communicate using asynchronous message 
 ###MP4: Receiving Messages
 
 * __FIXED__ Processes should be able to receive messages from their message queue.
-* The receive operation should be able to filter messages based on the type or priority of the message.
+* __FIXED__ The receive operation should be able to filter messages based on the type or priority of the message.
 * __FIXED__ The user-defined data specified in the message should be readable by the receiver.
 * __FIXED__ The receive operation should block the receiving process if the message queue is empty.
 * __FIXED__ It should be possible to specify a time-out for a receive operation, after which a process will resume operation even if no message arrives, and report an error.
@@ -266,7 +266,7 @@ order to provide fault detection and tolerance.
 * __FIXED__ It should be possible to differentiate between controlled and uncontrolled
   termination, i.e. it should be possible for the supervisor to see if a 
   subordinate process has crashed or if it terminated in good order.
-* To provoke crashes, the semantics of the send operation is changed so that a
+* __FIXED__ To provoke crashes, the semantics of the send operation is changed so that a
   process terminates if the receiving process has a full message queue.
 
 ###UP7: Process Supervision

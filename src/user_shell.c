@@ -94,8 +94,8 @@ command(void)
 
         g_executed = SHELL_SPAWN;
         supervise(pid);
-        print_str("Executed ");
-        print_strln(g_args[0]);
+        //print_str("Executed ");
+        //print_strln(g_args[0]);
         msg_type_set_argument(msg);
         msg_set_receiver_pid(msg, pid);
         while (g_args[i])
@@ -192,7 +192,11 @@ run(char cmd[])
         g_executed = SHELL_COMMAND;
         if (0 == strcmp(g_args[0], "exit"))
         {
-            kill_self();
+            if (getpid() != 3)
+            {
+                kill_self();
+            }
+            print_strln("Sorry, will not kill last shell.");
         }
         else if (0 == strcmp(g_args[0], "kill"))
         {
@@ -230,8 +234,7 @@ shell(void)
 {
     msg_t msg_struct;
     msg_t *msg = &msg_struct;
-
-    print_strln("Shell. Type 'exit' to exit.");
+    
     while (1)
     {
         print_str("deviate> ");
