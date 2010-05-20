@@ -64,4 +64,9 @@ fib(void)
         print_strln("");
         sleep(100);
     }
+    print_strln(get_process_name(4));
+    print_int(get_process_priority(4));
+    print_strln("");
+    print_int(get_process_state(4));
+    print_strln("");
 }

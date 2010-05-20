@@ -4,6 +4,7 @@
 #include "utils.h"
 #include "registers.h"
 #include "msg.h"
+#include "pcb.h"
 
 /*
  * ---------------------------------------------------------------------------
@@ -67,6 +68,12 @@ unblock(uint32_t pid);
 
 const char *
 get_process_name(uint32_t pid);
+
+uint32_t 
+get_process_priority(uint32_t pid);
+
+process_state_t
+get_process_state(uint32_t pid);
 
 void
 block_self(void);
