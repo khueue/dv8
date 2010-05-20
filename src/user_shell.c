@@ -232,7 +232,7 @@ shell(void)
 {
     msg_t msg_struct;
     msg_t *msg = &msg_struct;
-    
+
     while (1)
     {
         print_str("deviate> ");
@@ -246,12 +246,26 @@ shell(void)
 
             if (g_executed == SHELL_SPAWN)
             {
-                /* xxxxxx fix stuff */
+                uint32_t child_pid = 0;
+                process_state_t state;
+
                 read_message_by_type(msg, MSG_TYPE_SUPERVISOR_NOTICE_ID, 0);
                 if (msg_type_is(msg, MSG_TYPE_SUPERVISOR_NOTICE_ID))
                 {
+                    child_pid = msg_data_get_integer(msg);
                 }
                 read_message_by_type(msg, MSG_TYPE_SUPERVISOR_NOTICE_STATE, 0);
+                if (msg_type_is(msg, MSG_TYPE_SUPERVISOR_NOTICE_STATE))
+                {
+                    state = msg_data_get_integer(msg);
+                }
+
+                if (child_pid && (state == PROCESS_STATE_TERMINATED))
+                {
+                    print_str("Process ");
+                    print_int(child_pid);
+                    print_strln(" quit unexpectedly!");
+                }
             }
         }
         else

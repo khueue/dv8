@@ -65,7 +65,7 @@ g_programs[] =
     {  "ring",              ring,              SHELL      },
     {  "ringn",             ringnode,          NOT_SHELL  },
     {  "scroll",            scroll,            NOT_SHELL  },
-    {  "scrollermsg",       scrollermsg,       SHELL      },
+    {  "scrollmsg",         scrollermsg,       SHELL      },
     {  "dp",                dphilo_init,       SHELL      },
     {  "dphilo",            philosopher,       NOT_SHELL  },
     {  "dtable",            dtable,            NOT_SHELL  },
