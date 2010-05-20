@@ -141,7 +141,6 @@ tty_manager_dispatch_message(const char str[])
     }
     else
     {
-        kdebug_println("TTY MANAGER: No one is waiting for input!");
     }
 }
 
