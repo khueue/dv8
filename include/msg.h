@@ -14,7 +14,7 @@
  */
 typedef enum
 {
-    MSG_TYPE_INVALID,
+    MSG_TYPE_INVALID = 0,
     MSG_TYPE_ARGUMENT,
     MSG_TYPE_CONSOLE_INPUT,
     MSG_TYPE_SUPERVISOR_NOTICE_STATE,
@@ -26,7 +26,7 @@ typedef enum
  */
 typedef enum
 {
-    MSG_DATA_TYPE_INVALID,
+    MSG_DATA_TYPE_INVALID = 0,
     MSG_DATA_TYPE_INTEGER,
     MSG_DATA_TYPE_STRING
 } msg_data_type_t;

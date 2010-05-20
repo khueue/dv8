@@ -35,7 +35,7 @@ The operating system should provide the concept of processes that run pseudo-par
 * __FIXED__ Each process should have a priority.
 * __FIXED__ The number of priority levels should be at least 30.
 * __FIXED__ Priorities should be specified at process start.
-* __FIXED__ Priorities should be changeable at run-time. 
+* __FIXED__ Priorities should be changeable at run-time.
 
 ###PH3: Process Scheduling
 
@@ -76,14 +76,14 @@ Scheduling should be highest-priority first, with preemption. In particular:
 
 ###PH8: Process Information
 
-* A process should be able to obtain information about another process.
-* The information should include:
-  - Process priority
-  - Process name, if such is used
-  - Name of the program running in the process
-  - Current scheduling state of the process
-* This information should be readable by the process requesting it.
-* The information should not be printed directly to the console; if it is to be presented to the user, a program (or function in the shell program) will have to be written for that purpose.
+* __FIXED__ A process should be able to obtain information about another process.
+* __FIXED__ The information should include:
+  - __FIXED__ Process priority
+  - __WONT_FIX__ Process name, if such is used
+  - __FIXED__ Name of the program running in the process
+  - __FIXED__ Current scheduling state of the process
+* __FIXED__ This information should be readable by the process requesting it.
+* __FIXED__ The information should not be printed directly to the console; if it is to be presented to the user, a program (or function in the shell program) will have to be written for that purpose.
 
 ###PH9: Resource Recycling
 
@@ -256,15 +256,15 @@ restart
 
 ##Process Supervision (2 pts)
 
-So far, process lives on its own. Nobody else cares if a process terminates. 
-In most real real-time operating systems, processes can be linked together in 
+So far, process lives on its own. Nobody else cares if a process terminates.
+In most real real-time operating systems, processes can be linked together in
 order to provide fault detection and tolerance.
 ###PS1: Provide Process Supervision
 
 * __FIXED__ Processes can be appointed as supervisors of one or more other processes.
 * __FIXED__ When a supervised process terminates, the supervisor is notified.
 * __FIXED__ It should be possible to differentiate between controlled and uncontrolled
-  termination, i.e. it should be possible for the supervisor to see if a 
+  termination, i.e. it should be possible for the supervisor to see if a
   subordinate process has crashed or if it terminated in good order.
 * __FIXED__ To provoke crashes, the semantics of the send operation is changed so that a
   process terminates if the receiving process has a full message queue.

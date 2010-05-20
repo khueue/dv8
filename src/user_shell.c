@@ -264,9 +264,7 @@ shell(void)
                 {
                     print_str("Process ");
                     print_int(child_pid);
-                    print_str(" (");
-                    print_str(get_process_name(child_pid));
-                    print_strln(") quit unexpectedly!");
+                    print_strln(" quit unexpectedly!");
                 }
             }
         }
