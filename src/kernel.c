@@ -477,7 +477,6 @@ kinit(void)
 
     setup_scheduler();
 
-    /* XXXXXXXX run scheduler? start shell? */
     do_nothing_forever("Kernel doing nothing ...", 10000000);
 }
 
