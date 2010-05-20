@@ -1,10 +1,7 @@
 #include "utils.h"
 #include "kernel.h"
 #include "kernel_api.h"
-
 #include "user_shell.h"
-#include "user_fib.h"
-#include "user_incr.h"
 
 #include "program_list.h"
 
@@ -15,13 +12,13 @@
  */
 
 /*
- * XXXXX
+ * Buffer for input line.
  */
 static char
 g_line[1024];
 
 /*
- * XXXXXXXX
+ * Pointers to all arguments.
  */
 static char *
 g_args[512];
@@ -33,7 +30,7 @@ g_args[512];
  */
 
 /*
- * XXXXX
+ * Skips spaces in the beginning of the string.
  */
 static char *
 skipwhite(char str[])
@@ -110,20 +107,19 @@ command(void)
 /*
  * XXXXX
  */
-
 static int
 do_kill(void)
 {
-    if(g_args[1])
+    if (g_args[1])
     {
         uint32_t pid = atoi(g_args[1]);
-        if(pid == 0)
+        if (pid == 0)
         {
             print_strln("USAGE KILL!!!");
         }
         else
         {
-            if(!kill(pid))
+            if (!kill(pid))
             {
                 print_strln("Failed to kill process");
                 return 0;
@@ -141,11 +137,11 @@ do_kill(void)
 static int
 do_priority_change(void)
 {
-    if(g_args[1] && g_args[2])
+    if (g_args[1] && g_args[2])
     {
         uint32_t pid = atoi(g_args[1]);
         uint32_t new_priority = atoi(g_args[2]);
-        if(pid == 0)
+        if (pid == 0)
         {
             print_strln("USAGE KILL!!!");
         }
@@ -217,15 +213,21 @@ void
 shell(void)
 {
     msg_t *msg = msg_alloc();
-    
+
     print_strln("Shell. Type 'exit' to exit.");
     while (1)
     {
         print_str("deviate> ");
         read_from_console(msg);
-        strcpy(g_line, msg_data_get_string(msg));
-
-        run(g_line);
+        if (msg_type_is_console_input(msg))
+        {
+            strcpy(g_line, msg_data_get_string(msg));
+            run(g_line);
+        }
+        else
+        {
+            print_strln("Shell: could not read input!");
+        }
     }
 
     msg = msg_free(msg);
