@@ -6,16 +6,6 @@
 #include "msg.h"
 
 /*
- * XXXXXXx
- */
-typedef struct program program_t;
-struct program
-{
-    char name[256];
-    user_program_pointer func;
-};
-
-/*
  * ---------------------------------------------------------------------------
  * Functions.
  * ---------------------------------------------------------------------------
