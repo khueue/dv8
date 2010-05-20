@@ -35,7 +35,7 @@ ringnode(void)
     char usage[] = "Error: ringn is executed with 'ring'";
 
     //Get ringnode index
-    if (!get_arg(msg, 300) || !msg_data_is_integer(msg))
+    if (!get_arg(msg, 200) || !msg_data_is_integer(msg))
     {
         print_strln(usage);
         return;
@@ -43,7 +43,7 @@ ringnode(void)
     index = msg_data_get_integer(msg);
 
     //Get next pid
-    if (!get_arg(msg, 300) || !msg_data_is_integer(msg))
+    if (!get_arg(msg, 200) || !msg_data_is_integer(msg))
     {
         print_strln(usage);
         return;
@@ -65,7 +65,7 @@ ringnode(void)
     print_int(msg_get_sender_pid(msg));
     print_strln("");
 
-    sleep(3000);
+    sleep(1500);
 
     //Send message to next
     msg_set_receiver_pid(msg, pid);
@@ -99,7 +99,7 @@ ring(void)
     msg_t *msg = &msg_struct;
     int n = 0;
     int i = 0;
-    int pids[10];
+    int pids[NUM_PCBS];
     char the_msg[256];
     char usage[] = "Usage: ring [int nodes] [str message]";
 
@@ -112,12 +112,6 @@ ring(void)
 
     n = atoi(msg_data_get_string(msg));
 
-    if (n <= 0 || n > 10)
-    {
-        print_str(usage);
-        return;
-    }
-
     /* Get argument 2 - the message*/
     if (!get_arg(msg, 300) || !msg_data_is_string(msg))
     {
@@ -128,17 +122,24 @@ ring(void)
 
     msg_type_set_argument(msg);
 
-    pids[i] = exec("ringn", PROCESS_DEFAULT_PRIORITY);
+    //Init pids
+    for (i = 0; i < n; i++)
+    {
+        pids[i] = exec("ringn", PROCESS_DEFAULT_PRIORITY);
+        if(!pids[i])
+        {
+            print_strln("Error: Failed to spawn the whole ring.");
+            return;
+        }
+    }
 
-    /* send index */
-    msg_set_receiver_pid(msg, pids[i]);
-    msg_data_set_integer(msg, i);
+    /* send index to first node */
+    msg_set_receiver_pid(msg, pids[0]);
+    msg_data_set_integer(msg, 0);
     send_message(msg);
 
     for (i = 1; i < n; i++)
     {
-        pids[i] = exec("ringn", PROCESS_DEFAULT_PRIORITY);
-
         /* send index */
         msg_set_receiver_pid(msg, pids[i]);
         msg_data_set_integer(msg, i);

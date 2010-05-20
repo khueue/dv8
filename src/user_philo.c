@@ -46,8 +46,8 @@ philosopher(void)
     int table_pid = 0;
     int id = 0;
     int i;
-    int max_duration = 4000;
-    int min_duration = 1000;
+    int max_duration = 2000;
+    int min_duration = 500;
     int status;
     char usage[] = "Error: philo is executed with 'dp'";
 

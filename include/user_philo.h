@@ -16,4 +16,5 @@ dtable(void);
 
 void
 dphilo_init(void);
-#endif /* _USER_PHILO_H_ */
+
+#endif
