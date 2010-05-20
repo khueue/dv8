@@ -19,7 +19,7 @@ scrollermsg(void)
     msg_t *msg = &msg_struct;
     uint32_t scroller_pid = 0;
     char str[512] = { '\0' };
-    char usage[] = "Usage: scrollermsg [str message]";
+    char usage[] = "Usage: scrollmsg [str message]";
 
     read_message_by_type(msg, MSG_TYPE_ARGUMENT, 300);
     if (msg_type_is_invalid(msg))
