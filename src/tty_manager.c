@@ -135,9 +135,6 @@ tty_manager_dispatch_message(const char str[])
 
         process = stack_peek(&g_input_stack);
         kdebug_assert(process);
-        kdebug_println("tty::: process to receive input: ");
-        kdebug_printint(process->pid);
-        kdebug_println("");
         tty_manager_remove_input_listener(process);
         msg_set_receiver_pid(msg, process->pid);
         ksend_message(msg);
