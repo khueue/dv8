@@ -107,8 +107,8 @@ kread_from_console(msg_t *msg)
     tty_manager_add_input_listener(pcb);
 
     /* Guaranteed no console input in queue, so just block. */
-    pcb->waiting_msg = msg;
-    pcb->waiting_type = MSG_TYPE_CONSOLE_INPUT;
+    pcb->waiting_msg  = msg;
+    pcb->waiting_type = type;
     kblock_self();
 
     return 1;

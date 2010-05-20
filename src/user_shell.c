@@ -72,6 +72,13 @@ split(char cmd[])
     g_args[i] = NULL;
 }
 
+#define SHELL_COMMAND 0
+#define SHELL_SPAWN   1
+#define SHELL_NOTHING 2
+
+static int
+g_executed;
+
 /*
  * XXXXX
  */
@@ -85,6 +92,7 @@ command(void)
         msg_t msg_struct;
         msg_t *msg = &msg_struct;
 
+        g_executed = SHELL_SPAWN;
         supervise(pid);
         print_str("Executed ");
         print_strln(g_args[0]);
@@ -181,6 +189,7 @@ run(char cmd[])
     split(cmd);
     if (g_args[0])
     {
+        g_executed = SHELL_COMMAND;
         if (0 == strcmp(g_args[0], "exit"))
         {
             kill_self();
@@ -208,6 +217,7 @@ run(char cmd[])
         }
     }
 
+    g_executed = SHELL_NOTHING;
     return 0;
 }
 
@@ -225,11 +235,23 @@ shell(void)
     while (1)
     {
         print_str("deviate> ");
+
+        g_executed = SHELL_NOTHING;
         read_from_console(msg);
         if (msg_type_is_console_input(msg))
         {
             strcpy(g_line, msg_data_get_string(msg));
             run(g_line);
+
+            if (g_executed == SHELL_SPAWN)
+            {
+                /* xxxxxx fix stuff */
+                read_message_by_type(msg, MSG_TYPE_SUPERVISOR_NOTICE_ID, 0);
+                if (msg_type_is(msg, MSG_TYPE_SUPERVISOR_NOTICE_ID))
+                {
+                }
+                read_message_by_type(msg, MSG_TYPE_SUPERVISOR_NOTICE_STATE, 0);
+            }
         }
         else
         {
