@@ -94,8 +94,6 @@ command(void)
 
         g_executed = SHELL_SPAWN;
         supervise(pid);
-        //print_str("Executed ");
-        //print_strln(g_args[0]);
         msg_type_set_argument(msg);
         msg_set_receiver_pid(msg, pid);
         while (g_args[i])
