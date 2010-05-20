@@ -239,10 +239,6 @@ shell(void)
     {
         print_str("deviate> ");
 
-        print_str("secs: ");
-        print_int(rtc->data.seconds);
-        print_strln("");
-
         g_executed = SHELL_NOTHING;
         read_from_console(msg);
         if (msg_type_is_console_input(msg))
