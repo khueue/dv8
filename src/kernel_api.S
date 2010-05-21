@@ -27,6 +27,7 @@
     .globl get_process_name
     .globl get_process_priority
     .globl get_process_state
+    .globl lcd_print
 
     # syscall_handler:
     #   Enables argument passing for up
@@ -161,3 +162,9 @@ read_from_console:
     la v0, kread_from_console
     syscall
     jr ra
+
+lcd_print:
+    la v0, klcd_print
+    syscall
+    jr ra
+    
