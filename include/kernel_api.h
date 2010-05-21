@@ -84,4 +84,7 @@ supervise(uint32_t pid);
 void
 set_inbox_limit(uint32_t limit);
 
+void
+lcd_print(const char str[]);
+
 #endif

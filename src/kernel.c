@@ -430,6 +430,24 @@ kset_inbox_limit(uint32_t limit)
     process->inbox_limit = limit;
 }
 
+void
+klcd_print(const char str[])
+{
+    msg_t msg_struct;
+    msg_t *msg = &msg_struct;
+    uint32_t scroller_pid = 0;
+        
+    scroller_pid = 2; /* xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx */
+
+    msg_data_set_string(msg, str);
+    msg_set_receiver_pid(msg, scroller_pid);
+    if (send_message(msg))
+    {
+        /* uhhhhhhhhhh XXXXXXX */
+    }
+
+}
+
 /*
  * Sets up the
  */

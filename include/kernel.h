@@ -77,7 +77,7 @@ kblock_self(void);
 const char *
 kget_process_name(uint32_t pid);
 
-uint32_t 
+uint32_t
 kget_process_priority(uint32_t pid);
 
 process_state_t
@@ -88,5 +88,8 @@ ksupervise(uint32_t pid);
 
 void
 kset_inbox_limit(uint32_t limit);
+
+void
+klcd_print(const char str[]);
 
 #endif
