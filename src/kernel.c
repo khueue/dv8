@@ -441,11 +441,11 @@ klcd_print(const char str[])
 
     msg_data_set_string(msg, str);
     msg_set_receiver_pid(msg, scroller_pid);
-    if (send_message(msg))
+    msg_set_type(msg, MSG_TYPE_ARGUMENT);
+    if (ksend_message(msg))
     {
         /* uhhhhhhhhhh XXXXXXX */
     }
-
 }
 
 /*
