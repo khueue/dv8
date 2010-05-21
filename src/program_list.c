@@ -61,19 +61,19 @@ g_programs[] =
 {
     /* name string          code pointer       shell? */
     {  "idle",              idle,              NOT_SHELL  },
-    {  "fib",               man,               SHELL      },
-    {  "incr",              man,              SHELL      },
+    {  "fib",               fib,               SHELL      },
+    {  "incr",              incr,              SHELL      },
     {  "shell",             shell,             SHELL      },
-    {  "ring",              man,              SHELL      },
+    {  "ring",              ring,              SHELL      },
     {  "ringn",             ringnode,          NOT_SHELL  },
     {  "scroll",            scroll,            NOT_SHELL  },
     {  "scrollmsg",         scrollermsg,       SHELL      },
-    {  "dp",                man,       SHELL      },
+    {  "dp",                dphilo_init,       SHELL      },
     {  "dphilo",            philosopher,       NOT_SHELL  },
     {  "dtable",            dtable,            NOT_SHELL  },
-    {  "superd",            man,   SHELL      },
+    {  "superd",            supervisor_demo,   SHELL      },
     {  "spammer",           spammer,           NOT_SHELL  },
-    {  "dv8",               man,               NOT_SHELL  },
+    {  "dv8",               dv8,               NOT_SHELL  },
     {  "man",               man,               NOT_SHELL  },
 };
 
