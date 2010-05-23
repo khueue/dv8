@@ -118,3 +118,18 @@ program_list_program_executable_by_shell(const program_info_t *program)
 {
     return program->executable_by_shell == SHELL;
 }
+
+int
+program_list_name_exist(char *name)
+{
+    size_t i = 0;
+
+    for (i = 0; i < COUNT_ARRAY(g_programs); ++i)
+    {
+        if (0 == strcmp(name, g_programs[i].name))
+        {
+            return 1;
+        }
+    }
+    return 0;
+}

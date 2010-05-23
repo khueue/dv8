@@ -36,4 +36,7 @@ program_list_print(void);
 int
 program_list_program_executable_by_shell(const program_info_t *program);
 
+int 
+program_list_name_exist(char *name);
+
 #endif

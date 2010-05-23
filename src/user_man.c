@@ -3,6 +3,7 @@
 #include "msg.h"
 
 #include "user_man.h"
+#include "program_list.h"
 
 static void
 jon_old_as_hell(void)
@@ -40,13 +41,14 @@ man(void)
 
     strcpy(arg,msg_data_get_string(msg));
 
-    if (0 == (strcmp("fib", arg)))
+    if (program_list_name_exist(arg))
     {
-        print_strln("Fib works like this");
+        print_strln("Fib works like this");        
+        /*get_program_man(arg);*/
     }
     else
     {
-        jon_old_as_hell();
+        print_strln("No such program exist. Did you mean <murat''>?");
         return;
     }
 }
