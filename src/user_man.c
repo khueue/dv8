@@ -48,7 +48,7 @@ man(void)
     }
     else
     {
-        print_strln("No such program exist. Did you mean <murat''>?");
+        print_strln("No such program exist. Did you mean <grab> or <grap>?");
         return;
     }
 }
