@@ -42,7 +42,7 @@ man(void)
 
     if (0 == (strcmp("fib", arg)))
     {
-        print_strln("Fib workes like this");
+        print_strln("Fib works like this");
     }
     else
     {
