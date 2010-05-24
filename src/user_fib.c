@@ -1,11 +1,8 @@
 #include "utils.h"
 #include "kernel_api.h"
-
-#include "kernel.h" /* SUPER REMOVE XXXXXXXXX */
 #include "msg.h"
 
 #include "user_fib.h"
-#include "user_incr.h"
 
 /*
  * ---------------------------------------------------------------------------

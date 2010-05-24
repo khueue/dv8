@@ -324,26 +324,6 @@ msg_data_get_integer(const msg_t *msg)
     return msg_data_is_integer(msg) ? msg->data.integer : 0;
 }
 
-msg_t *
-create_string_message(const char *str, uint32_t receiver_pid)
-{
-    msg_t *msg = NULL;
-
-    kdebug_assert(str);
-
-    msg = msg_alloc();
-    if (!msg)
-    {
-        /* Error handling? XXX */
-        return NULL;
-    }
-
-    msg_data_set_string(msg, str);
-    msg_set_receiver_pid(msg, receiver_pid);
-
-    return msg;
-}
-
 /*
  * ---------------------------------------------------------------------------
  * Main for module testing.

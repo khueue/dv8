@@ -31,16 +31,28 @@ struct bounded_fifo
  */
 
 /*
- * XXXXX processes wanting input
+ * Processes wanting input. Top of the stack receivs input.
  */
 static stack_t
 g_input_stack;
 
 /*
- * XXXXXXXXXX
+ * Bounded fifo to buffer characters.
  */
 static bounded_fifo_t
 g_bfifo;
+
+/*
+ * Buffer for input line.
+ */
+static char
+g_buf[CONSOLE_INPUT_MAX_LENGTH];
+
+/*
+ * Current position in console input.
+ */
+static size_t
+g_pos;
 
 /*
  * ---------------------------------------------------------------------------
@@ -91,7 +103,7 @@ tty_manager_init(void)
 }
 
 /*
- * XXXXX
+ * Let the manager know that a process wants console input.
  */
 void
 tty_manager_add_input_listener(pcb_t *pcb)
@@ -100,7 +112,7 @@ tty_manager_add_input_listener(pcb_t *pcb)
 }
 
 /*
- * XXXXX
+ * A process no longer requires input.
  */
 void
 tty_manager_remove_input_listener(pcb_t *pcb)
@@ -109,7 +121,7 @@ tty_manager_remove_input_listener(pcb_t *pcb)
 }
 
 /*
- * XXXXXXXX
+ * Returns true if the fifo has unconsumed characters.
  */
 int
 tty_manager_has_characters(void)
@@ -118,7 +130,8 @@ tty_manager_has_characters(void)
 }
 
 /*
- * XXXXXXXX
+ * Sends a message to the process at the top of the input stack. The message
+ * consists of the last line read from the console.
  */
 static void
 tty_manager_dispatch_message(const char str[])
@@ -139,13 +152,7 @@ tty_manager_dispatch_message(const char str[])
         msg_set_receiver_pid(msg, process->pid);
         ksend_message(msg);
     }
-    else
-    {
-    }
 }
-
-static char g_buf[CONSOLE_INPUT_MAX_LENGTH];
-static size_t g_pos;
 
 /*
  * Successively builds a complete line of characters from input.
@@ -172,19 +179,7 @@ tty_manager_build_line(uint8_t c)
 }
 
 /*
- * XXXXXXXXXXX
- */
-static void
-tty_manager_remove_prutt(void)
-{
-    if (g_pos > 0)
-    {
-        g_buf[--g_pos] = '\0';
-    }
-}
-
-/*
- * XXXXXX
+ * Give character to TTY manager.
  */
 void
 tty_manager_put_char(uint8_t c)
@@ -197,7 +192,7 @@ tty_manager_put_char(uint8_t c)
             bfifo_put(&g_bfifo, BACKSPACE);
             bfifo_put(&g_bfifo, ' ');
             bfifo_put(&g_bfifo, BACKSPACE);
-            tty_manager_remove_prutt();
+            g_buf[--g_pos] = '\0';
         }
     }
     else
@@ -212,7 +207,7 @@ tty_manager_put_char(uint8_t c)
 }
 
 /*
- * XXXXXX
+ * Get char from TTY manager.
  */
 uint8_t
 tty_manager_get_char(void)

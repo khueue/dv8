@@ -1,5 +1,5 @@
 #include "utils.h"
-#include "program_list.h"
+#include "kernel_api.h"
 
 #include "user_fib.h"
 #include "user_incr.h"
@@ -14,7 +14,7 @@
 #include "user_dv8.h"
 #include "user_man.h"
 
-#include "kernel_api.h"
+#include "program_list.h"
 
 /*
  * ---------------------------------------------------------------------------

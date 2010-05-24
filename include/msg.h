@@ -186,10 +186,4 @@ int  msg_data_is_integer(const msg_t *msg);
 void msg_data_set_integer(msg_t *msg, int integer);
 int  msg_data_get_integer(const msg_t *msg);
 
-/*
- * Allocates and initializes a message with a string.
- */
-msg_t *
-create_string_message(const char *str, uint32_t receiver_pid);
-
 #endif

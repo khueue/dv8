@@ -47,7 +47,6 @@ ksyscall_handler:
 
     jr  v0      # Jump to system call implementation.
 
-    # Input:XXXXXX
 exec:
     la v0, kexec
     syscall
@@ -58,7 +57,6 @@ do_syscall:
     syscall
     jr ra
 
-    # Input:XXXXXX
 kill_self:
     la v0, kkill_self
     syscall

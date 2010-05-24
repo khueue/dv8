@@ -1,8 +1,5 @@
 #include "utils.h"
 #include "kernel_api.h"
-
-#include "scheduler.h" /* SUPER REMOVE XXXXXXXXX */
-#include "kernel.h" /* SUPER REMOVE XXXXXXXXX */
 #include "msg.h"
 
 #include "user_ring.h"
@@ -82,7 +79,7 @@ ringnode(void)
         }
         strcpy(the_msg, msg_data_get_string(msg));
 
-        kdebug_printint(getpid());
+        print_int(getpid());
         print_str(" received message ");
         print_str(the_msg);
         print_str(" from ");

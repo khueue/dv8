@@ -1,7 +1,7 @@
 #include "utils.h"
 #include "kernel_api.h"
-
 #include "msg.h"
+
 #include "user_supervisor_demo.h"
 
 /*
@@ -27,8 +27,9 @@ supervisor_demo(void)
 
     supervise(pid_to_supervise);
     int unexpected = 1;
+    int tries = 0;
 
-    while (unexpected)
+    while (unexpected && tries++ < 10)
     {
         read_message_by_type(msg, MSG_TYPE_SUPERVISOR_NOTICE_ID, 0);
         if (msg_type_is_invalid(msg))
@@ -68,4 +69,6 @@ supervisor_demo(void)
             print_strln("Unhandled process state!");
         }
     }
+
+    print_strln("Giving up ...");
 }

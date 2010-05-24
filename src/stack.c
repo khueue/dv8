@@ -9,66 +9,42 @@
  * ---------------------------------------------------------------------------
  */
 
-/*
- * XXXXXXXXInit the queue.
- */
 void
-stack_init(
-    stack_t *stack,
-    int (*compare)(const void *data1, const void *data2),
-    int (*is_match)(const void *data, const void *id))
+stack_init(stack_t *stack, compare_func compare, match_func is_match)
 {
     list_init(stack, compare, is_match);
 }
 
-/*
- * XXXXXXXXXInsert first in the lifo_queue.
- */
 void
 stack_push(stack_t *stack, void *data)
 {
     list_insert_head(stack, data);
 }
 
-/*
- * XXXXXXReturns the first data of the queue.
- */
 void *
 stack_pop(stack_t *stack)
 {
     return list_remove_head(stack);
 }
 
-/*
- * XXXXXXReturns the first data of the queue.
- */
 void *
 stack_remove(stack_t *stack, void *id)
 {
     return list_remove(stack, id);
 }
 
-/*
- * XXXXXXReturns the first data of the queue.
- */
 void *
 stack_peek(const stack_t *stack)
 {
     return list_find_head(stack);
 }
 
-/*
- * Returns true if the queue is empty, false otherwise.
- */
 int
 stack_is_empty(const stack_t *stack)
 {
     return list_is_empty(stack);
 }
 
-/*
- * Returns the length of the queue.
- */
 size_t
 stack_length(const stack_t *stack)
 {

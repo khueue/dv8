@@ -12,7 +12,4 @@
 pcb_t *
 spawn(const char name[], user_program_pointer program, uint32_t priority);
 
-void
-func_to_go_to_when_the_process_ends_normally(void);
-
 #endif

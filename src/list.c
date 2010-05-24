@@ -29,7 +29,6 @@ list_insert_head(list_t *list, void *data)
     node = list_node_alloc();
     if (!node)
     {
-        /* XXX maybe print some stuff to the screen? */
         return 0;
     }
 
@@ -62,7 +61,6 @@ list_insert_foot(list_t *list, void *data)
     node = list_node_alloc();
     if (!node)
     {
-        /* XXX maybe print some stuff to the screen? */
         return 0;
     }
 
@@ -96,7 +94,6 @@ list_insert_ordered(list_t *list, void *data)
     node = list_node_alloc();
     if (!node)
     {
-        /* XXXXXXXXXXX */
         return 0;
     }
 
@@ -156,7 +153,6 @@ list_remove_head(list_t *list)
 
     if (list_is_empty(list))
     {
-        /* XXXXXX */
         return NULL;
     }
 
@@ -189,7 +185,6 @@ list_remove_foot(list_t *list)
 
     if (list_is_empty(list))
     {
-        /* XXXXXX */
         return NULL;
     }
 

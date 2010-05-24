@@ -64,7 +64,7 @@ sch_remove_from_run(pcb_t *pcb)
 }
 
 /*
- * XXXXXX
+ * Tries to find a process in the scheduler and returns it.
  */
 pcb_t *
 sch_find_process(uint32_t pid)
@@ -291,7 +291,6 @@ sch_unblock(uint32_t pid)
     process = prio_remove(&g_wait, &pid);
     if (process)
     {
-        /*process->sleepleft = 0; xxxxxxx */
         process->state = PROCESS_STATE_READY;
         prio_enqueue(&g_ready, process);
 

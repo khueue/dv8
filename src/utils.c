@@ -13,11 +13,12 @@ void
 do_nothing_forever(const char msg[], uint32_t interval)
 {
     uint32_t i = 0;
-    (void)msg; /* Needed when NDEBUG is defined. */
+    
     for (;;)
     {
         if ((++i % interval) == 0)
         {
+            (void)msg; /* Needed when NDEBUG is defined. */
             kdebug_println(msg);
         }
     }

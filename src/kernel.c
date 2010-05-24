@@ -148,9 +148,7 @@ kread_next_message(msg_t *msg, int max_wait_ms)
     return 1;
 }
 
-/*
- * XXXXXXXXXX
- */
+
 uint32_t
 ksend_message(msg_t *msg)
 {
@@ -361,7 +359,7 @@ kkill(uint32_t pid)
 
     pcb = pcb_free(pcb);
     sch_run();
-    return pcb == NULL; /* XXXX */
+    return pcb == NULL;
 }
 
 void
@@ -431,17 +429,12 @@ klcd_print(const char str[])
 {
     msg_t msg_struct;
     msg_t *msg = &msg_struct;
-    uint32_t scroller_pid = 0;
-
-    scroller_pid = 2; /* xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx */
+    uint32_t scroller_pid = 2; /* xxx, yes hardcoded */
 
     msg_data_set_string(msg, str);
     msg_set_receiver_pid(msg, scroller_pid);
     msg_set_type(msg, MSG_TYPE_ARGUMENT);
-    if (ksend_message(msg))
-    {
-        /* uhhhhhhhhhh XXXXXXX */
-    }
+    ksend_message(msg);
 }
 
 /*
@@ -457,21 +450,21 @@ setup_scheduler(void)
     ret = kexec("idle", 0);
     if (!ret)
     {
-        kdebug_println("Failed to start the idle process!");
+        kprint_strln("Failed to start the idle process!");
         return;
     }
 
     ret = kexec("scroll", PROCESS_DEFAULT_PRIORITY + 30);
     if (!ret)
     {
-        kdebug_println("Failed to start the scroller!");
+        kprint_strln("Failed to start the scroller!");
         return;
     }
 
     ret = kexec("shell", PROCESS_DEFAULT_PRIORITY);
     if (!ret)
     {
-        kdebug_println("Failed to start the shell!");
+        kprint_strln("Failed to start the shell!");
         return;
     }
 
@@ -500,7 +493,7 @@ set_status_reg(void)
 
     or.reg = 0;               /* All zeroes: preserve all bits. */
     or.field.ie  = 1;         /* Enable interrupts. */
-    or.field.im  = BIT7|BIT2; /* XXXXXX todo: Enable HW interrupt 0. */
+    or.field.im  = BIT7|BIT2; /* Enable HW interrupt. */
     or.field.cu0 = 1;         /* Coprocessor 0 usable. */
 
     kset_sr(and.reg, or.reg);
@@ -566,6 +559,7 @@ kexception(void)
     else
     {
         pcb_t *process = sch_get_currently_running_process();
+        (void)process; /* Needed when NDEBUG is defined. */
 
         kdebug_println("");
         kdebug_println("");
@@ -591,6 +585,12 @@ kexception(void)
             kdebug_println("!!! SOMETHING BAD HAPPENED !!!");
         }
 
+#ifndef NDEBUG
         kkill(kgetpid());
+#else
+        while (1)
+        {
+        }
+#endif
     }
 }

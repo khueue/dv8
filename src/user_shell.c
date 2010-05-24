@@ -5,13 +5,34 @@
 
 #include "program_list.h"
 
-#include "malta.h"
+
+/*
+ * ---------------------------------------------------------------------------
+ * Types.
+ * ---------------------------------------------------------------------------
+ */
+
+/*
+ * Flags used to indicate what the shell just executed.
+ */
+enum
+{
+    SHELL_COMMAND,
+    SHELL_SPAWN,
+    SHELL_NOTHING
+};
 
 /*
  * ---------------------------------------------------------------------------
  * Globals.
  * ---------------------------------------------------------------------------
  */
+
+/*
+ * What the shell just executed.
+ */
+static int
+g_executed;
 
 /*
  * Buffer for input line.
@@ -44,9 +65,6 @@ skipwhite(char str[])
     return str;
 }
 
-/*
- * XXXXX
- */
 static void
 split(char cmd[])
 {
@@ -74,16 +92,6 @@ split(char cmd[])
     g_args[i] = NULL;
 }
 
-#define SHELL_COMMAND 0
-#define SHELL_SPAWN   1
-#define SHELL_NOTHING 2
-
-static int
-g_executed;
-
-/*
- * XXXXX
- */
 static int
 command(void)
 {
@@ -114,9 +122,6 @@ command(void)
     return 1;
 }
 
-/*
- * XXXXX
- */
 static int
 do_kill(void)
 {
@@ -125,7 +130,7 @@ do_kill(void)
         uint32_t pid = atoi(g_args[1]);
         if (pid == 0 && 0 != strcmp(g_args[1], "0"))
         {
-            print_strln("USAGE KILL!!!");
+            print_strln("usage: kill <pid>");
         }
         else if (pid == 1 || pid == 2 || pid == 3)
         {
@@ -135,7 +140,7 @@ do_kill(void)
         {
             if (!kill(pid))
             {
-                print_strln("Failed to kill process");
+                print_strln("Failed to kill process!");
                 return 0;
             }
             return 1;
@@ -143,7 +148,7 @@ do_kill(void)
     }
     else
     {
-        print_strln("USAGE KILL!!!");
+        print_strln("usage: kill <pid>");
     }
     return 0;
 }
@@ -157,7 +162,7 @@ do_priority_change(void)
         uint32_t new_priority = atoi(g_args[2]);
         if (pid == 0)
         {
-            print_strln("USAGE KILL!!!");
+            print_strln("usage: priority <pid> <priority>");
         }
         else
         {
@@ -171,7 +176,7 @@ do_priority_change(void)
     }
     else
     {
-        print_strln("USAGE KILL!!!");
+        print_strln("usage: priority <pid> <priority>");
     }
     return 0;
 }
@@ -210,7 +215,7 @@ run(char cmd[])
         {
             return do_ls();
         }
-        else if (0 == strcmp(g_args[0], "t"))
+        else if (0 == strcmp(g_args[0], "top"))
         {
             top();
             return 1;
@@ -224,10 +229,6 @@ run(char cmd[])
     g_executed = SHELL_NOTHING;
     return 0;
 }
-
-/*
- * XXXXX
- */
 
 void
 shell(void)

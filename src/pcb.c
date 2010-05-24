@@ -1,8 +1,10 @@
 #include "utils.h"
-#include "pcb.h"
 #include "msg.h"
+#include "asm.h"
+#include "kernel.h"
+#include "prio_queue.h"
 
-#include "kernel.h" /* xxxxxxxx ojojoj */
+#include "pcb.h"
 
 /*
  * ---------------------------------------------------------------------------
@@ -96,6 +98,9 @@ pcb_assign_pid(pcb_t *pcb)
     pcb->pid = (mem_offset / sizeof(*pcb)) + 1;
 }
 
+/*
+ * Assigns a supervisor to a PCB.
+ */
 void
 pcb_assign_supervisor(pcb_t *pcb, int supervisor_pid)
 {
@@ -103,7 +108,7 @@ pcb_assign_supervisor(pcb_t *pcb, int supervisor_pid)
 }
 
 /*
- * XXXXXXX
+ * Initializes a PCB.
  */
 void
 pcb_init(pcb_t *pcb)
@@ -238,7 +243,6 @@ pcb_free(pcb_t *pcb)
 void
 pcb_print(const pcb_t *process)
 {
-
     kprint_str(process->program);
     kprint_str("\t");
 
@@ -251,7 +255,7 @@ pcb_print(const pcb_t *process)
     kprint_int(process->inbox_q.length);
     kprint_str("\t");
 
-    if(process->state == PROCESS_STATE_RUNNING)
+    if (process->state == PROCESS_STATE_RUNNING)
     {
         kprint_str("RUN");
     }
@@ -277,21 +281,21 @@ pcb_print(const pcb_t *process)
     }
     else
     {
-        kprint_str("***** PROCESS_STATE_?????");
+        kprint_str("UNKNOWN PROCESS STATE");
     }
 
     kprint_str("\t");
 
-    kprint_int(process->state == PROCESS_STATE_SLEEPING ? process->sleepleft/67000 : 0);
+    kprint_int(process->state == PROCESS_STATE_SLEEPING ? process->sleepleft/timer_msec : 0);
     kprint_strln("");
 }
-    
+
 int
 pcb_inbox_full(pcb_t *pcb)
 {
     if (pcb->inbox_limit != 0)
     {
-        return (pcb->inbox_limit <= pcb->inbox_q.length);
+        return pcb->inbox_limit <= pcb->inbox_q.length;
     }
     else
     {
