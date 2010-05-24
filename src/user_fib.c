@@ -63,6 +63,5 @@ fib(void)
         print_int(fib_recursive(i));
         print_strln("");
         sleep(100);
-    }    
-    lcd_print("Pruttlucka");
+    }
 }
