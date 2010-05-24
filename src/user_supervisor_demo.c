@@ -1,10 +1,7 @@
 #include "utils.h"
 #include "kernel_api.h"
 
-#include "scheduler.h" /* SUPER REMOVE XXXXXXXXX */
-#include "kernel.h" /* SUPER REMOVE XXXXXXXXX */
 #include "msg.h"
-#include "settings.h"
 #include "user_supervisor_demo.h"
 
 /*
@@ -24,7 +21,7 @@ supervisor_demo(void)
 
     if (!pid_to_supervise)
     {
-        kdebug_println("xxxxxxxxxx ----------- HOLY SHIT");
+        print_strln("Could not execute spammer!");
         return;
     }
 
@@ -36,39 +33,39 @@ supervisor_demo(void)
         read_message_by_type(msg, MSG_TYPE_SUPERVISOR_NOTICE_ID, 0);
         if (msg_type_is_invalid(msg))
         {
-            kdebug_println("------ xxxxxHOLY COW!!!!");
+            print_strln("Did not receive proper pid!");
             return;
         }
         pid_of_dead = msg_data_get_integer(msg);
         read_message_by_type(msg, MSG_TYPE_SUPERVISOR_NOTICE_STATE, 0);
         if (msg_type_is_invalid(msg))
         {
-            kdebug_println("------ xxxxxx HOLY COW!!!!");
+            print_strln("Did not receive proper process state!");
             return;
         }
         pcb_state = msg_data_get_integer(msg);
         sleep(10);
         if (pcb_state == PROCESS_STATE_TERMINATED) {
-            kdebug_print("Process ");
-            kdebug_printint(pid_of_dead);
-            kdebug_println(" quit unexpectedly. Respawning...");
+            print_str("Process ");
+            print_int(pid_of_dead);
+            print_strln(" quit unexpectedly. Respawning...");
             pid_to_supervise = exec("spammer", PROCESS_DEFAULT_PRIORITY);
             if (!pid_to_supervise)
             {
-                kdebug_println("------not pid  xxxxxx HOLY COW!!!!");
+                print_strln("Could not execute spammer!");
                 return;
             }
             supervise(pid_to_supervise);
         }
         else if (pcb_state == PROCESS_STATE_ENDED) {
-            kdebug_print("Process ");
-            kdebug_printint(pid_of_dead);
-            kdebug_println(" quit normally.");
+            print_str("Process ");
+            print_int(pid_of_dead);
+            print_strln(" quit normally.");
             unexpected = 0;
         }
         else
         {
-            kdebug_print("*Schnabelherstellungsfehler*");
+            print_strln("Unhandled process state!");
         }
     }
 }

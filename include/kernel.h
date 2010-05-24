@@ -20,9 +20,6 @@ kexec(const char program[], uint32_t priority);
 uint32_t
 kgetpid(void);
 
-uint32_t
-getpid(void);
-
 void
 kprint_char(char c);
 

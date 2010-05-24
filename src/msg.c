@@ -48,9 +48,6 @@ msg_init_freelist(void)
     }
 }
 
-/*
- * Returns the number of free messages in the system.
- */
 size_t
 msg_num_free(void)
 {
@@ -98,29 +95,23 @@ msg_free(msg_t *msg)
     return NULL;
 }
 
-/*
- * XXXXXX
- */
 void
 msg_copy(msg_t *dst, const msg_t *src)
 {
+    kdebug_assert(dst);
+    kdebug_assert(src);
+
     memcpy(dst, src, sizeof(*dst));
 }
 
 msg_t *
 msg_zero(msg_t *msg)
 {
+    kdebug_assert(msg);
+
     ZERO_STRUCT(msg);
     msg_type_set_invalid(msg);
     return msg;
-}
-
-msg_type_t
-msg_get_type(const msg_t *msg)
-{
-    kdebug_assert(msg);
-
-    return msg->type;
 }
 
 int

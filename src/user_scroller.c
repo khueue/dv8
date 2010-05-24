@@ -19,7 +19,7 @@ scroll(void)
     int init = 0;
     int done;
 
-    uint8_t tomalta[MESSAGE_MAX_LENGTH];
+    uint8_t tomalta[CONSOLE_INPUT_MAX_LENGTH];
     strcpy(tomalta, DEFAULT_MALTA_TEXT);
 
     malta->ledbar.reg = 0xFF;

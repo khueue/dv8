@@ -88,7 +88,6 @@ ringnode(void)
         print_str(" from ");
         print_int(msg_get_sender_pid(msg));
         print_strln("\nEND OF RING");
-
     }
 }
 
@@ -126,7 +125,7 @@ ring(void)
     for (i = 0; i < n; i++)
     {
         pids[i] = exec("ringn", PROCESS_DEFAULT_PRIORITY);
-        if(!pids[i])
+        if (!pids[i])
         {
             print_strln("Error: Failed to spawn the whole ring.");
             return;
@@ -149,7 +148,6 @@ ring(void)
         msg_set_receiver_pid(msg, pids[i-1]);
         msg_data_set_integer(msg, pids[i]);
         send_message(msg);
-
     }
 
     /* Last should send to first in ring */

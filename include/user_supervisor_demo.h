@@ -1,5 +1,5 @@
-#ifndef USER_SUPERVD_H
-#define USER_SUPERVD_H
+#ifndef USER_SUPERVISOR_DEMO_H
+#define USER_SUPERVISOR_DEMO_H
 
 /*
  * ---------------------------------------------------------------------------

@@ -67,9 +67,9 @@ philosopher(void)
         print_strln(usage);
         return;
     }
-    
+
     sleep(rand_between(min_duration, max_duration));
-    
+
     for (i = 0; i < 5; i++)
     {
         print_int(id);
@@ -267,6 +267,6 @@ dphilo_init()
     {
         print_strln("Failed to load Dining Philosophers");
     }
-    
+
     print_strln("Dining Philosophers");
 }

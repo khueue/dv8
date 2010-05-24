@@ -3,7 +3,12 @@
 #include "msg.h"
 
 #include "user_dv8.h"
-#include "user_dv8.h"
+
+/*
+ * ---------------------------------------------------------------------------
+ * Functions.
+ * ---------------------------------------------------------------------------
+ */
 
 static void
 print_strln_center(const char *str)

@@ -28,6 +28,7 @@
     .globl get_process_priority
     .globl get_process_state
     .globl lcd_print
+    .globl getpid
 
     # syscall_handler:
     #   Enables argument passing for up
@@ -137,12 +138,12 @@ get_process_name:
     la v0, kget_process_name
     syscall
     jr ra
-    
+
 get_process_priority:
     la v0, kget_process_priority
     syscall
     jr ra
-    
+
 get_process_state:
     la v0, kget_process_state
     syscall
@@ -167,4 +168,8 @@ lcd_print:
     la v0, klcd_print
     syscall
     jr ra
-    
+
+getpid:
+    la v0, kgetpid
+    syscall
+    jr ra

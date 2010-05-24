@@ -8,10 +8,10 @@
 #include "exception_timer.h"
 #include "exception_syscall.h"
 #include "pcb.h"
-#include "spawn.h"
 #include "scheduler.h"
 #include "tty_manager.h"
 #include "msg.h"
+#include "spawn.h"
 
 #include "program_list.h"
 
@@ -40,14 +40,16 @@ kexec(const char program[], uint32_t priority)
     code = program_list_get_program_code(program);
     if (!code)
     {
-        /* xxxxxxxx error invalid program */
+        kprint_str("Could not find program ");
+        kprint_strln(program);
         return 0;
     }
 
     pcb = spawn(program, code, priority);
     if (!pcb)
     {
-        /* crappy spawn xxxxxxx */
+        kprint_str("Could not spawn ");
+        kprint_strln(program);
         return 0;
     }
 
@@ -268,12 +270,6 @@ kgetpid(void)
     }
 }
 
-uint32_t
-getpid(void)
-{
-    return do_syscall(kgetpid);
-}
-
 const char *
 kget_process_name(uint32_t pid)
 {
@@ -289,7 +285,7 @@ kget_process_name(uint32_t pid)
     }
 }
 
-uint32_t 
+uint32_t
 kget_process_priority(uint32_t pid)
 {
     pcb_t *pcb = sch_find_process(pid);
@@ -436,7 +432,7 @@ klcd_print(const char str[])
     msg_t msg_struct;
     msg_t *msg = &msg_struct;
     uint32_t scroller_pid = 0;
-        
+
     scroller_pid = 2; /* xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx */
 
     msg_data_set_string(msg, str);

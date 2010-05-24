@@ -18,11 +18,12 @@ kill_self(void);
 uint32_t
 kill(uint32_t pid);
 
-uint32_t
-do_syscall(uint32_t (*kfunc)(void));
-
+/* xxxxxxxxx remove from here */
 uint32_t
 ksyscall_handler(registers_t *regs);
+
+uint32_t
+getpid(void);
 
 uint32_t
 exec(const char *program, uint32_t priority);

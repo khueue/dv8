@@ -11,7 +11,7 @@
  */
 
 /*
- * XXXXXX
+ * Simply an alias.
  */
 typedef list_t stack_t;
 
@@ -22,10 +22,7 @@ typedef list_t stack_t;
  */
 
 void
-stack_init(
-    stack_t *stack,
-    int (*compare)(const void *data1, const void *data2),
-    int (*is_match)(const void *data, const void *id));
+stack_init(stack_t *stack, compare_func compare, match_func is_match);
 
 void
 stack_push(stack_t *stack, void *data);

@@ -42,8 +42,7 @@ struct msg_
     union
     {
         int32_t integer;
-        char    string[STR_BUF_SIZE];
-        uint8_t bytes[STR_BUF_SIZE]; /* XXX currently unused. */
+        char    string[CONSOLE_INPUT_MAX_LENGTH];
     } data;
 
     uint32_t sender_pid;
@@ -60,9 +59,6 @@ struct msg_
  * ---------------------------------------------------------------------------
  */
 
-size_t
-msg_num_free(void);
-
 /*
  * Returns a free message, or NULL if none free.
  */
@@ -77,28 +73,43 @@ msg_alloc(void);
 msg_t *
 msg_free(msg_t *msg);
 
+/*
+ * Returns the number of free messages in the system.
+ */
+size_t
+msg_num_free(void);
+
+/*
+ * Copies a message, byte for byte.
+ */
 void
 msg_copy(msg_t *dst, const msg_t *src);
 
+/*
+ * Zeroes a message and sets its type to invalid.
+ */
 msg_t *
 msg_zero(msg_t *msg);
 
 /*
- * XXXXXXXXXX
+ * Comparison function for messages. Used by generic data structures.
  */
 int
 msg_cmp_priority(const void *pmsg1, const void *pmsg2);
+
+/*
+ * Returns true if the message is of the given type. Used by generic data
+ * structures.
+ */
 int
 msg_has_type(const void *pmsg, const void *ptype);
 
 /*
- * XXXXXXX
+ * Returns true if the message is of given type.
  */
 int
 msg_type_is(const msg_t *msg, msg_type_t type);
 
-msg_type_t
-msg_get_type(const msg_t *msg);
 /*
  * - set() makes the message be of a type
  */

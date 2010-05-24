@@ -144,7 +144,7 @@ tty_manager_dispatch_message(const char str[])
     }
 }
 
-static char g_buf[STR_BUF_SIZE];
+static char g_buf[CONSOLE_INPUT_MAX_LENGTH];
 static size_t g_pos;
 
 /*

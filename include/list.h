@@ -14,8 +14,6 @@ typedef int (*compare_func)(const void *data1, const void *data2);
 typedef int (*match_func)(const void *data, const void *id);
 
 typedef struct _list list_t;
-
-/* XXX should really be in the .c file */
 struct _list
 {
     list_node_t *head;
@@ -49,11 +47,14 @@ int list_insert_ordered(list_t *list, void *data);
 
 /*
  * Removes and returns an item from the list. NULL on failure.
- * - head() removes from the front of the list
- * - foot() removes from the back of the list
+ * - head() removes from the front of the list (first item)
+ * - foot() removes from the back of the list (last item)
  * - remove() removes the first item (starting from the back) that matches id,
  *     using the list's match_func
- * XXXXXXXXXXXX
+ * - from_head() removes the first item (starting from the head) that matches
+ *     id, using the list's match_func
+ * - from_foot() removes the first item (starting from the back) that matches
+ *     id, using the list's match_func
  */
 void *list_remove_head(list_t *list);
 void *list_remove_foot(list_t *list);
@@ -63,11 +64,14 @@ void *list_remove_from_foot(list_t *list, const void *id);
 
 /*
  * Returns, but does not remove, an item from the list. NULL on failure.
- * - head() returns the front of the list
- * - foot() returns the back of the list
+ * - head() returns the front of the list (first item)
+ * - foot() returns the back of the list (last item)
  * - find() returns the first item (starting from the back) that matches id,
  *     using the list's match_func
- * XXXXXXXXXXXX rename to return? or something else?
+ * - from_head() returns the first item (starting from the front) that matches
+ *     id, using the list's match_func
+ * - from_foot() returns the first item (starting from the back) that matches
+ *     id, using the list's match_func
  */
 void *list_find_head(const list_t *list);
 void *list_find_foot(const list_t *list);

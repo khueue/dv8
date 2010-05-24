@@ -13,24 +13,16 @@
  * ---------------------------------------------------------------------------
  */
 
-int
-fib_recursive(int n)
-{
-    if (n <= 1)
-    {
-        return 1;
-    }
-    else
-    {
-        return fib_recursive(n-1) + fib_recursive(n-2);
-    }
-}
-
 static void
 print_usage(void)
 {
-    print_strln("");
-    print_strln("Usage: fib [int limit]");
+    print_strln("usage: fib <int limit>");
+}
+
+static int
+fib_rec(int n)
+{
+    return (n <= 1) ? 1 : fib_rec(n-1) + fib_rec(n-2);
 }
 
 void
@@ -40,8 +32,8 @@ fib(void)
     msg_t *msg = &msg_struct;
     int n = 0;
     int i = 0;
-    
-    read_message_by_type(msg, MSG_TYPE_ARGUMENT, 330);
+
+    read_message_by_type(msg, MSG_TYPE_ARGUMENT, 100);
     if (msg_type_is_invalid(msg))
     {
         print_usage();
@@ -57,12 +49,12 @@ fib(void)
 
     for (i = 0; i <= n; ++i)
     {
+        sleep(100);
+
         print_str("fib(");
         print_int(i);
         print_str(") = ");
-        print_int(fib_recursive(i));
+        print_int(fib_rec(i));
         print_strln("");
-        sleep(100);
-    }    
-    lcd_print("Pruttlucka");
+    }
 }
