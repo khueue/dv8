@@ -9,7 +9,7 @@
  * Functions.
  * ---------------------------------------------------------------------------
  */
-
+ 
 pcb_t *
 spawn(const char name[], user_program_pointer program, uint32_t priority)
 {
