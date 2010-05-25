@@ -11,7 +11,6 @@
 #include "scheduler.h"
 #include "tty_manager.h"
 #include "msg.h"
-#include "spawn.h"
 
 #include "program_list.h"
 
@@ -31,6 +30,34 @@ restore_process_state(const pcb_t *pcb)
     kset_registers(&pcb->regs);
 }
 
+static pcb_t *
+create_and_init_pcb(
+    const char name[],
+    user_program_pointer program,
+    uint32_t priority)
+{
+    pcb_t *pcb = pcb_alloc();
+    if (!pcb)
+    {
+        return NULL;
+    }
+
+    pcb_init(pcb);
+
+    strcpy(pcb->program, name);
+
+    pcb->priority  = priority;
+    pcb->sleepleft = 0;
+    pcb->state     = PROCESS_STATE_NEW;
+
+    pcb->regs.epc_reg = (uint32_t)program;
+    pcb->regs.sp_reg  = (uint32_t)(pcb->stack + sizeof(pcb->stack) - 32);
+    pcb->regs.gp_reg  = GLOBAL_DATA_OFFSET;
+    pcb->regs.ra_reg  = (uint32_t)kill_self;
+
+    return pcb;
+}
+
 uint32_t
 kexec(const char program[], uint32_t priority)
 {
@@ -41,15 +68,17 @@ kexec(const char program[], uint32_t priority)
     if (!code)
     {
         kprint_str("Could not find program ");
-        kprint_strln(program);
+        kprint_str(program);
+        kprint_strln("!");
         return 0;
     }
 
-    pcb = spawn(program, code, priority);
+    pcb = create_and_init_pcb(program, code, priority);
     if (!pcb)
     {
-        kprint_str("Could not spawn ");
-        kprint_strln(program);
+        kprint_str("Could not spawn program ");
+        kprint_str(program);
+        kprint_strln("!");
         return 0;
     }
 
@@ -147,7 +176,6 @@ kread_next_message(msg_t *msg, int max_wait_ms)
 
     return 1;
 }
-
 
 uint32_t
 ksend_message(msg_t *msg)
@@ -326,8 +354,8 @@ kkill(uint32_t pid)
 {
     pcb_t *pcb = NULL;
     uint32_t current_pid = kgetpid();
-    pcb = sch_unschedule(pid);
 
+    pcb = sch_unschedule(pid);
     if (!pcb)
     {
         /* No process found with given pid! */
@@ -357,13 +385,14 @@ kkill(uint32_t pid)
 
     tty_manager_remove_input_listener(pcb);
 
-    
-    if(current_pid == pid)
+    /* Only need to reschedule if we killed ourself. */
+    if (current_pid == pid)
     {
         sch_run();
     }
-    
+
     pcb = pcb_free(pcb);
+
     return 1;
 }
 
@@ -575,7 +604,7 @@ kexception(void)
 
         if (cause.field.exc == 3)
         {
-            kdebug_println("!!! CAUSE EXC 3, TLB STORE !!!");
+            kdebug_println("!!! CAUSE EXC 3, TLB STORE (syscall in syscall?) !!!");
         }
         else if (cause.field.exc == 4)
         {
@@ -587,7 +616,7 @@ kexception(void)
         }
         else
         {
-            kdebug_println("!!! SOMETHING BAD HAPPENED !!!");
+            kdebug_println("!!! SOMETHING BAD HAPPENED (null dereference?) !!!");
         }
 
 #ifndef NDEBUG
