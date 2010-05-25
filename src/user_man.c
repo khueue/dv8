@@ -43,12 +43,13 @@ man(void)
 
     if (program_list_name_exist(arg))
     {
-        print_strln("Fib works like this");        
+        print_str(arg);
+        print_strln(" works like this");        
         /*get_program_man(arg);*/
     }
     else
     {
-        print_strln("No such program exist. Did you mean <grab> or <grap>?");
+        print_strln("No such program exist.");
         return;
     }
 }
