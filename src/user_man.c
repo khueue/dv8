@@ -6,7 +6,7 @@
 #include "program_list.h"
 
 static void
-jon_old_as_hell(void)
+jon_birthday(void)
 {
     print_strln("");
     print_strln("  _|_|_|  _|_|_|      _|_|    _|_|_|_|_|  _|_|_|_|_|  _|_|_|    _|_|_| ");
@@ -35,7 +35,7 @@ man(void)
     read_message_by_type(msg, MSG_TYPE_ARGUMENT, 330);
     if (msg_type_is_invalid(msg))
     {
-        jon_old_as_hell();
+        jon_birthday();
         return;
     }
 
