@@ -95,7 +95,7 @@ ring(void)
     msg_t *msg = &msg_struct;
     int n = 0;
     int i = 0;
-    int pids[NUM_PCBS];
+    int pids[NUM_PCBS] = {0};
     char the_msg[256];
     char usage[] = "Usage: ring [int nodes] [str message]";
 
@@ -122,8 +122,13 @@ ring(void)
     for (i = 0; i < n; i++)
     {
         pids[i] = exec("ringn", PROCESS_DEFAULT_PRIORITY);
-        if (!pids[i])
+        if (pids[i] == 0)
         {
+            for(i = i - 1; i >= 0; i--)
+            {
+                kill(pids[i]);
+            }
+            
             print_strln("Error: Failed to spawn the whole ring.");
             return;
         }

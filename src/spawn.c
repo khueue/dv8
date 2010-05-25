@@ -1,7 +1,7 @@
 #include "utils.h"
 #include "pcb.h"
 #include "kernel_api.h"
-
+#include "kernel.h"
 #include "spawn.h"
 
 /*
@@ -17,7 +17,7 @@ spawn(const char name[], user_program_pointer program, uint32_t priority)
 
     if (!pcb)
     {
-        print_str("Could not allocate new PCB!");
+        kprint_strln("Could not allocate new PCB!");
         return NULL;
     }
 

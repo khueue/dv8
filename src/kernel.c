@@ -325,7 +325,7 @@ uint32_t
 kkill(uint32_t pid)
 {
     pcb_t *pcb = NULL;
-
+    uint32_t current_pid = kgetpid();
     pcb = sch_unschedule(pid);
 
     if (!pcb)
@@ -357,9 +357,14 @@ kkill(uint32_t pid)
 
     tty_manager_remove_input_listener(pcb);
 
+    
+    if(current_pid == pid)
+    {
+        sch_run();
+    }
+    
     pcb = pcb_free(pcb);
-    sch_run();
-    return pcb == NULL;
+    return 1;
 }
 
 void
