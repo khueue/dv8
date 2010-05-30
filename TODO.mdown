@@ -1,29 +1,11 @@
-fixa ta bort message queue pcb när den försvinner
-fundera över add/remove input listener-placering
-
-# Todo
-
-__All:__ kinit, scheduler, process, etc.
-
-__Seb:__ utility functions (strcmp, etc.), generic lists/queues
-
-__Simon:__ group leader, kinit supervisor
-
-__Jon:__ more scheduler, generic lists/queues
-
-__David:__ user programs, more scheduler
-
-relocate spawn and associated functionality?
-think through syscalls a bit more, again
-fix input and shell
-
-#Requirement Set A
+# Requirement Set A
 
 The basic requirements are divided into a number of categories, each detailing a certain area of OS functionality.
 Process Handling
 
 The operating system should provide the concept of processes that run pseudo-parallel to each other by sharing time on the single processor in the system.
-###PH1: Process States
+
+### PH1: Process States
 
 * __FIXED__ Processes should be possible to block.
     - _We use a function named block which takes a process pid and puts that process in the waiting queue._
@@ -34,7 +16,7 @@ The operating system should provide the concept of processes that run pseudo-par
 * __FIXED__ When a process is delayed, it should not be able to execute any code.
     - _If the process is in the wait queue, it does not run._
 
-###PH2: Process Priorities
+### PH2: Process Priorities
 
 * __FIXED__ Each process should have a priority.
     - _When a process is created, it gets its priority._
@@ -43,9 +25,9 @@ The operating system should provide the concept of processes that run pseudo-par
 * __FIXED__ Priorities should be specified at process start.
     - _When a process is created it gets its priority._
 * __FIXED__ Priorities should be changeable at run-time.
-    - _We have a function named change_priority which takes a pid and a new priority value._
+    - _We have a function named change_priority which takes a pid and a new priority value, changes the priority value in the process PCB._
 
-###PH3: Process Scheduling
+### PH3: Process Scheduling
 
 Scheduling should be highest-priority first, with preemption. In particular:
 
@@ -59,14 +41,15 @@ Scheduling should be highest-priority first, with preemption. In particular:
     - _On each timer interrupt we re-schedule._
 * __FIXED__ A lower priority process should not be allowed to run if there is a higher priority process ready to run. We expect strict highest-priority-first scheduling.
     - _The ready queue is a priority queue._
-###PH4: Process Identities
+
+### PH4: Process Identities
 
 * __FIXED__ Each process should have a unique ID that can be used to address the process and perform operations on it.
     - _When a process is created, it gets a unique ID, called pid, which is stored in its PCB._
 * __FIXED__ A process may have a human-readable name.
     - _When a process is created, it gets the name of the process(program), which is stored in its PCB. There can exist processes with the same name._
 
-###PH5: Process Creation
+### PH5: Process Creation
 
 * __FIXED__ Processes should be able to create new processes.
     - _A process can use the function exec to create a new process._
@@ -77,7 +60,7 @@ Scheduling should be highest-priority first, with preemption. In particular:
 * __FIXED__ If the process spawning fails for some reason, an error should be reported.
     - _If exec fails to spawn a process, it returns NULL._
 
-###PH6: Process Termination
+### PH6: Process Termination
 
 * __FIXED__ Processes should be able to terminate themselves.
     - _A process can call the kill_self function which kills the process._
@@ -86,128 +69,149 @@ Scheduling should be highest-priority first, with preemption. In particular:
 * __FIXED__ The operating system should be able to terminate processes.
     - _Yes, with kkill(kernel mode) or with kill._
 
-###PH7: Programs and Processes
+### PH7: Programs and Processes
 
 * __FIXED__ Each process runs the code of a particular program.
     - _When a process is created with exec, we give exec a pointer to a function._
 * __FIXED__  The program to execute in a process is specified when the process starts.
     - _When a process is created with exec, we give exec a pointer to a function._
 * __FIXED__ Each program should have an ID that is used to identify it when starting a process.
-    
 * __FIXED__ Each program should have a human-readable name associated with it. This might be the same as the ID.
 * __FIXED__ There should be a global table of available programs.
+    - _We store a list with available programs, which can be viewed in the shell by typing "ls"._
 * __FIXED__ It should be possible to start every program in multiple simultaneous instances.
+    - _As long as we have free PCBs, there is no restriction on the number of instances of a program._
 
-###PH8: Process Information
+### PH8: Process Information
 
 * __FIXED__ A process should be able to obtain information about another process.
+    -_We have a set of functions which returns information about a process by providing the pid of the desired process._
 * __FIXED__ The information should include:
   - __FIXED__ Process priority
+    - _get_process_priority(pid)._
   - __WONT_FIX__ Process name, if such is used
   - __FIXED__ Name of the program running in the process
+    - _get_process_name(pid)._
   - __FIXED__ Current scheduling state of the process
+    - _get_process_state(pid)._
 * __FIXED__ This information should be readable by the process requesting it.
 * __FIXED__ The information should not be printed directly to the console; if it is to be presented to the user, a program (or function in the shell program) will have to be written for that purpose.
 
-###PH9: Resource Recycling
+### PH9: Resource Recycling
 
 * __FIXED__ When a process is terminated, all resources that it has allocated should be reclaimed.
 * __FIXED__ Process IDs should be recycled.
 * __FIXED__ The operating system should never "leak" memory, if there are dynamically allocated or assigned resources.
 
-###PH10: Process Limitations
+### PH10: Process Limitations
 
 * __FIXED__ There can be a fixed upper limit on the number of processes allowed in the  system.
 * __FIXED__ Process IDs should be reused, as per requirement PH9.
 * __FIXED__ Any fixed upper limits must be easy to modify, using a #define or similar C construct.
 
-##Input and Output
+## Input and Output
 
 The system has to provide some kind of input and output facility to do interesting work.
-###IO1: Text Consoles
+
+### IO1: Text Consoles
 
 * __FIXED__ The system should provide at least one text console for input and output.
 
-###IO2: Interrupt-Driven IO
+### IO2: Interrupt-Driven IO
 
 * __FIXED__ Text input and output shall be implemented using interrupt-driven IO on the serial port of the system.
 
-###IO3: Text Output
+### IO3: Text Output
 
 * __FIXED__ It should be possible for processes to send text to a console.
+    - _There are print functions for char, int and str._
 * __FIXED__ It should be possible to send coherent messages, i.e. a process should be able to send a text message that is printed uninterrupted on a text console.
 
-###IO4: Text Input
+### IO4: Text Input
 
 * __FIXED__ It should be possible for a process to request the user to input text.
 * __FIXED__ Text input should be returned as a string to the requesting process.
 
-###IO5: Malta LCD Output
+### IO5: Malta LCD Output
 
 * __FIXED__ It should be possible for a process to output text to the Malta LCD display
+    - _With lcd_print(str)_;
 
-##System Application Programming Interface (API)
+## System Application Programming Interface (API)
 
 The operating system should provide an API for user programs.
-###A1: General
 
-* The API should be the only way to request services from the operating system kernel.
+### A1: General
 
-###A2: Syscall
+* __XXX__ The API should be the only way to request services from the operating system kernel.
+
+### A2: Syscall
 
 * __FIXED__ The MIPS Syscall exception mechanism should be used to implemented the API.
 
-###A3: Documentation
+### A3: Documentation
 
-* The API should be presented to the user programs as a set of C functions.
-* The API should be documented for the benefit of user programs.
+* __FIXED__ The API should be presented to the user programs as a set of C functions.
+* __FIXED__ The API should be documented for the benefit of user programs.
 
-##Other
+## Other
 
 There are some other requirements that do not fit conveniently under the headings above.
-###O1: No Shared Memory
+
+### O1: No Shared Memory
 
 * __FIXED__ Processes should never use shared variables or memory to communicate.
 * __FIXED__ It is not necessary for the operating system to rigorously enforce this condition.
 
-###O2: Reentrancy
+### O2: Reentrancy
 
 It should be possible to execute multiple instances of the same program concurrently. In particular, this means that:
 
 * __FIXED__ A program cannot use "static" variables in C or global variables.
 * __FIXED__ Any attempts at using names to identify processes has to allow for the dynamic creation of names.
+    - _With the shell command top you can see both the program name and the process id._
 
-###O3: Error Handling
+### O3: Error Handling
 
 Whenever the operating system cannot complete an operation, it should return an error code to the process trying to perform the operation.
 
 * __FIXED__ Error codes should be returned to the calling process as the function result, so that it has the ability to deal with the error.
 * __WONT FIX__ To help debugging programs, the OS may provide the facility to print diagnostic errors to the console automatically.
 
-##User Programs
+## User Programs
 
 The system would be no fun without a set of programs to run on it. For demonstration purposes, you should implement a set of simple user programs.
-###UP1: Increment
+
+### UP1: Increment
 
 __FIXED__ A user level program that prints out an increasing number sequence 1, 2, 3, ...., N to the console. Each number should be printed on a separate line.
-###UP2: Fibonacci
+
+### UP2: Fibonacci
 
 __FIXED__ A user level program that prints out the Fibonacci number serie: 1, 1, 2, 3, 5, 8, 11, ....... Max-Fib-Number. Each number should be printed on a separate line.
-###UP3: Command Shell
+
+### UP3: Command Shell
 
 The system should have a command shell that can do at least the following:
 
 * __FIXED__ Start processes. For example, it shall be possible to start another interpreter.
+    - _The available programs can be found with ls._
 * __FIXED__ Change priority of processes.
+    - _By typing priority pid newPriority, which calls the change priority function._
 * __FIXED__ Obtain information about present processes.
+    - _With the command top._
 * __FIXED__ Terminate processes.
+    - _With the command kill pid, which uses the kill function._
 * __FIXED__ Ouput to the Malta LCD display
+    - _With the command scrollmsg, which uses the lcd_print function.
 * __FIXED__ It should be possible to have more than one shell running simultaneously.
+    _The most recently started shell accept input._
 * __FIXED__ The command shell should not be special-treated by the operating system in any way.
 * __FIXED__ The command shell has to handle "backspace" functionality when entering commands.
 * __FIXED__ The command shell should not use CPU time when waiting for input.
+    - _When waiting for the tty it will block and be put in the wait queue._
 
-###UP4: Text Scroller
+### UP4: Text Scroller
 
 There should be a scroller background process that scrolls text on the Malta board LCD display.
 
@@ -217,13 +221,15 @@ There should be a scroller background process that scrolls text on the Malta boa
 * __FIXED__ The scroller should sleep between updates to the display.
 * __FIXED__ The scroller should start when the operating system starts.
 
-#Requirement Set B
+# Requirement Set B
 
 These requirments are mandatory only for KandDV students.
-##Message Passing (3 pts)
+
+## Message Passing (3 pts)
 
 Processes in the operating system should communicate using asynchronous message passing.
-###MP1: Messages
+
+### MP1: Messages
 
 * __FIXED__ Messages are unicast, going from one process to precisely one other process.
   - _When a message is created, a sender_pid must be set._
@@ -236,13 +242,13 @@ Processes in the operating system should communicate using asynchronous message 
 * __FIXED__ It should be possible to pass process identities using messages.
   - _Just pass the PID as an integer or such in the message._
 
-###MP2: Message Queues
+### MP2: Message Queues
 
 * __FIXED__ Each process should have a single message queue for incoming messages.
 * __FIXED__ The message queue can have a fixed upper bound on the number of messages stored.
   - _There is no fixed limit other than a global limit determined by the OS. A syscall exists to simulate a per-process upper bound though._
 
-###MP3: Sending Messages
+### MP3: Sending Messages
 
 * __FIXED__ Processes should be able to send messages to other processes.
   - _The OS API includes a function called send_message._
@@ -251,7 +257,7 @@ Processes in the operating system should communicate using asynchronous message 
 * __OBSOLETE__ The send operation should report an error if the message queue of the receiving process is full.
 * __FIXED__ The send operation should never block the sending process.
 
-###MP4: Receiving Messages
+### MP4: Receiving Messages
 
 * __FIXED__ Processes should be able to receive messages from their message queue.
   - _Each process has a message queue in its PCB, and can access it through the OS API._
@@ -264,24 +270,23 @@ Processes in the operating system should communicate using asynchronous message 
 * __FIXED__ It should be possible to specify a time-out for a receive operation, after which a process will resume operation even if no message arrives, and report an error.
   - _Read functions take a timeout argument. A timeout of >0 makes the process continue execution after that time even if no message was received. The process can report an error._
 
-###UP5: Ring
+### UP5: Ring
 
 A user level program that demonstrates process communication.
 
 * __FIXED__ A program should start a set of other processes, P1 to Pn.
-_Yes, it does. It ring starts ringn (ring node). If the ring is not complete, i.e. due to lack of PCBs, ring will terminate the spawned ringn processes again. The argument to each nodes is sent by message passing._
+    - _Yes, it does. It ring starts ringn (ring node). If the ring is not complete, i.e. due to lack of PCBs, ring will terminate the spawned ringn processes again. The argument to each nodes is sent by message passing._
 * __FIXED__ The processes should be set up in a communications ring, where P1 sends messages to P2, etc. on to Pn.
-_Yes, this is done with message passing._
+    - _Yes, this is done with message passing._
 * __FIXED__ The demonstration should send some messages around the ring and show that they visit all processes along the way.
-_Yes, the when the message is recieved it will send it to the next process then end._
+    - _Yes, the when the message is recieved it will send it to the next process then end._
 * __FIXED__ The user should only need to start a single process to start the ring demo: the main program should start the other processes involved.
-_Yes, the program ring spawns n ringn's._
+    - _Yes, the program ring spawns n ringn's._
 * __FIXED__ The main ring program should return to the shell when done setting up the ring.
-_Yes, exactly._
 * __FIXED__ Timers for when to send messages should be set in such a way that it is possible to observe the processes involved in the ring from the shell.
-_Yes, a sufficient sleep is set in the ringn program. top is used to observe._
+    - _Yes, a sufficient sleep is set in the ringn program. top is used to observe._
 
-###UP6: Dining Philosophers
+### UP6: Dining Philosophers
 
 This demonstrates process synchronization (you will need to work out how to synchronize processes given the message passing paradigm). The dining philosophers program is a program solving a problem with resource sharing as follows. A group of philosophers are sitting around a dining table (formed as a circle). Between each pair of philosophers is one fork. Occasionally, one philosopher wants to eat and to do that he needs two forks. This means that two philosophers sitting next to each other can not eat at the same time. You should implement this with the following in mind:
 
@@ -293,20 +298,18 @@ get other fork
 eat(random())
 drop forks
 restart
-_Yes, exactly._
 
 * __FIXED__ Like UP3, the entire setup should be started by a single process.
-_Yes, exactly._
 * __FIXED__ Like UP3, the main program should return and make it possible to observe the processes running.
 _Yes, exactly, it returns to the shell where you can use "top"._
 
-##Process Supervision (2 pts)
+## Process Supervision (2 pts)
 
 So far, process lives on its own. Nobody else cares if a process terminates.
 In most real real-time operating systems, processes can be linked together in
 order to provide fault detection and tolerance.
 
-###PS1: Provide Process Supervision
+### PS1: Provide Process Supervision
 
 * __FIXED__ Processes can be appointed as supervisors of one or more other processes.
     - _Yes, the supervisior is set in the supervised PCB with the call __supervise__._
@@ -315,12 +318,11 @@ order to provide fault detection and tolerance.
 * __FIXED__ It should be possible to differentiate between controlled and uncontrolled
   termination, i.e. it should be possible for the supervisor to see if a
   subordinate process has crashed or if it terminated in good order.
-    _Yes, the killself and kill function sets different states of the PCB._ 
+    - _Yes, the killself and kill function sets different states of the PCB._
 * __FIXED__ To provoke crashes, the semantics of the send operation is changed so that a
   process terminates if the receiving process has a full message queue.
-  _Yes, exactly._
 
-###UP7: Process Supervision
+### UP7: Process Supervision
 
 * __FIXED__ A demo application and application note should describe the mechanism and demonstrate that you have a working implementation of process supervision. The demo should include a supervisor that restarts its subordinates if they crash.
     - _Supervision demo spawns a "spammer" and sets itself to be its supervisor. Spammer then forces itself to a crash by spamming itself with messages, the supervisor will the be notfied of the crash and spawn it again. This will be done 10 times._
