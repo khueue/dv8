@@ -181,8 +181,8 @@ It should be possible to execute multiple instances of the same program concurre
 
 Whenever the operating system cannot complete an operation, it should return an error code to the process trying to perform the operation.
 
-* Error codes should be returned to the calling process as the function result, so that it has the ability to deal with the error.
-* To help debugging programs, the OS may provide the facility to print diagnostic errors to the console automatically.
+* __FIXED__ Error codes should be returned to the calling process as the function result, so that it has the ability to deal with the error.
+* __WONT FIX__ To help debugging programs, the OS may provide the facility to print diagnostic errors to the console automatically.
 
 ##User Programs
 
@@ -246,6 +246,7 @@ Processes in the operating system should communicate using asynchronous message 
 ###MP4: Receiving Messages
 
 * __FIXED__ Processes should be able to receive messages from their message queue.
+_Each process has a queue in thier PCB._
 * __FIXED__ The receive operation should be able to filter messages based on the type or priority of the message.
 * __FIXED__ The user-defined data specified in the message should be readable by the receiver.
 * __FIXED__ The receive operation should block the receiving process if the message queue is empty.
@@ -256,11 +257,17 @@ Processes in the operating system should communicate using asynchronous message 
 A user level program that demonstrates process communication.
 
 * __FIXED__ A program should start a set of other processes, P1 to Pn.
+_Yes, it does. It ring starts ringn (ring node). If the ring is not complete, i.e. due to lack of PCBs, ring will terminate the spawned ringn processes again. The argument to each nodes is sent by message passing._
 * __FIXED__ The processes should be set up in a communications ring, where P1 sends messages to P2, etc. on to Pn.
+_Yes, this is done with message passing._
 * __FIXED__ The demonstration should send some messages around the ring and show that they visit all processes along the way.
+_Yes, the when the message is recieved it will send it to the next process then end._
 * __FIXED__ The user should only need to start a single process to start the ring demo: the main program should start the other processes involved.
+_Yes, the program ring spawns n ringn's._
 * __FIXED__ The main ring program should return to the shell when done setting up the ring.
+_Yes, exactly._
 * __FIXED__ Timers for when to send messages should be set in such a way that it is possible to observe the processes involved in the ring from the shell.
+_Yes, a sufficient sleep is set in the ringn program. top is used to observe._
 
 ###UP6: Dining Philosophers
 
@@ -274,25 +281,34 @@ get other fork
 eat(random())
 drop forks
 restart
+_Yes, exactly._
 
 * __FIXED__ Like UP3, the entire setup should be started by a single process.
+_Yes, exactly._
 * __FIXED__ Like UP3, the main program should return and make it possible to observe the processes running.
+_Yes, exactly, it returns to the shell where you can use "top"._
 
 ##Process Supervision (2 pts)
 
 So far, process lives on its own. Nobody else cares if a process terminates.
 In most real real-time operating systems, processes can be linked together in
 order to provide fault detection and tolerance.
+
 ###PS1: Provide Process Supervision
 
 * __FIXED__ Processes can be appointed as supervisors of one or more other processes.
+  -_Yes, the supervisior is set in the supervised PCB with the call __supervise__._
 * __FIXED__ When a supervised process terminates, the supervisor is notified.
+  -_Yes, the kill function sends a message to the supervisor, if one exists._
 * __FIXED__ It should be possible to differentiate between controlled and uncontrolled
   termination, i.e. it should be possible for the supervisor to see if a
   subordinate process has crashed or if it terminated in good order.
+  -_Yes, the killself and kill function sets different states of the PCB._ 
 * __FIXED__ To provoke crashes, the semantics of the send operation is changed so that a
   process terminates if the receiving process has a full message queue.
+  -_Yes, exactly._
 
 ###UP7: Process Supervision
 
-* A demo application and application note should describe the mechanism and demonstrate that you have a working implementation of process supervision. The demo should include a supervisor that restarts its subordinates if they crash.
+* __FIXED__ A demo application and application note should describe the mechanism and demonstrate that you have a working implementation of process supervision. The demo should include a supervisor that restarts its subordinates if they crash.
+  -_Supervision demo spawns a "spammer" and sets itself to be its supervisor. Spammer then forces itself to a crash by spamming itself with messages, the supervisor will the be notfied of the crash and spawn it again. This will be done 10 times._
