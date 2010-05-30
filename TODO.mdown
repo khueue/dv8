@@ -26,44 +26,65 @@ The operating system should provide the concept of processes that run pseudo-par
 ###PH1: Process States
 
 * __FIXED__ Processes should be possible to block.
+    - We use a function named block which takes a process pid and puts that process in the waiting queue.
 * __FIXED__ A blocked process should not be able to run until it is unblocked.
+    - A process is blocked until we use the function unblock, taking the process pid as argument.
 * __FIXED__ It should be possible to delay a process for a specified amount of time.
+    - We use a function named sleep, which puts the process in the wait queue for a specified amount of time.
 * __FIXED__ When a process is delayed, it should not be able to execute any code.
+    - If the process is in the wait queue, it does not run.
 
 ###PH2: Process Priorities
 
 * __FIXED__ Each process should have a priority.
+    - When a process is created, it gets its priority.
 * __FIXED__ The number of priority levels should be at least 30.
+    - We use uint_32 as the datatype for the priority and thus we have more than 30 priority levels.
 * __FIXED__ Priorities should be specified at process start.
+    - When a process is created it gets its priority.
 * __FIXED__ Priorities should be changeable at run-time.
+    - We have a function named change_priority which takes a pid and a new priority value.
 
 ###PH3: Process Scheduling
 
 Scheduling should be highest-priority first, with preemption. In particular:
 
 * __FIXED__ A higher-priority process should be scheduled in preference to a lower-priority process.
+    - The ready queue is a priority queue, where higher priority is placed ahead of lower priority processes.
 * __FIXED__ Between processes of the same priority, round-robin scheduling should be used.
+    - When processes have the same priority, the process which have been longest in the queue is placed ahead in the ready queue.
 * __FIXED__ Higher-priority processes should be able to preempt lower-priority processes.
+    - When a process is created, we re-schedule. So if the new process has higher priority it will get to run instantly.
 * __FIXED__ There should be a recurring regular check for which process to run, unrelated to whether a particular task has finished its work.
+    - On each timer interrupt we re-schedule.
 * __FIXED__ A lower priority process should not be allowed to run if there is a higher priority process ready to run. We expect strict highest-priority-first scheduling.
-
+    - The ready queue is a priority queue.
 ###PH4: Process Identities
 
 * __FIXED__ Each process should have a unique ID that can be used to address the process and perform operations on it.
+    - When a process is created, it gets a unique ID, called pid, which is stored in its PCB.
 * __FIXED__ A process may have a human-readable name.
+    - When a process is created, it gets the name of the process(program), which is stored in its PCB. There can exist processes with the same name.
 
 ###PH5: Process Creation
 
 * __FIXED__ Processes should be able to create new processes.
+    - A process can use the function exec to create a new process.
 * __FIXED__ Processes are created by a spawn operation that starts a new process with a given code to run (see requirement PH7).
+    - We have a function called exec which does just that.
 * __FIXED__ The spawn operation should return the ID of the created process.
+    - exec returns the pid of the created process.
 * __FIXED__ If the process spawning fails for some reason, an error should be reported.
+    - If exec fails to spawn a process, it returns NULL.
 
 ###PH6: Process Termination
 
 * __FIXED__ Processes should be able to terminate themselves.
+    - A process can call the kill_self function which kills the process.
 * __FIXED__ Processes should be able to terminate other processes.
+    - A process can kill other process by using the kill function.
 * __FIXED__ The operating system should be able to terminate processes.
+    - Yes, with kkill(kernel mode) or with kill.
 
 ###PH7: Programs and Processes
 
