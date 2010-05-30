@@ -135,6 +135,7 @@ The system has to provide some kind of input and output facility to do interesti
 ###IO3: Text Output
 
 * __FIXED__ It should be possible for processes to send text to a console.
+    - _There are print functions for char, int and str._
 * __FIXED__ It should be possible to send coherent messages, i.e. a process should be able to send a text message that is printed uninterrupted on a text console.
 
 ###IO4: Text Input
@@ -145,13 +146,15 @@ The system has to provide some kind of input and output facility to do interesti
 ###IO5: Malta LCD Output
 
 * __FIXED__ It should be possible for a process to output text to the Malta LCD display
+    - _With lcd_print(str)_;
+
 
 ##System Application Programming Interface (API)
 
 The operating system should provide an API for user programs.
 ###A1: General
 
-* The API should be the only way to request services from the operating system kernel.
+* __XXX__ The API should be the only way to request services from the operating system kernel.
 
 ###A2: Syscall
 
@@ -159,8 +162,8 @@ The operating system should provide an API for user programs.
 
 ###A3: Documentation
 
-* The API should be presented to the user programs as a set of C functions.
-* The API should be documented for the benefit of user programs.
+* __FIXED__ The API should be presented to the user programs as a set of C functions.
+* __FIXED__ The API should be documented for the benefit of user programs.
 
 ##Other
 
@@ -176,6 +179,7 @@ It should be possible to execute multiple instances of the same program concurre
 
 * __FIXED__ A program cannot use "static" variables in C or global variables.
 * __FIXED__ Any attempts at using names to identify processes has to allow for the dynamic creation of names.
+    - _With the shell command top you can see both the program name and the process id._
 
 ###O3: Error Handling
 
@@ -198,14 +202,21 @@ __FIXED__ A user level program that prints out the Fibonacci number serie: 1, 1,
 The system should have a command shell that can do at least the following:
 
 * __FIXED__ Start processes. For example, it shall be possible to start another interpreter.
+    - _The available programs can be found with ls._
 * __FIXED__ Change priority of processes.
+    - _By typing priority pid newPriority, which calls the change priority function._
 * __FIXED__ Obtain information about present processes.
+    - _With the command top._
 * __FIXED__ Terminate processes.
+    - _With the command kill pid, which uses the kill function._
 * __FIXED__ Ouput to the Malta LCD display
+    - _With the command scrollmsg, which uses the lcd_print function.
 * __FIXED__ It should be possible to have more than one shell running simultaneously.
+    _The most recently started shell accept input._
 * __FIXED__ The command shell should not be special-treated by the operating system in any way.
 * __FIXED__ The command shell has to handle "backspace" functionality when entering commands.
 * __FIXED__ The command shell should not use CPU time when waiting for input.
+    - _When waiting for the tty it will block and be put in the wait queue._
 
 ###UP4: Text Scroller
 
@@ -246,7 +257,7 @@ Processes in the operating system should communicate using asynchronous message 
 ###MP4: Receiving Messages
 
 * __FIXED__ Processes should be able to receive messages from their message queue.
-_Each process has a queue in thier PCB._
+    - _Each process has a queue in thier PCB._
 * __FIXED__ The receive operation should be able to filter messages based on the type or priority of the message.
 * __FIXED__ The user-defined data specified in the message should be readable by the receiver.
 * __FIXED__ The receive operation should block the receiving process if the message queue is empty.
@@ -257,17 +268,16 @@ _Each process has a queue in thier PCB._
 A user level program that demonstrates process communication.
 
 * __FIXED__ A program should start a set of other processes, P1 to Pn.
-_Yes, it does. It ring starts ringn (ring node). If the ring is not complete, i.e. due to lack of PCBs, ring will terminate the spawned ringn processes again. The argument to each nodes is sent by message passing._
+    - _Yes, it does. It ring starts ringn (ring node). If the ring is not complete, i.e. due to lack of PCBs, ring will terminate the spawned ringn processes again. The argument to each nodes is sent by message passing._
 * __FIXED__ The processes should be set up in a communications ring, where P1 sends messages to P2, etc. on to Pn.
-_Yes, this is done with message passing._
+    - _Yes, this is done with message passing._
 * __FIXED__ The demonstration should send some messages around the ring and show that they visit all processes along the way.
-_Yes, the when the message is recieved it will send it to the next process then end._
+    - _Yes, the when the message is recieved it will send it to the next process then end._
 * __FIXED__ The user should only need to start a single process to start the ring demo: the main program should start the other processes involved.
-_Yes, the program ring spawns n ringn's._
+    - _Yes, the program ring spawns n ringn's._
 * __FIXED__ The main ring program should return to the shell when done setting up the ring.
-_Yes, exactly._
 * __FIXED__ Timers for when to send messages should be set in such a way that it is possible to observe the processes involved in the ring from the shell.
-_Yes, a sufficient sleep is set in the ringn program. top is used to observe._
+    - _Yes, a sufficient sleep is set in the ringn program. top is used to observe._
 
 ###UP6: Dining Philosophers
 
@@ -281,10 +291,8 @@ get other fork
 eat(random())
 drop forks
 restart
-_Yes, exactly._
 
 * __FIXED__ Like UP3, the entire setup should be started by a single process.
-_Yes, exactly._
 * __FIXED__ Like UP3, the main program should return and make it possible to observe the processes running.
 _Yes, exactly, it returns to the shell where you can use "top"._
 
@@ -303,11 +311,10 @@ order to provide fault detection and tolerance.
 * __FIXED__ It should be possible to differentiate between controlled and uncontrolled
   termination, i.e. it should be possible for the supervisor to see if a
   subordinate process has crashed or if it terminated in good order.
-    _Yes, the killself and kill function sets different states of the PCB._ 
+    - _Yes, the killself and kill function sets different states of the PCB._ 
 * __FIXED__ To provoke crashes, the semantics of the send operation is changed so that a
   process terminates if the receiving process has a full message queue.
-  _Yes, exactly._
-
+ 
 ###UP7: Process Supervision
 
 * __FIXED__ A demo application and application note should describe the mechanism and demonstrate that you have a working implementation of process supervision. The demo should include a supervisor that restarts its subordinates if they crash.
