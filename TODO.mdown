@@ -178,8 +178,8 @@ It should be possible to execute multiple instances of the same program concurre
 
 Whenever the operating system cannot complete an operation, it should return an error code to the process trying to perform the operation.
 
-* Error codes should be returned to the calling process as the function result, so that it has the ability to deal with the error.
-* To help debugging programs, the OS may provide the facility to print diagnostic errors to the console automatically.
+* __FIXED__ Error codes should be returned to the calling process as the function result, so that it has the ability to deal with the error.
+* __WONT FIX__ To help debugging programs, the OS may provide the facility to print diagnostic errors to the console automatically.
 
 ##User Programs
 
