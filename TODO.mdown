@@ -43,7 +43,7 @@ The operating system should provide the concept of processes that run pseudo-par
 * __FIXED__ Priorities should be specified at process start.
     - _When a process is created it gets its priority._
 * __FIXED__ Priorities should be changeable at run-time.
-    - _We have a function named change_priority which takes a pid and a new priority value._
+    - _We have a function named change_priority which takes a pid and a new priority value, changes the priority value in the process PCB._
 
 ###PH3: Process Scheduling
 
@@ -92,20 +92,25 @@ Scheduling should be highest-priority first, with preemption. In particular:
     - _When a process is created with exec, we give exec a pointer to a function._
 * __FIXED__  The program to execute in a process is specified when the process starts.
     - _When a process is created with exec, we give exec a pointer to a function._
-* __FIXED__ Each program should have an ID that is used to identify it when starting a process.
-    
+* __FIXED__ Each program should have an ID that is used to identify it when starting a process. 
 * __FIXED__ Each program should have a human-readable name associated with it. This might be the same as the ID.
 * __FIXED__ There should be a global table of available programs.
+    - _We store a list with available programs, which can be viewed in the shell by typing "ls"._
 * __FIXED__ It should be possible to start every program in multiple simultaneous instances.
+    - _As long as we have free PCBs, there is no restriction on the number of instances of a program._
 
 ###PH8: Process Information
 
 * __FIXED__ A process should be able to obtain information about another process.
+    -_We have a set of functions which returns information about a process by providing the pid of the desired process._
 * __FIXED__ The information should include:
   - __FIXED__ Process priority
+    - _get_process_priority(pid)._
   - __WONT_FIX__ Process name, if such is used
   - __FIXED__ Name of the program running in the process
+    - _get_process_name(pid)._
   - __FIXED__ Current scheduling state of the process
+    - _get_process_state(pid)._
 * __FIXED__ This information should be readable by the process requesting it.
 * __FIXED__ The information should not be printed directly to the console; if it is to be presented to the user, a program (or function in the shell program) will have to be written for that purpose.
 
