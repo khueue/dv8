@@ -226,31 +226,43 @@ Processes in the operating system should communicate using asynchronous message 
 ###MP1: Messages
 
 * __FIXED__ Messages are unicast, going from one process to precisely one other process.
+  - _When a message is created, a sender_pid must be set._
 * __FIXED__ The messages should be able to contain some user data.
+  - _Messages contain either an integer or a string of at most 1024 chars._
 * __FIXED__ Messages should be tagged with sender and receiver process identities.
+  - _Messages contain sender_pid and receiver_pid._
 * __FIXED__ Messages should have a type or priority field for filtering by the receiver.
+  - _Messages contain a type, which the receiver can acknowledge using different read functions._
 * __FIXED__ It should be possible to pass process identities using messages.
+  - _Just pass the PID as an integer or such in the message._
 
 ###MP2: Message Queues
 
 * __FIXED__ Each process should have a single message queue for incoming messages.
 * __FIXED__ The message queue can have a fixed upper bound on the number of messages stored.
+  - _There is no fixed limit other than a global limit determined by the OS. A syscall exists to simulate a per-process upper bound though._
 
 ###MP3: Sending Messages
 
 * __FIXED__ Processes should be able to send messages to other processes.
+  - _The OS API includes a function called send_message._
 * __FIXED__ The send should not depend on the state of the other process.
-* The send operation should report an error if the message queue of the receiving process is full.
+  - _The function send_message sends without caring._
+* __OBSOLETE__ The send operation should report an error if the message queue of the receiving process is full.
 * __FIXED__ The send operation should never block the sending process.
 
 ###MP4: Receiving Messages
 
 * __FIXED__ Processes should be able to receive messages from their message queue.
-_Each process has a queue in thier PCB._
+  - _Each process has a message queue in its PCB, and can access it through the OS API._
 * __FIXED__ The receive operation should be able to filter messages based on the type or priority of the message.
+  - _Different read functions allow for this._
 * __FIXED__ The user-defined data specified in the message should be readable by the receiver.
+  - _The message contains a type field which determines what data is to be expected from the message._
 * __FIXED__ The receive operation should block the receiving process if the message queue is empty.
+  - _Read functions take a timeout argument. A timeout of 0 blocks the process forever._
 * __FIXED__ It should be possible to specify a time-out for a receive operation, after which a process will resume operation even if no message arrives, and report an error.
+  - _Read functions take a timeout argument. A timeout of >0 makes the process continue execution after that time even if no message was received. The process can report an error._
 
 ###UP5: Ring
 
