@@ -8,11 +8,11 @@
 
 ### void kill_self(void)
 
-Used by a process to terminate itself.
+Used by a process to terminate itself. The process is considered to have terminated successfully.
 
 ### uint32_t kill(uint32_t pid)
 
-Terminates the process with the indicated PID. Returns [number] if successful, otherwise [other number].
+Terminates the process with the indicated PID. Returns 1 if successful, otherwise 0. The killed process is considered to have terminated in an unusual way.
 
 ### uint32_t exec(const char *program, uint32_t priority)
 
@@ -20,10 +20,26 @@ Spawns a new process __program__ with the priority __priority__.
 
 ## Process intercommunication
 
-* uint32_t send_message(msg_t *msg)
+* uint32_t send_message(const msg_t *msg)
 * uint32_t read_from_console(msg_t *msg)
 * uint32_t read_message_by_type(msg_t *msg, msg_type_t type, int max_wait_ms)
 * uint32_t read_next_message(msg_t *msg, int max_wait_ms)
+
+### uint32_t send_message(const msg_t *msg)
+
+Sends a message to the process indicated by msg->receiver_pid. The receiver is unblocked immediately if the message was expected, otherwise the message is simply added to the receiver's inbox for later processing. send_message returns zero and kills the sender process if the receiver's inbox is full.
+
+### uint32_t read_from_console(msg_t *msg)
+
+The reading process is added to the console's input queue and blocks. When the console dispatches a message to the process, it is unblocked. If the process is unblocked without having been sent a console message, the message pointed to by __msg__ is marked as invalid. Always returns 1.
+
+### uint32_t read_message_by_type(msg_t *msg, msg_type_t type, int max_wait_ms)
+
+The reading process waits for a new message of the given __type__. If max_wait_ms is 0, the process blocks until an appropriate message is received. If max_wait_ms is > 0, the process blocks for a maximum of max_wait_ms milliseconds. If the process is unblocked without being given an appropriate message, the message pointed to by __msg__ is marked as invalid.
+
+### uint32_t read_next_message(msg_t *msg, int max_wait_ms)
+
+The reading process waits for a new message of any type. If max_wait_ms is 0, the process blocks until a message is received. If max_wait_ms is > 0, the process blocks for a maximum of max_wait_ms milliseconds. If the process is unblocked without being given a message, the message pointed to by __msg__ is marked as invalid.
 
 ## Process and scheduling manipulation
 

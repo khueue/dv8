@@ -1,0 +1,46 @@
+# User guide to Deviate OS
+
+## Boot Deviate in Simics
+
+* XXXXXXXX
+
+## User's guide for programs
+
+###Shell
+The shell is the input handler for the OS.
+
+Starts a command shell prompt. 
+__Shell command:__ shell
+
+List the programs available.
+__Shell command:__ ls
+
+Shows information about the current processes.
+__Shell command:__ top
+
+Kills the pid. 
+__Shell command:__ kill pid
+
+###Increment
+Increases 1 to n, where n is the argument. 
+__Shell command:__ incr 10
+
+###Fibonacci
+List the n first fibonacci numbers, where n is the argument.
+__Shell command:__ fib 10
+
+###Scroller Message
+Sets the message of the malta scroller. First argument is the message.
+__Shell command:__ scrollmsg Hello_World!
+
+###Ring
+Starts a program ring with n processes, where n is the first argument.
+__Shell command:__ ring 10
+
+###Dining philosophers
+Starts a dinner of five. Each philosopher will eat 10 times before leaving the table.
+__Shell command:__ dp
+
+###Supervision demo
+Starts an supervision demonstration. 
+__Shell command:__ superd
