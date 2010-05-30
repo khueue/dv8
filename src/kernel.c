@@ -178,7 +178,7 @@ kread_next_message(msg_t *msg, int max_wait_ms)
 }
 
 uint32_t
-ksend_message(msg_t *msg)
+ksend_message(const msg_t *msg)
 {
     pcb_t *receiver = NULL;
 

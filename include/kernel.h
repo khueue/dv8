@@ -57,7 +57,7 @@ uint32_t
 kread_from_console(msg_t *msg);
 
 uint32_t
-ksend_message(msg_t *msg);
+ksend_message(const msg_t *msg);
 
 uint32_t
 kchange_priority(uint32_t pid, uint32_t priority);

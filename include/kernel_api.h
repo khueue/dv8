@@ -50,7 +50,7 @@ void
 top(void);
 
 uint32_t
-send_message(msg_t *msg);
+send_message(const msg_t *msg);
 
 uint32_t
 read_from_console(msg_t *msg);
