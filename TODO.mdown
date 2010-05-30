@@ -89,8 +89,11 @@ Scheduling should be highest-priority first, with preemption. In particular:
 ###PH7: Programs and Processes
 
 * __FIXED__ Each process runs the code of a particular program.
+    - When a process is created with exec, we give exec a pointer to a function.
 * __FIXED__  The program to execute in a process is specified when the process starts.
+    - When a process is created with exec, we give exec a pointer to a function.
 * __FIXED__ Each program should have an ID that is used to identify it when starting a process.
+    
 * __FIXED__ Each program should have a human-readable name associated with it. This might be the same as the ID.
 * __FIXED__ There should be a global table of available programs.
 * __FIXED__ It should be possible to start every program in multiple simultaneous instances.
