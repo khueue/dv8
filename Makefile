@@ -1,3 +1,6 @@
+# !!! CHANGE THIS to the path of your Simics installation. !!!
+SIMICS = /home/$(shell whoami)/simics-workspace
+
 # ----------------------------------------------------------------------------
 # Variables.
 # ----------------------------------------------------------------------------
@@ -24,14 +27,11 @@ ARCH = -EL -G0 -mips32
 # -W...           : show lots of warnings
 CFLAGS += -ggdb -fno-builtin -Iinclude \
 	-W -Wall -Werror -Wshadow -Wpointer-arith \
-	-Wcast-qual -Wstrict-prototypes -Wmissing-prototypes
+	-Wcast-qual -Wstrict-prototypes -Wmissing-prototypes -DNDEBUG
 
 # Add linker flags.
 # -Ttext          : tell it where to start the text segment
 LDFLAGS += -Ttext 80020000
-
-# Path to Simics installation.
-SIMICS = /home/$(shell whoami)/simics-workspace
 
 # Project directories.
 DIR_BIN     = bin
@@ -59,6 +59,9 @@ EXE = $(DIR_BIN)/dv8
 
 # Default rule, used when simply typing 'make'.
 all: boot
+
+run:
+	./$(DIR_SCRIPTS)/run.sh $(SIMICS) $(EXE)
 
 bootfast: buildfast
 	@- echo '--- Starting simulation ...'
