@@ -2,7 +2,12 @@
 
 ## Boot Deviate in Simics
 
-* XXXXXXXX
+1. Open the makefile in the root folder with your favorite editor. 
+2. Change the variable SIMICS on line 2 to your simics workspace directory. Save the changes.
+3. Open terminal go to the root project.
+4. Type "make run" to run the precompiled operating system.
+5. Press C in the simics prompt followed by a enter.
+6. The operating system is now running. You can use the shell commands below in the serial console to test the operating system.
 
 ## User's guide for programs
 
