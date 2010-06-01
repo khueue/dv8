@@ -6,7 +6,7 @@
 2. Change the variable SIMICS on line 2 to your simics workspace directory. Save the changes.
 3. Open terminal go to the root project.
 4. Type "make run" to run the precompiled operating system.
-5. Press C in the simics prompt followed by a enter.
+5. Press C in the simics prompt followed by enter.
 6. The operating system is now running. You can use the shell commands below in the serial console to test the operating system.
 
 ## User's guide for programs
@@ -14,6 +14,7 @@
 ###Shell
 The shell is the input handler for the OS.
 
+####Shell
 Starts a command shell prompt.
 
 __Shell command:__ shell
@@ -26,19 +27,23 @@ Shows information about the current processes.
 
 __Shell command:__ top
 
-Kills the pid.
+Kills a process with pid n.
 
-__Shell command:__ kill 7
+__Shell command:__ kill n
+
+Changes the priority of a process with pid n.
+
+__Shell command:__ priority n
 
 ###Increment
-Increases 1 to n, where n is the argument.
+Prints integers 1 to n, where n is the argument.
 
-__Shell command:__ incr 5
+__Shell command:__ incr n
 
 ###Fibonacci
 List the n first fibonacci numbers, where n is the argument.
 
-__Shell command:__ fib 10
+__Shell command:__ fib n
 
 ###Scroller Message
 Sets the message of the malta scroller. First argument is the message.
@@ -49,7 +54,7 @@ __Shell command:__ scrollmsg Hello_World!
 Starts a program ring with n processes, where n is the first argument. The
 second arguments is the message to pass around the ring.
 
-__Shell command:__ ring 10 heeeello
+__Shell command:__ ring n message
 
 ###Dining philosophers
 Starts a dinner of five. Each philosopher will eat 10 times before leaving the table.
