@@ -67,9 +67,11 @@ kexec(const char program[], uint32_t priority)
     code = program_list_get_program_code(program);
     if (!code)
     {
+        /*
         kprint_str("Could not find program ");
         kprint_str(program);
         kprint_strln("!");
+        */
         return 0;
     }
 
