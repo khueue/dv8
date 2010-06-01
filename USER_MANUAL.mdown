@@ -14,26 +14,20 @@
 ###Shell
 The shell is the input handler for the OS.
 
-####Shell
-Starts a command shell prompt.
-
 __Shell command:__ shell
-
-List the programs available.
+- Starts a command shell prompt.
 
 __Shell command:__ ls
-
-Shows information about the current processes.
+- Lists the programs available.
 
 __Shell command:__ top
-
-Kills a process with pid n.
+- Shows information about the current processes.
 
 __Shell command:__ kill n
-
-Changes the priority of a process with pid n.
+- Kills a process with pid n.
 
 __Shell command:__ priority n
+- Changes the priority of a process with pid n.
 
 ###Increment
 Prints integers 1 to n, where n is the argument.
@@ -62,6 +56,6 @@ Starts a dinner of five. Each philosopher will eat 10 times before leaving the t
 __Shell command:__ dp
 
 ###Supervision demo
-Starts an supervision demonstration.
+Starts a supervision demonstration.
 
 __Shell command:__ superd
