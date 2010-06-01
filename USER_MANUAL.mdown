@@ -26,8 +26,8 @@ __Shell command:__ top
 __Shell command:__ kill n
 - Kills a process with pid n.
 
-__Shell command:__ priority n
-- Changes the priority of a process with pid n.
+__Shell command:__ priority n x
+- Changes the priority of a process with pid n to x.
 
 ###Increment
 Prints integers 1 to n, where n is the argument.
