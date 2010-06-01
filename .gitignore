@@ -1,6 +1,8 @@
 *.[oa]
 *~
 
+*.tar.gz
+
 a.out
 
 *.tmproj

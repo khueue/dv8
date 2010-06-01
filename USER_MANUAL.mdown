@@ -2,7 +2,7 @@
 
 ## Boot Deviate in Simics
 
-1. Open the makefile in the root folder with your favorite editor. 
+1. Open the makefile in the root folder with your favorite editor.
 2. Change the variable SIMICS on line 2 to your simics workspace directory. Save the changes.
 3. Open terminal go to the root project.
 4. Type "make run" to run the precompiled operating system.
@@ -15,7 +15,7 @@
 The shell is the input handler for the OS.
 
 Starts a command shell prompt.
- 
+
 __Shell command:__ shell
 
 List the programs available.
@@ -28,12 +28,12 @@ __Shell command:__ top
 
 Kills the pid.
 
-__Shell command:__ kill pid
+__Shell command:__ kill 7
 
 ###Increment
 Increases 1 to n, where n is the argument.
 
-__Shell command:__ incr 10
+__Shell command:__ incr 5
 
 ###Fibonacci
 List the n first fibonacci numbers, where n is the argument.
@@ -46,9 +46,10 @@ Sets the message of the malta scroller. First argument is the message.
 __Shell command:__ scrollmsg Hello_World!
 
 ###Ring
-Starts a program ring with n processes, where n is the first argument.
+Starts a program ring with n processes, where n is the first argument. The
+second arguments is the message to pass around the ring.
 
-__Shell command:__ ring 10
+__Shell command:__ ring 10 heeeello
 
 ###Dining philosophers
 Starts a dinner of five. Each philosopher will eat 10 times before leaving the table.
@@ -56,6 +57,6 @@ Starts a dinner of five. Each philosopher will eat 10 times before leaving the t
 __Shell command:__ dp
 
 ###Supervision demo
-Starts an supervision demonstration. 
+Starts an supervision demonstration.
 
 __Shell command:__ superd
