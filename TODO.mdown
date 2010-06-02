@@ -1,3 +1,6 @@
+Completed at 2010-06-01!
+-deviate
+
 # Requirement Set A
 
 The basic requirements are divided into a number of categories, each detailing a certain area of OS functionality.
